@@ -1,0 +1,63 @@
+{
+  "expo": {
+    
+    "name": "Germathics",
+    "slug": "Germathics",
+    "version": "0.0.2",
+    "orientation": "portrait",
+    "icon": "./assets/germathics-logo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash-screen-1.jpeg",
+      "resizeMode": "cover",
+      "backgroundColor": "#FFFFFF"
+    },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/germathics-logo.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./assets/sounds/buffalosound.wav"
+          ]
+        }
+      ]
+    ],
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/635e3b9c-c23e-4347-a1d4-a97b516fb5d9"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "buildNumber": "0.0.2",
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sariq.germathics"
+    },
+    "android": {
+      "versionCode": 2,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon-creme.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "splash": {
+        "image": "./assets/splash-screen-1.jpeg",
+        "backgroundColor": "#FFFFFF"
+
+      },
+      "package": "com.sariq.germathics",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyD0CSVYW-UxSDEnderEtAB9YDmYYZLu8q8"
+        }
+      },
+      "permissions" : ["CAMERA"]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "runtimeVersion": "1.0.0"
+  }
+}
