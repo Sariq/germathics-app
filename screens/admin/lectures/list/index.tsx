@@ -145,7 +145,7 @@ const LecturesListScreen = ({ lectures, course,title, onSave }: any) => {
   if (selctedCourseStudentsList) {
     return (
       <StudentsListScreen
-        ids={course.studentList}
+        ids={selctedCourseStudentsList}
         title={`${title} - لقاء ${selectedLecture.id + 1}`}
         isLecture={true}
         onApperanceChange={onApperanceChange}
