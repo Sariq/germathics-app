@@ -17,6 +17,7 @@ import CheckBox from "../../../../components/controls/checkbox";
 import BackButton from "../../../../components/back-button";
 import { LinearGradient } from "expo-linear-gradient";
 import StudentsListScreen from "../../students/list";
+import AddLectureScreen from "../add";
 
 export type TProduct = {
   id?: string;
@@ -24,7 +25,7 @@ export type TProduct = {
   count: string;
 };
 
-const LecturesListScreen = ({ lectures, course,title }: any) => {
+const LecturesListScreen = ({ lectures, course,title, onSave }: any) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
@@ -32,10 +33,14 @@ const LecturesListScreen = ({ lectures, course,title }: any) => {
 
   const [isEditMode, setIdEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isAddLecture, setIsAddLecture] = useState(false);
 
   const [selectedProduct, setSelectedProduct] = useState<TProduct>();
   const [selectedLecture, setSelectedLecture] = useState<TProduct>();
   const [selctedCourseStudentsList, setSelctedCourseStudentsList] = useState();
+  const [lecturesList, setLecturesList] = useState(lectures);
+
+  
 
   const initNewProduct = () => {
     return {
@@ -121,16 +126,36 @@ const LecturesListScreen = ({ lectures, course,title }: any) => {
     })
   };
 
+  const handleAddLecture = () => {
+    setIsAddLecture(true)
+  }
+  const onAddLectureClose = () => {
+    setIsAddLecture(false)
+  }
+
+  const onLectureSave = (newLecture) => {
+    const tmpLecturesList = [...lecturesList];
+    tmpLecturesList.push(newLecture);
+    setLecturesList(tmpLecturesList);
+    onSave(tmpLecturesList)
+    setIsAddLecture(false)
+
+  }
+
   if (selctedCourseStudentsList) {
     return (
       <StudentsListScreen
-        ids={selctedCourseStudentsList}
+        ids={course.studentList}
         title={`${title} - لقاء ${selectedLecture.id + 1}`}
         isLecture={true}
         onApperanceChange={onApperanceChange}
         lectureData={selectedLecture}
       />
     );
+  }
+
+  if(isAddLecture){
+    return <AddLectureScreen onClose={onAddLectureClose} onSave={onLectureSave}/>
   }
   return (
     <ScrollView style={styles.container}>
@@ -141,7 +166,7 @@ const LecturesListScreen = ({ lectures, course,title }: any) => {
 
       </View>
       <View style={styles.cardListContainer}>
-        {lectures?.map((lecture, index) => {
+        {lecturesList?.map((lecture, index) => {
           return (
             <View style={styles.cardContainer}>
         
@@ -218,6 +243,16 @@ const LecturesListScreen = ({ lectures, course,title }: any) => {
           );
         })}
       </View>
+
+      <View style={{ width: "100%", paddingHorizontal: 50, marginTop: 25 }}>
+          <Button
+            text={t("اضف لقاء")}
+            fontSize={20}
+            onClickFn={handleAddLecture}
+            isLoading={isLoading}
+            disabled={isLoading || !isValidForm()}
+          />
+        </View>
     </ScrollView>
   );
 };

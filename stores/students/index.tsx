@@ -1,6 +1,12 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { axiosInstance } from "../../utils/http-interceptor";
-import { STORE_API, CALANDER_API, TRANSLATIONS_API, COURSES_API, STUDENTS_API } from "../../consts/api";
+import {
+  STORE_API,
+  CALANDER_API,
+  TRANSLATIONS_API,
+  COURSES_API,
+  STUDENTS_API,
+} from "../../consts/api";
 import { fromBase64, toBase64 } from "../../helpers/convert-base64";
 
 class StudentsStore {
@@ -12,10 +18,7 @@ class StudentsStore {
 
   getStudentsFromServer = async (ids: any) => {
     return axiosInstance
-      .post(
-        `${STUDENTS_API.ADMIN_GET_STUDENTS_LIST_API}`,
-        {ids: ids}
-      )
+      .post(`${STUDENTS_API.ADMIN_GET_STUDENTS_LIST_API}`, { ids: ids })
       .then(function (response) {
         return response;
       })
@@ -25,13 +28,13 @@ class StudentsStore {
   };
 
   getStudents = (ids?: any) => {
-    return this.getStudentsFromServer(ids).then((res:any) => {
+    return this.getStudentsFromServer(ids).then((res: any) => {
       runInAction(() => {
-        console.log("RRRRRRESSS",res)
+        console.log("RRRRRRESSS", res);
         this.studentsList = res;
-      })
+      });
       return res;
-    })
+    });
   };
 
   updateStudentsFromServer = async (data: any) => {
@@ -49,21 +52,22 @@ class StudentsStore {
   };
 
   updateStudents = (data: any) => {
-    return this.updateStudentsFromServer(data).then((res:any) => {
+    return this.updateStudentsFromServer(data).then((res: any) => {
       runInAction(() => {
         this.studentsList = res;
-      })
+      });
       return res;
-    })
+    });
   };
 
   addStudentsFromServer = async (data: any, isEditMode?: boolean) => {
     return axiosInstance
       .post(
-
-        `${        isEditMode
-          ? STUDENTS_API.ADMIN_UPDATE_STUDENT_API
-          : STUDENTS_API.ADMIN_ADD_STUDENT_API}`,
+        `${
+          isEditMode
+            ? STUDENTS_API.ADMIN_UPDATE_STUDENT_API
+            : STUDENTS_API.ADMIN_ADD_STUDENT_API
+        }`,
         data
       )
       .then(function (response) {
@@ -75,12 +79,42 @@ class StudentsStore {
   };
 
   addStudents = (data: any, isEditMode?: boolean) => {
-    return this.addStudentsFromServer(data,isEditMode).then((res:any) => {
+    return this.addStudentsFromServer(data, isEditMode).then((res: any) => {
       runInAction(() => {
         //this.studentsList = res;
-      })
+      });
       return res;
-    })
+    });
+  };
+
+  addPackageFromServer = async (data: any, isEditMode?: boolean) => {
+    return axiosInstance
+      .post(
+        `${
+          isEditMode
+            ? STUDENTS_API.ADMIN_UPDATE_STUDENT_API
+            : STUDENTS_API.ADMIN_ADD_PACKAGE_API
+        }`,
+        data
+      )
+      .then(function (response) {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  addPackage = (studentId: any, studentPackage: any, isEditMode?: boolean) => {
+    return this.addPackageFromServer(
+      { studentId, studentPackage },
+      isEditMode
+    ).then((res: any) => {
+      runInAction(() => {
+        this.studentsList = res;
+      });
+      return res;
+    });
   };
 
   deleteStudentsFromServer = async (data: any) => {
@@ -98,12 +132,12 @@ class StudentsStore {
   };
 
   deleteStudents = (data: any) => {
-    return this.deleteStudentsFromServer(data).then((res:any) => {
+    return this.deleteStudentsFromServer(data).then((res: any) => {
       runInAction(() => {
         this.studentsList = res;
-      })
+      });
       return res;
-    })
+    });
   };
 }
 export const studentsStore = new StudentsStore();

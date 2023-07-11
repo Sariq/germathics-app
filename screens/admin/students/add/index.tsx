@@ -15,14 +15,20 @@ import { useNavigation } from "@react-navigation/native";
 import { cdnUrl, studentStatuses } from "../../../../consts/shared";
 import CheckBox from "../../../../components/controls/checkbox";
 import BackButton from "../../../../components/back-button";
+import AddPackageScreen from "../../package/add";
+import PackagesListScreen from "../../package/list";
+
 export type TProduct = {
   id?: string;
   name: string;
   status: string;
   phone: string;
+  fatherPhone: string;
+  motherNumber: string;
   categoryId?: string;
   totalPaidPrice?: number;
   totalLecturesPaid?: number;
+  packagesList?: any;
 };
 
 
@@ -38,6 +44,8 @@ const AddStudentScreen = ({ route }) => {
 
   const [selectedProduct, setSelectedProduct] = useState<TProduct>();
   const [coursesList, setCoursesList] = useState<TProduct>();
+  const [isAddPacakge, setIsAddPacakge] = useState(false);
+  const [isShowPackagesList, setIsShowPackagesList] = useState(false);
 
   const initNewProduct = () => {
     return {
@@ -47,6 +55,7 @@ const AddStudentScreen = ({ route }) => {
       status: "",
       phone: "0542454362",
       totalLecturesPaid: 8,
+      packagesList: []
     };
   };
 
@@ -81,14 +90,8 @@ const AddStudentScreen = ({ route }) => {
     if (student) {
       setIdEditMode(true);
       const tmpStudent = {
+        ...student,
         id: student._id,
-        categoryId: student.categoryId,
-        name: student.name,
-        status: student.status,
-        phone: student.phone,
-        totalPaidPrice: student.totalPaidPrice,
-        apperanceCount: student.apperanceCount,
-        totalLecturesPaid: student.totalLecturesPaid,
       };
       setSelectedProduct(tmpStudent);
     } else {
@@ -125,6 +128,45 @@ const AddStudentScreen = ({ route }) => {
   const navigateToMenu = () => {
     navigation.navigate("menuScreen");
   };
+  const goToPackagesList = () => {
+    navigation.navigate("admin-add-package",{studentId: selectedProduct.id});
+  };
+
+  const addPackage = () => {
+    setIsAddPacakge(true);
+  };
+
+
+  const onCloseAddPackage = () => {
+    setIsAddPacakge(false);
+  };
+  const onClosePackagesList = () => {
+    setIsShowPackagesList(false);
+  };
+
+  const openPacakgedList = () => {
+    setIsShowPackagesList(true);
+  };
+
+  const onSavePacakge = (newPackage:any) => {
+    console.log("newPackage",newPackage)
+
+    setIsAddPacakge(false);
+    const foundedPackage = selectedProduct.packagesList.find((pacakge)=> pacakge.id === newPackage.id);
+    if(foundedPackage){
+      const updatedPackagesList = selectedProduct.packagesList.map((pacakge)=> {
+        if(pacakge.id === newPackage.id){
+            return newPackage;
+        }else{
+          return pacakge;
+        }
+        });
+        setSelectedProduct({...selectedProduct, packagesList: updatedPackagesList})
+    }else{
+      selectedProduct.packagesList.push(newPackage)
+      setSelectedProduct({...selectedProduct})
+    }
+  };
 
   useEffect(() => {
     // getMenu();
@@ -132,6 +174,19 @@ const AddStudentScreen = ({ route }) => {
 
   if (!selectedProduct) {
     return;
+  }
+
+  if(isAddPacakge){
+    return(
+      <AddPackageScreen onClose={onCloseAddPackage} onSave={onSavePacakge}/>
+    )
+  }
+
+  console.log("selectedProduct.packagesList",student)
+  if(isShowPackagesList){
+    return(
+      <PackagesListScreen pacakgesList={selectedProduct.packagesList} onClose={onClosePackagesList} onSave={onSavePacakge}/>
+    )
   }
 
   return (
@@ -150,7 +205,7 @@ const AddStudentScreen = ({ route }) => {
         >
           <InputText
             onChange={(e) => handleInputChange(e, "name")}
-            label={t("name")}
+            label={t("الاسم")}
             value={selectedProduct?.name}
           />
           {!selectedProduct?.name && (
@@ -169,13 +224,51 @@ const AddStudentScreen = ({ route }) => {
         >
           <InputText
             onChange={(e) => handleInputChange(e, "phone")}
-            label={t("phone")}
+            label={t("هاتف الطالب")}
             value={selectedProduct?.phone}
             keyboardType="numeric"
           />
           {!selectedProduct?.phone && (
             <Text style={{ color: themeStyle.ERROR_COLOR }}>
               {t("invalid-phone")}
+            </Text>
+          )}
+        </View>
+
+        <View
+          style={{
+            width: "100%",
+            marginTop: 15,
+            alignItems: "flex-start",
+          }}
+        >
+          <InputText
+            onChange={(e) => handleInputChange(e, "fatherNumber")}
+            label={t("هاتف الاب")}
+            value={selectedProduct?.fatherPhone}
+          />
+          {!selectedProduct?.fatherPhone && (
+            <Text style={{ color: themeStyle.ERROR_COLOR }}>
+              {t("invalid-fatherNumber")}
+            </Text>
+          )}
+        </View>
+
+        <View
+          style={{
+            width: "100%",
+            marginTop: 15,
+            alignItems: "flex-start",
+          }}
+        >
+          <InputText
+            onChange={(e) => handleInputChange(e, "motherNumber")}
+            label={t("هاتف الام")}
+            value={selectedProduct?.motherNumber}
+          />
+          {!selectedProduct?.motherNumber && (
+            <Text style={{ color: themeStyle.ERROR_COLOR }}>
+              {t("invalid-motherNumber")}
             </Text>
           )}
         </View>
@@ -262,6 +355,14 @@ const AddStudentScreen = ({ route }) => {
             </View>
           )}
         </View>)}
+
+        <View style={{ width: "100%", paddingHorizontal: 50, marginTop: 25 }}>
+          <Button
+            text={t("قائمة الباقات")}
+            fontSize={20}
+            onClickFn={openPacakgedList}
+          />
+        </View>
 
         {/* 
         <View

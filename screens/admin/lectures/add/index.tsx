@@ -15,12 +15,14 @@ import { useNavigation } from "@react-navigation/native";
 import { cdnUrl } from "../../../../consts/shared";
 import CheckBox from "../../../../components/controls/checkbox";
 import BackButton from "../../../../components/back-button";
+import moment from "moment";
 export type TProduct = {
   id?: string;
-  name: string;
+  freeText: string;
+  createdDate: any;
 };
 
-const AddCourseScreen = ({ route }) => {
+const AddLectureScreen = ({ onClose, onSave }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
@@ -33,17 +35,17 @@ const AddCourseScreen = ({ route }) => {
 
   const initNewProduct = () => {
     return {
-      categoryId: "",
-      name: "دورة 1",
+      freeText: "دورة ",
+      createdDate: new Date(),
     };
   };
 
-  const isValidForm = () => {
-    return (
-      (selectedProduct?.name
-       )
-    );
-  };
+  // const isValidForm = () => {
+  //   return (
+  //     (selectedProduct?.name
+  //      )
+  //   );
+  // };
 
   useEffect(() => {
     // console.log("product?.extras.size.options", product?.extras.size.options);
@@ -60,38 +62,34 @@ const AddCourseScreen = ({ route }) => {
     //   };
     //   setSelectedProduct(tmpProduct);
     // } else {
-     setSelectedProduct(initNewProduct());
+    setSelectedProduct(initNewProduct());
     // }
   }, []);
-
-
 
   const handleInputChange = (value: any, name: string) => {
     setSelectedProduct({ ...selectedProduct, [name]: value });
   };
 
   const handlAddClick = () => {
-    if (selectedProduct ) {
-      setIsLoading(true);
-      //uploadImage(imgFile).then((res) => {
-      let updatedData: TProduct = null;
-    
-        updatedData = { ...selectedProduct };
+    onSave(selectedProduct)
+    // if (selectedProduct) {
+    //   setIsLoading(true);
+    //   //uploadImage(imgFile).then((res) => {
+    //   let updatedData: TProduct = null;
 
+    //   updatedData = { ...selectedProduct };
 
-      setSelectedProduct(updatedData);
-      menuStore
-        .addOrUpdateProduct(updatedData, isEditMode)
-        .then((res: any) => {
-          menuStore.getMenu();
-          setIsLoading(false);
-          navigation.navigate("admin-dashboard");
+    //   setSelectedProduct(updatedData);
+    //   menuStore.addOrUpdateProduct(updatedData, isEditMode).then((res: any) => {
+    //     menuStore.getMenu();
+    //     setIsLoading(false);
+    //     navigation.navigate("admin-dashboard");
 
-          //navigateToMenu();
-        });
+    //     //navigateToMenu();
+    //   });
 
-      //});
-    }
+    //   //});
+    // }
   };
 
   const navigateToMenu = () => {
@@ -99,7 +97,7 @@ const AddCourseScreen = ({ route }) => {
   };
 
   useEffect(() => {
-   // getMenu();
+    // getMenu();
   }, []);
 
   if (!selectedProduct) {
@@ -108,105 +106,31 @@ const AddCourseScreen = ({ route }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <BackButton />
+      <BackButton isClose onClick={onClose} />
 
       <View style={styles.inputsContainer}>
-        <Text style={{  fontSize: 30 }}>{t("اضف دورة")}</Text>
-
-        <View
-          style={{
-            width: "100%",
-            marginTop: 30,
-          }}
-        >
-          <View
-            style={{
-              flexBasis: "49%",
-              marginTop: 15,
-              alignItems: "flex-start",
-            }}
-          >
-            <InputText
-              onChange={(e) => handleInputChange(e, "name")}
-              label={t("name")}
-              value={selectedProduct?.name}
-            />
-            {!selectedProduct?.name && (
-              <Text style={{ color: themeStyle.ERROR_COLOR }}>
-                {t("invalid-name")}
-              </Text>
-            )}
-          </View>
-  
-        </View>
-        <View
-          style={{
-            justifyContent: "space-around",
-            width: "100%",
-            marginTop: 30,
-          }}
-        >
-
-          </View>
-
-        {/* <View
-          style={{
-            width: "100%",
-            marginTop: 20,
-            alignItems: "flex-start",
-            zIndex: 11,
-          }}
-        >
-          {categoryList && (
-            <View style={{ alignItems: "flex-start" }}>
-              <DropDown
-                itemsList={categoryList}
-                defaultValue={selectedCategoryId}
-                onChangeFn={(e) => handleInputChange(e, "categoryId")}
-              />
-              {!selectedProduct?.categoryId && (
-                <Text style={{ color: themeStyle.ERROR_COLOR }}>
-                  {t("invalid-categoryId")}
-                </Text>
-              )}
-            </View>
-          )}
-        </View> */}
-
-
-        
-   
-{/* 
+        <Text style={{ fontSize: 30 }}>{t("اضف لقاء")}</Text>
         <View
           style={{
             width: "100%",
             marginTop: 40,
             alignItems: "center",
             flexDirection: "row",
+            justifyContent:"center"
           }}
         >
           <Text style={{ fontSize: 20, marginRight: 10 }}>
-            {t("is-inStore")}
+            {moment(selectedProduct.createdDate).format("DD-MM-YY | HH:mm")}{" "}
           </Text>
-          <CheckBox
-            onChange={(e) => handleInputChange(e, "isInStore")}
-            value={selectedProduct?.isInStore}
-          />
-        </View> */}
-
-   
-
-
-
-          
+        </View>
 
         <View style={{ width: "100%", paddingHorizontal: 50, marginTop: 25 }}>
           <Button
-            text={t("approve")}
+            text={t("اضف")}
             fontSize={20}
             onClickFn={handlAddClick}
             isLoading={isLoading}
-            disabled={isLoading || !isValidForm()}
+            disabled={isLoading}
           />
         </View>
       </View>
@@ -214,7 +138,7 @@ const AddCourseScreen = ({ route }) => {
   );
 };
 
-export default observer(AddCourseScreen);
+export default observer(AddLectureScreen);
 
 const styles = StyleSheet.create({
   container: {

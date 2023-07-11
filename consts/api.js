@@ -1,8 +1,8 @@
 export const SITE_URL = "https://api.buffaloburger.co.il/";
 
 // //PROD
-// export const BASE_URL = "https://creme-caramel-app-t5725.ondigitalocean.app/api";
-// export const WS_URL = "wss://creme-caramel-app-t5725.ondigitalocean.app";
+// export const BASE_URL = "https://jellyfish-app-9hxts.ondigitalocean.app/api";
+// export const WS_URL = "wss://cjellyfish-app-9hxts.ondigitalocean.app";
 
 //DEV
 export const BASE_URL = "http://192.168.1.234:1111/api";
@@ -45,6 +45,7 @@ export const COURSES_API = {
 export const STUDENTS_API = {
     ADMIN_GET_STUDENTS_LIST_API : "admin/students/",
     ADMIN_ADD_STUDENT_API : "admin/students/add",
+    ADMIN_ADD_PACKAGE_API : "/api/admin/students/add/package",
     ADMIN_UPDATE_STUDENT_API : "admin/students/update",
     ADMIN_UPDATE_COURSE_API : "admin/categories/update",
 }

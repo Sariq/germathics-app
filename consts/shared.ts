@@ -35,6 +35,52 @@ export const studentStatuses = [
   },
 ];
 
+export const PaymentMethods = [
+  {
+    label: "בחר אמצעי תשלום",
+    value: "",
+  },
+  {
+    label: "מזומן",
+    value: "1",
+  },
+  {
+    label: "כרטיס אשראי",
+    value: "2",
+  },
+  {
+    label: "bit",
+    value: "3",
+  },
+  {
+    label: "העברה בנקאית",
+    value: "4",
+  },
+];
+
+export const CoursesNames = [
+  {
+    label: "8-4-A",
+    value: "",
+  },
+  {
+    label: "מזומן",
+    value: "1",
+  },
+  {
+    label: "כרטיס אשראי",
+    value: "2",
+  },
+  {
+    label: "bit",
+    value: "3",
+  },
+  {
+    label: "העברה בנקאית",
+    value: "4",
+  },
+];
+
 export const paidDelta = {
   low: 2,
   medium: 3,

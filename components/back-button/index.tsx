@@ -1,4 +1,4 @@
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View, TouchableOpacity,Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import theme from "../../styles/theme.style";
@@ -8,12 +8,18 @@ import themeStyle from "../../styles/theme.style";
 
 export type TProps = {
   goTo?: string;
+  isClose?: boolean;
+  onClick?: any;
 }
-export default function BackButton({goTo}: TProps) {
+export default function BackButton({goTo, isClose, onClick}: TProps) {
   const navigation = useNavigation();
 
   const onBtnClick = () => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    if(isClose){
+      onClick && onClick();
+      return
+    }
     const routes = navigation.getState()?.routes;
     const currentRoute = routes[routes.length - 1]; // -2 because -1 is the current route
     const prevRoute = routes[routes.length - 2]; // -2 because -1 is the current route
@@ -51,7 +57,7 @@ export default function BackButton({goTo}: TProps) {
             // transform: [{ rotate: "180deg" }],
           }}
         >
-          <Icon icon="arrow-right" size={15} style={{ color: themeStyle.WHITE_COLOR }} />
+          {isClose ? <Text style={{color:themeStyle.WHITE_COLOR}}>X</Text>: <Icon icon="arrow-right" size={15} style={{ color: themeStyle.WHITE_COLOR }} />}
         </View>
       </TouchableOpacity>
     </View>

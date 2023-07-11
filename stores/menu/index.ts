@@ -200,23 +200,23 @@ class MenuStore {
  
 
 
-    if (isEditMode) {
-      product?._id && formData.append("productId", product?._id);
-    }
+    // if (isEditMode) {
+    //   product?._id && formData.append("productId", product?._id);
+    // }
 
-    const body = {
-      name: product.name,
-      lecturesCount: product.count
-    }
+    // const body = {
+    //   name: product.name,
+    //   lecturesCount: product.count
+    // }
     console.log()
     return axiosInstance
       .post(
         `${
           isEditMode
-            ? MENU_API.ADMIN_UPDATE_PRODUCT_API
+            ? COURSES_API.ADMIN_UPDATE_COURSE_API
             : COURSES_API.ADMIN_ADD_COURSE_API
         }`,
-        body,
+        product,
       )
       .then(function (response) {
         return response;

@@ -104,6 +104,18 @@ const CoursesListScreen = ({ route }) => {
     setSelctedLecturesList(lectures);
   };
 
+  const onSaveLecture = (lecturesList:any) => {
+    const tmpCourse = {...selctedCourse};
+    tmpCourse.lectures = lecturesList;
+    console.log("tmpCourse",tmpCourse)
+    menuStore.addOrUpdateProduct(tmpCourse, true).then((res: any) => {
+      menuStore.getMenu();
+      setIsLoading(false);
+      //navigateToMenu();
+    });
+
+    console.log("newlecturesssss",lecturesList)
+  }
   
 
   useEffect(() => {
@@ -124,7 +136,7 @@ const CoursesListScreen = ({ route }) => {
   if(selctedLecturesList){
     return (
       <LecturesListScreen         title={selctedCourse.name}
-      lectures={selctedLecturesList} course={selctedCourse}/>
+      lectures={selctedLecturesList} course={selctedCourse} onSave={onSaveLecture}/>
     )
   }
 
@@ -229,6 +241,7 @@ const CoursesListScreen = ({ route }) => {
           );
         })}
       </View>
+      
     </ScrollView>
   );
 };

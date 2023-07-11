@@ -3,7 +3,7 @@
     
     "name": "Germathics",
     "slug": "Germathics",
-    "version": "0.0.2",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/germathics-logo.png",
     "userInterfaceStyle": "light",
@@ -32,12 +32,12 @@
       "**/*"
     ],
     "ios": {
-      "buildNumber": "0.0.2",
+      "buildNumber": "0.0.1",
       "supportsTablet": true,
       "bundleIdentifier": "com.sariq.germathics"
     },
     "android": {
-      "versionCode": 2,
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon-creme.png",
         "backgroundColor": "#FFFFFF"
