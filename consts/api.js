@@ -8,8 +8,8 @@ export const SITE_URL = "https://api.buffaloburger.co.il/";
 export const BASE_URL = "http://192.168.1.234:1111/api";
 export const WS_URL = "ws://192.168.1.234:1111";
 
-// export const BASE_URL = "http://10.0.0.24:1111/api";
-// export const WS_URL = "ws://10.0.0.24:1111";
+// export const BASE_URL = "http://10.0.0.34:1111/api";
+// export const WS_URL = "ws://10.0.0.34:1111";
 
 // export const BASE_URL = "http://172.20.10.3:1111/api";
 // export const WS_URL = "ws://1172.20.10.3:1111";
@@ -40,7 +40,7 @@ export const COURSES_API = {
     ADMIN_GET_COURSE_STUDENTS_LIST_API : "admin/categories",
     ADMIN_ADD_COURSE_API : "admin/categories/add",
     ADMIN_UPDATE_COURSE_API : "admin/categories/update",
-    ADMIN_UPDATE_STUDENT_APPEARNCE : "admin/categories/lecture/apperance",
+    ADMIN_UPDATE_STUDENT_APPEARNCE : "admin/students/apperance",
 }
 export const STUDENTS_API = {
     ADMIN_GET_STUDENTS_LIST_API : "admin/students/",

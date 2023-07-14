@@ -17,6 +17,7 @@ import CheckBox from "../../../../components/controls/checkbox";
 import BackButton from "../../../../components/back-button";
 import { LinearGradient } from "expo-linear-gradient";
 import SeatsScreen from "../../../../components/seats";
+import PackageItemScreen from "../item";
 
 import AddPackageScreen from "../add"
 import moment from "moment";
@@ -42,6 +43,7 @@ const PackagesListScreen = ({
   const [selectedStudentPackage, setSelectedStudentPackage] = useState("");
   const [isAddPacakge, setIsAddPacakge] = useState(false);
   const [isShowSeats, setIsShowSeats] = useState(false);
+  const [isShowPackage, setIsShowPackge] = useState(false);
 
   const [selectedSeats, setSelectedSeats] = useState<TProduct>();
   const [studentsList, setStudentsList] = useState<TProduct>();
@@ -84,14 +86,23 @@ const PackagesListScreen = ({
     setIsAddPacakge(true);
   };
 
-  const handlePackageClick = (seatsList) => {
-    setSelectedSeats(seatsList);
-    setIsShowSeats(true);
+  // const handlePackageClick = (seatsList) => {
+  //   setSelectedSeats(seatsList);
+  //  setIsShowSeats(true);
+  // };
+
+  const handlePackageClick = (studentPackage) => {
+    setSelectedStudentPackage(studentPackage);
+    setIsShowPackge(true);
   };
 
   const onCloseSeats = () => {
     setSelectedSeats(null);
     setIsShowSeats(false);
+  };
+  const onClosePackgeItem = () => {
+    setSelectedStudentPackage(null);
+    setIsShowPackge(false);
   };
 
 
@@ -110,6 +121,12 @@ const PackagesListScreen = ({
     )
   }
 
+  if(isShowPackage){
+    return(
+      <PackageItemScreen onClose={onClosePackgeItem} onSave={onSavePacakge} packageItem={selectedStudentPackage}/>
+    )
+  }
+
   if(isAddPacakge){
     return(
       <AddPackageScreen onClose={onCloseAddPackage} onSave={onSavePacakge} studentPackage={selectedStudentPackage}/>
@@ -124,7 +141,7 @@ const PackagesListScreen = ({
       </View>
 
       <View style={styles.cardListContainer}>
-        {pacakgesList.map((student) => {
+        {pacakgesList.map((packageItem) => {
           return (
             <View
               style={[
@@ -188,7 +205,7 @@ const PackagesListScreen = ({
                     }}
                     onPress={() => {
                       //onRemoveProduct(product, index);
-                      onEditClick(student);
+                      onEditClick(packageItem);
                     }}
                   >
                     <Icon
@@ -202,7 +219,7 @@ const PackagesListScreen = ({
               </View>
               <TouchableOpacity
                 onPress={() => {
-                 handlePackageClick(student.seats);
+                 handlePackageClick(packageItem);
                 }}
               >
                 {/* <LinearGradient
@@ -237,7 +254,7 @@ const PackagesListScreen = ({
                         }}
                       >
                         {" "}
-                        {student.lecturesCount}{" "}
+                        {packageItem.lecturesCount}{" "}
                       </Text>
                     </View>
                   </View>
@@ -261,7 +278,7 @@ const PackagesListScreen = ({
                         }}
                       >
                         {" "}
-                        {student.price}{" "}
+                        {packageItem.price}{" "}
                       </Text>
                     </View>
                   </View>
@@ -285,7 +302,7 @@ const PackagesListScreen = ({
                         }}
                       >
                         {" "}
-                        {moment(student.createdDate).format("YYYY-MM-DD")}{" "}
+                        {moment(packageItem.createdDate).format("YYYY-MM-DD")}{" "}
                       </Text>
                     </View>
                   </View>

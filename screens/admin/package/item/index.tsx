@@ -1,20 +1,21 @@
 import { StyleSheet, View, TextInput, Image, ScrollView } from "react-native";
-import InputText from "../controls/input";
-import Button from "../controls/button/button";
-import Text from "../controls/Text";
+import InputText from "../../../../components/controls/input";
+import Button from "../../../../components/controls/button/button";
+import Text from "../../../../components/controls/Text";
 import { observer } from "mobx-react";
 import { useState, useEffect, useContext } from "react";
 import { useTranslation } from "react-i18next";
-import BackButton from "../back-button";
+import BackButton from "../../../../components/back-button";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import themeStyle from "../../styles/theme.style";
+import themeStyle from "../../../../styles/theme.style";
 import moment from "moment";
+import SeatsScreen from "../../../../components/seats";
 
 export type TProduct = {
   seats: any[];
 };
 
-const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
+const PackageItemScreen = ({ onClose, onSave, packageItem }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -38,15 +39,25 @@ const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
     }
   };
 
-  console.log("seats", seats);
-  if (!seats) {
+  const getBgColorByStatus = (status) => {
+    switch (status) {
+      case 0:
+        return themeStyle.ORANGE_COLOR;
+      case 1:
+        return themeStyle.PRIMARY_COLOR;
+      case 2:
+        return themeStyle.SUCCESS_COLOR;
+    }
+  };
+
+  console.log("packageItem", packageItem);
+  if (!packageItem) {
     return;
   }
 
-
   return (
     <ScrollView style={styles.container}>
-     {onClose &&  <BackButton isClose={true} onClick={onClose} />}
+      <BackButton isClose={true} onClick={onClose} />
 
       <View
         style={{
@@ -54,24 +65,13 @@ const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
           flexDirection: "row",
           flexWrap: "wrap",
           justifyContent: "flex-end",
-          backgroundColor: themeStyle.PRIMARY_COLOR,
-          margin:15,
-          height: "100%"
+          backgroundColor: getBgColorByStatus(packageItem.status),
+          margin: 15,
+          height: "100%",
         }}
       >
-        {seats.map((seat) => {
-          return (
-            <View style={[styles.seatContainer]}>
-                <Text style={{color:themeStyle.WHITE_COLOR, height:20, marginBottom:5}}>{seat.lectureDate && moment(seat.lectureDate).format("DD-MM-YY")}</Text>
-              <TouchableOpacity
-                style={[styles.seatIconContainer]}
-                onPress={() => handleSeatClick(seat)}
-              >
-                <Text style={{color: themeStyle.WHITE_COLOR}}>{getStatusIcon(seat.status)}</Text>
-              </TouchableOpacity>
-            </View>
-          );
-        })}
+        <SeatsScreen seats={packageItem.seats} />
+
         {/* 
         <View style={{ width: "100%", paddingHorizontal: 50, marginTop: 25 }}>
           <Button
@@ -86,7 +86,7 @@ const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
   );
 };
 
-export default observer(SeatsScreen);
+export default observer(PackageItemScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -109,17 +109,17 @@ const styles = StyleSheet.create({
   seatContainer: {
     margin: 15,
     padding: 10,
-    width:90,
-    height:50,
-    alignItems:"center",
-    borderColor: themeStyle.WHITE_COLOR
+    width: 90,
+    height: 50,
+    alignItems: "center",
+    borderColor: themeStyle.WHITE_COLOR,
   },
   seatIconContainer: {
     borderWidth: 1,
     padding: 10,
-    width:40,
-    height:40,
-    alignItems:"center",
-    borderColor: themeStyle.WHITE_COLOR
+    width: 40,
+    height: 40,
+    alignItems: "center",
+    borderColor: themeStyle.WHITE_COLOR,
   },
 });

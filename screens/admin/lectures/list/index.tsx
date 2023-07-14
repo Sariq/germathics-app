@@ -25,7 +25,7 @@ export type TProduct = {
   count: string;
 };
 
-const LecturesListScreen = ({ lectures, course,title, onSave }: any) => {
+const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
@@ -36,7 +36,7 @@ const LecturesListScreen = ({ lectures, course,title, onSave }: any) => {
   const [isAddLecture, setIsAddLecture] = useState(false);
 
   const [selectedProduct, setSelectedProduct] = useState<TProduct>();
-  const [selectedLecture, setSelectedLecture] = useState<TProduct>();
+  const [selectedLecture, setSelectedLecture] = useState();
   const [selctedCourseStudentsList, setSelctedCourseStudentsList] = useState();
   const [lecturesList, setLecturesList] = useState(lectures);
 
@@ -102,11 +102,14 @@ const LecturesListScreen = ({ lectures, course,title, onSave }: any) => {
 
   const handleOpenStudents = (lecture: any) => {
     setSelectedLecture(lecture);
-    const studentsIds = lecture.studentsList.map(
-      (student) => student.studentId
+    const studentsIds = course.studentsList.map(
+      (student) => student
     );
-    console.log("studentsIds", studentsIds);
     setSelctedCourseStudentsList(studentsIds);
+  };
+  const onStudentsListClose = () => {
+    setSelectedLecture(undefined);
+    setSelctedCourseStudentsList(undefined);
   };
 
   useEffect(() => {
@@ -115,12 +118,23 @@ const LecturesListScreen = ({ lectures, course,title, onSave }: any) => {
     //studentsStore.getStudents(lectures.studentsLis.map((student)=> student.id));
   }, []);
 
-  const onApperanceChange = (isAppeard, studentId) => {
+  // const onApperanceChange = (isAppeard, studentId) => {
+  //   coursesStore.updateStudentAppearance({
+  //     categoryId: course._id,
+  //     lectureId: selectedLecture.id,
+  //     studentId: studentId,
+  //     isAppeard: isAppeard,
+  //   }).then((res)=>{
+  //     studentsStore.getStudents();
+  //   })
+  // };
+  const onApperanceChange = (seatStatus, studentId) => {
     coursesStore.updateStudentAppearance({
       categoryId: course._id,
-      lectureId: selectedLecture.id,
       studentId: studentId,
-      isAppeard: isAppeard,
+      seatStatus: seatStatus,
+      lectureId: selectedLecture.id,
+      lectureDate: selectedLecture.createdDate
     }).then((res)=>{
       studentsStore.getStudents();
     })
@@ -150,6 +164,8 @@ const LecturesListScreen = ({ lectures, course,title, onSave }: any) => {
         isLecture={true}
         onApperanceChange={onApperanceChange}
         lectureData={selectedLecture}
+        onClose={onStudentsListClose}
+
       />
     );
   }
@@ -159,8 +175,12 @@ const LecturesListScreen = ({ lectures, course,title, onSave }: any) => {
   }
   return (
     <ScrollView style={styles.container}>
-      <BackButton />
-      <View style={{ alignItems: "center", marginTop:15 }}>
+      {onClose ? (
+        <BackButton isClose={true} onClick={onClose} />
+      ) : (
+        <BackButton />
+      )}
+            <View style={{ alignItems: "center", marginTop:15 }}>
         <Text style={{ fontSize: 30 }}>{`قائمة اللقائات`}</Text>
         <Text style={{ fontSize: 25 }}>{`${title ? title : ''}`}</Text>
 

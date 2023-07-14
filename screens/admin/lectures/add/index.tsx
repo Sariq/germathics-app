@@ -16,6 +16,9 @@ import { cdnUrl } from "../../../../consts/shared";
 import CheckBox from "../../../../components/controls/checkbox";
 import BackButton from "../../../../components/back-button";
 import moment from "moment";
+import { v4 as uuidv4 } from 'uuid';
+
+
 export type TProduct = {
   id?: string;
   freeText: string;
@@ -37,6 +40,7 @@ const AddLectureScreen = ({ onClose, onSave }) => {
     return {
       freeText: "دورة ",
       createdDate: new Date(),
+      id: uuidv4(),
     };
   };
 

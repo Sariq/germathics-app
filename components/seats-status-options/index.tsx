@@ -8,21 +8,36 @@ import { useTranslation } from "react-i18next";
 import BackButton from "../back-button";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import themeStyle from "../../styles/theme.style";
-import moment from "moment";
 
 export type TProduct = {
   seats: any[];
 };
 
-const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
+const seatOptions = [
+    {
+        label: 'V',
+        value: 1
+    },
+    {
+        label: 'X',
+        value: 2
+    },
+    {
+        label: '/',
+        value: 3
+    },
+]
+
+const SeatsStatusOptionsScreen = ({ value, onSave }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
     // getMenu();
   }, []);
 
-  const handleSeatClick = (seat) => {
-    console.log(seat);
+  const handleSeatOptionClick = (seatOption) => {
+    console.log(seatOption);
+    onSave(seatOption.value)
   };
 
   const getStatusIcon = (status) => {
@@ -34,40 +49,27 @@ const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
       case 2:
         return "X";
       case 3:
-        return "/";
+        return "o";
     }
   };
 
-  console.log("seats", seats);
-  if (!seats) {
-    return;
-  }
 
 
   return (
-    <ScrollView style={styles.container}>
-     {onClose &&  <BackButton isClose={true} onClick={onClose} />}
 
       <View
         style={{
-          marginTop: 60,
           flexDirection: "row",
-          flexWrap: "wrap",
-          justifyContent: "flex-end",
-          backgroundColor: themeStyle.PRIMARY_COLOR,
-          margin:15,
-          height: "100%"
         }}
       >
-        {seats.map((seat) => {
+        {seatOptions.map((seatStatus) => {
           return (
-            <View style={[styles.seatContainer]}>
-                <Text style={{color:themeStyle.WHITE_COLOR, height:20, marginBottom:5}}>{seat.lectureDate && moment(seat.lectureDate).format("DD-MM-YY")}</Text>
+            <View>
               <TouchableOpacity
-                style={[styles.seatIconContainer]}
-                onPress={() => handleSeatClick(seat)}
+                style={[styles.seatContainer, {borderColor: value ===seatStatus.value ? themeStyle.SUCCESS_COLOR : themeStyle.WHITE_COLOR }]}
+                onPress={() => handleSeatOptionClick(seatStatus)}
               >
-                <Text style={{color: themeStyle.WHITE_COLOR}}>{getStatusIcon(seat.status)}</Text>
+                <Text style={{color: themeStyle.WHITE_COLOR, fontSize: 20}}>{(seatStatus.label)}</Text>
               </TouchableOpacity>
             </View>
           );
@@ -82,11 +84,10 @@ const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
           />
         </View> */}
       </View>
-    </ScrollView>
   );
 };
 
-export default observer(SeatsScreen);
+export default observer(SeatsStatusOptionsScreen);
 
 const styles = StyleSheet.create({
   container: {
@@ -107,19 +108,11 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   seatContainer: {
-    margin: 15,
-    padding: 10,
-    width:90,
-    height:50,
-    alignItems:"center",
-    borderColor: themeStyle.WHITE_COLOR
-  },
-  seatIconContainer: {
+    marginHorizontal: 15,
     borderWidth: 1,
-    padding: 10,
-    width:40,
-    height:40,
-    alignItems:"center",
-    borderColor: themeStyle.WHITE_COLOR
+    width:30,
+    height:30,
+    color: themeStyle.WHITE_COLOR,
+    alignItems: "center"
   },
 });

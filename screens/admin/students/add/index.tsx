@@ -26,8 +26,8 @@ export type TProduct = {
   fatherPhone: string;
   motherNumber: string;
   categoryId?: string;
-  totalPaidPrice?: number;
-  totalLecturesPaid?: number;
+  // totalPaidPrice?: number;
+  // totalLecturesPaid?: number;
   packagesList?: any;
 };
 
@@ -51,10 +51,8 @@ const AddStudentScreen = ({ route }) => {
     return {
       categoryId: "",
       name: "ساري",
-      totalPaidPrice: 100,
       status: "",
       phone: "0542454362",
-      totalLecturesPaid: 8,
       packagesList: []
     };
   };
@@ -62,8 +60,8 @@ const AddStudentScreen = ({ route }) => {
   const isValidForm = () => {
     return (
       selectedProduct?.name &&
-      selectedProduct?.status &&
-      selectedProduct?.totalPaidPrice
+      selectedProduct?.status 
+      // selectedProduct?.totalPaidPrice
     );
   };
 
@@ -73,6 +71,7 @@ const AddStudentScreen = ({ route }) => {
       // if (categoryId && cours.categoryId === categoryId) {
       //   setSelectedCategoryId(index);
       // }
+      console.log(course.name)
       return {
         label: course.name,
         value: course._id,
@@ -277,8 +276,8 @@ const AddStudentScreen = ({ route }) => {
           style={{
             marginTop: 30,
             alignItems: "flex-start",
-            zIndex: 11,
             width: "100%",
+            zIndex:1
           }}
         >
           <DropDown
@@ -288,60 +287,18 @@ const AddStudentScreen = ({ route }) => {
           />
         </View>
 
-        {selectedProduct?.status === "paid" && (
-          <>
-            <View
-              style={{
-                marginTop: 15,
-                alignItems: "flex-start",
-                width: "100%",
-              }}
-            >
-              <InputText
-                onChange={(e) => handleInputChange(e, "totalPaidPrice")}
-                label={t("total paid price")}
-                value={selectedProduct?.totalPaidPrice?.toString()}
-                keyboardType="numeric"
-              />
-              {!selectedProduct?.totalPaidPrice && (
-                <Text style={{ color: themeStyle.ERROR_COLOR }}>
-                  {t("invalid-status")}
-                </Text>
-              )}
-            </View>
 
-            <View
-              style={{
-                marginTop: 15,
-                alignItems: "flex-start",
-                width: "100%",
-              }}
-            >
-              <InputText
-                onChange={(e) => handleInputChange(e, "totalLecturesPaid")}
-                label={t("total lectures paid")}
-                value={selectedProduct?.totalLecturesPaid?.toString()}
-                keyboardType="numeric"
-              />
-              {!selectedProduct?.totalLecturesPaid && (
-                <Text style={{ color: themeStyle.ERROR_COLOR }}>
-                  {t("invalid-totalLecturesPaid")}
-                </Text>
-              )}
-            </View>
-          </>
-        )}
 
 {(selectedProduct?.status === "paid" || selectedProduct?.status === "registered") && (<View
           style={{
             width: "100%",
             marginTop: 30,
             alignItems: "flex-start",
-            zIndex: 10,
+            zIndex:1
           }}
         >
           {coursesList && (
-            <View style={{ alignItems: "flex-start" }}>
+            <View style={{ alignItems: "flex-start",  }}>
               <DropDown
                 itemsList={coursesList}
                 defaultValue={selectedProduct?.categoryId}

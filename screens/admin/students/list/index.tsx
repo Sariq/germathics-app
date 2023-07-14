@@ -11,11 +11,13 @@ import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import { StoreContext } from "../../../../stores";
 import Icon from "../../../../components/icon";
 import { TouchableOpacity, ScrollView } from "react-native-gesture-handler";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useNavigationState } from "@react-navigation/native";
 import { cdnUrl, studentStatuses } from "../../../../consts/shared";
 import CheckBox from "../../../../components/controls/checkbox";
 import BackButton from "../../../../components/back-button";
 import { LinearGradient } from "expo-linear-gradient";
+import SeatsStatusOptionsScreen from "../../../../components/seats-status-options";
+
 export type TProduct = {
   id?: string;
   name: string;
@@ -29,9 +31,11 @@ const StudentsListScreen = ({
   onApperanceChange,
   isAppeared,
   lectureData,
+  onClose = null,
 }: any) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
+  const routeState = useNavigationState((state) => state);
 
   const { menuStore, studentsStore, coursesStore } = useContext(StoreContext);
 
@@ -185,16 +189,36 @@ const StudentsListScreen = ({
     return null;
   };
 
+  const getSeatValue = (student) => {
+    let currentSeatStatus = null;
+    student.packagesList.forEach((currentPackage) => {
+      currentPackage.seats.forEach((seat) => {
+        console.log("XXXX", seat.lectureId);
+
+        if (seat.lectureId == lectureData.id) {
+          currentSeatStatus = seat.status;
+        }
+      });
+    });
+    console.log("XXXX", currentSeatStatus);
+
+    return currentSeatStatus;
+  };
+
   if (!selectedProduct || !studentsStore.studentsList) {
     return;
   }
 
   return (
     <ScrollView style={styles.container}>
-      <BackButton />
-      <View style={{ alignItems: "center", marginTop:15 }}>
+      {onClose ? (
+        <BackButton isClose={true} onClick={onClose} />
+      ) : (
+        <BackButton />
+      )}
+      <View style={{ alignItems: "center", marginTop: 15 }}>
         <Text style={{ fontSize: 30 }}>{`قائمة الطلاب`}</Text>
-        <Text style={{ fontSize: 25 }}>{`${title ? title : ''}`}</Text>
+        <Text style={{ fontSize: 25 }}>{`${title ? title : ""}`}</Text>
       </View>
       <View
         style={{
@@ -238,6 +262,9 @@ const StudentsListScreen = ({
                 },
               ]}
             >
+              { !onClose && 
+              
+              <>
               <View
                 style={{
                   position: "absolute",
@@ -258,7 +285,6 @@ const StudentsListScreen = ({
                       borderBottomStartRadius: 20,
                       height: 40,
                       width: 40,
-
                     }}
                   >
                     <Icon
@@ -282,28 +308,29 @@ const StudentsListScreen = ({
                   borderTopStartRadius: 20,
                 }}
               >
-                  <TouchableOpacity
+                <TouchableOpacity
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%",
+                    width: "100%",
+                    position: "relative",
+                  }}
+                  onPress={() => {
+                    //onRemoveProduct(product, index);
+                    onEditClick(student);
+                  }}
+                >
+                  <Icon
+                    icon="pencil"
+                    size={18}
                     style={{
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height:"100%",
-                      width:"100%",
-                      position:"relative",
+                      color: themeStyle.PRIMARY_COLOR,
                     }}
-                    onPress={() => {
-                      //onRemoveProduct(product, index);
-                      onEditClick(student);
-                    }}
-                  >
-                    <Icon
-                      icon="pencil"
-                      size={18}
-                      style={{
-                        color: themeStyle.PRIMARY_COLOR,
-                      }}
-                    />
-                  </TouchableOpacity>
+                  />
+                </TouchableOpacity>
               </View>
+              </>}
               <TouchableOpacity
                 onPress={() => {
                   handleStudentClick(student);
@@ -370,55 +397,7 @@ const StudentsListScreen = ({
                     </View>
                   </View>
 
-                  {student.categoryId && (
-                    <View style={{ flexDirection: "row", marginTop: 15 }}>
-                      <View>
-                        <Text
-                          style={{
-                            fontSize: 20,
-                            color: themeStyle.WHITE_COLOR,
-                          }}
-                        >
-                          {t("اسم الكورس")}:
-                        </Text>
-                      </View>
-                      <View>
-                        <Text
-                          style={{
-                            fontSize: 20,
-                            color: themeStyle.WHITE_COLOR,
-                          }}
-                        >
-                          {" "}
-                          {getCourseById(student.categoryId).name}{" "}
-                        </Text>
-                      </View>
-                    </View>
-                  )}
-
-                  <View style={{ flexDirection: "row", marginTop: 15 }}>
-                    <View>
-                      <Text
-                        style={{
-                          fontSize: 20,
-                          color: themeStyle.WHITE_COLOR,
-                        }}
-                      >
-                        {t("عدد اللقائات")}:
-                      </Text>
-                    </View>
-                    <View>
-                      <Text
-                        style={{
-                          fontSize: 20,
-                          color: themeStyle.WHITE_COLOR,
-                        }}
-                      >
-                        {" "}
-                        {student.totalLecturesPaid}{" "}
-                      </Text>
-                    </View>
-                  </View>
+       
                 </View>
               </TouchableOpacity>
               {isLecture && (
@@ -431,9 +410,13 @@ const StudentsListScreen = ({
                     </Text>
                   </View>
                   <View>
-                    <CheckBox
+                    {/* <CheckBox
                       onChange={(e) => onApperanceChange(e, student._id)}
                       value={getIsAppearedByStudentId(student._id)}
+                    /> */}
+                    <SeatsStatusOptionsScreen
+                      value={getSeatValue(student)}
+                      onSave={(value) => onApperanceChange(value, student._id)}
                     />
                   </View>
                 </View>

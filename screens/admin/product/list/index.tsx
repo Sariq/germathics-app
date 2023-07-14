@@ -93,30 +93,36 @@ const CoursesListScreen = ({ route }) => {
     }
   };
 
-  const handleOpenStudents = (studentsIds: any, course:any) => {
-    setSelctedCourse(course)
-    console.log("LLLL", studentsIds)
+  const handleOpenStudents = (studentsIds: any, course: any) => {
+    setSelctedCourse(course);
+    console.log("LLLL", studentsIds);
     setSelctedCourseStudentsList(studentsIds);
   };
-
-  const handleOpenLectures = (lectures: any,  course:any) => {
-    setSelctedCourse(course)
-    setSelctedLecturesList(lectures);
+  const onStudentsListClose = (studentsIds: any, course: any) => {
+    setSelctedCourseStudentsList(undefined);
   };
 
-  const onSaveLecture = (lecturesList:any) => {
-    const tmpCourse = {...selctedCourse};
+  const handleOpenLectures = (lectures: any, course: any) => {
+    setSelctedCourse(course);
+    setSelctedLecturesList(lectures);
+  };
+  const onLecturesClose = (lectures: any, course: any) => {
+    setSelctedCourse(null);
+    setSelctedLecturesList(null);
+  };
+
+  const onSaveLecture = (lecturesList: any) => {
+    const tmpCourse = { ...selctedCourse };
     tmpCourse.lectures = lecturesList;
-    console.log("tmpCourse",tmpCourse)
+    console.log("tmpCourse", tmpCourse);
     menuStore.addOrUpdateProduct(tmpCourse, true).then((res: any) => {
       menuStore.getMenu();
       setIsLoading(false);
       //navigateToMenu();
     });
 
-    console.log("newlecturesssss",lecturesList)
-  }
-  
+    console.log("newlecturesssss", lecturesList);
+  };
 
   useEffect(() => {
     coursesStore.getCourses();
@@ -127,31 +133,39 @@ const CoursesListScreen = ({ route }) => {
     return;
   }
 
-  if(selctedCourseStudentsList){
-    console.log(selctedCourseStudentsList.length)
+  if (selctedCourseStudentsList) {
+    console.log(selctedCourseStudentsList.length);
     return (
-      <StudentsListScreen  title={selctedCourse.name}  ids={selctedCourseStudentsList}/>
-    )
+      <StudentsListScreen
+        title={selctedCourse.name}
+        ids={selctedCourseStudentsList}
+        onClose={onStudentsListClose}
+      />
+    );
   }
-  if(selctedLecturesList){
+  if (selctedLecturesList) {
     return (
-      <LecturesListScreen         title={selctedCourse.name}
-      lectures={selctedLecturesList} course={selctedCourse} onSave={onSaveLecture}/>
-    )
+      <LecturesListScreen
+        title={selctedCourse.name}
+        lectures={selctedLecturesList}
+        course={selctedCourse}
+        onSave={onSaveLecture}
+        onClose={onLecturesClose}
+      />
+    );
   }
 
   return (
     <ScrollView style={styles.container}>
       <BackButton />
-      
-      <View style={{ alignItems: "center", marginTop:15 }}>
-        <Text style={{ fontSize: 30 }}>{'قائمة الدورات'}</Text>
+
+      <View style={{ alignItems: "center", marginTop: 15 }}>
+        <Text style={{ fontSize: 30 }}>{"قائمة الدورات"}</Text>
       </View>
       <View style={styles.cardListContainer}>
         {coursesStore.coursesList?.map((course) => {
           return (
             <View style={styles.cardContainer}>
-        
               <View
                 style={{
                   position: "absolute",
@@ -184,64 +198,80 @@ const CoursesListScreen = ({ route }) => {
               <View style={{ flexDirection: "column", paddingHorizontal: 10 }}>
                 <View style={{ flexDirection: "row" }}>
                   <View>
-                    <Text style={{ fontSize: 20, color: themeStyle.WHITE_COLOR  }}>{t("الاسم")}:</Text>
+                    <Text
+                      style={{ fontSize: 20, color: themeStyle.WHITE_COLOR }}
+                    >
+                      {t("الاسم")}:
+                    </Text>
                   </View>
                   <View>
-                    <Text style={{ fontSize: 20, color: themeStyle.WHITE_COLOR  }}> {course.name} </Text>
+                    <Text
+                      style={{ fontSize: 20, color: themeStyle.WHITE_COLOR }}
+                    >
+                      {" "}
+                      {course.name}{" "}
+                    </Text>
                   </View>
                 </View>
                 <View style={{ flexDirection: "row", marginTop: 10 }}>
                   <View>
-                    <Text style={{ fontSize: 20, color: themeStyle.WHITE_COLOR  }}>{t("عدد اللقائات")}:</Text>
+                    <Text
+                      style={{ fontSize: 20, color: themeStyle.WHITE_COLOR }}
+                    >
+                      {t("عدد اللقائات")}:
+                    </Text>
                   </View>
                   <View>
-                    <Text style={{ fontSize: 20, color: themeStyle.WHITE_COLOR  }}>
+                    <Text
+                      style={{ fontSize: 20, color: themeStyle.WHITE_COLOR }}
+                    >
                       {" "}
-                      {course.lecturesCount}{" "}
+                      {course.lectures.length}{" "}
                     </Text>
                   </View>
                 </View>
-
-     
               </View>
               <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    marginTop: 18,
-                    width: "100%",
-                    paddingHorizontal: 5,
-                  }}
-                >
-                  <View style={{ flexBasis: "49%" }}>
-                    <Button
-                      text={t("قائمة الطلاب")}
-                      fontSize={14}
-                      onClickFn={() => handleOpenStudents(course.studentsList, course)}
-                      // isLoading={isLoading}
-                      // disabled={isLoading}
-                      textColor={themeStyle.TEXT_PRIMARY_COLOR}
-                      bgColor={themeStyle.WHITE_COLOR}
-                    />
-                  </View>
-                  <View style={{ flexBasis: "49%" }}>
-                    <Button
-                      text={t("قائمة اللقائات")}
-                      fontSize={14}
-                      onClickFn={() => handleOpenLectures(course.lectures, course)}
-                      // isLoading={isLoading}
-                      // disabled={isLoading}
-                      textColor={themeStyle.TEXT_PRIMARY_COLOR}
-                      bgColor={themeStyle.WHITE_COLOR}
-                    />
-                  </View>
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  marginTop: 18,
+                  width: "100%",
+                  paddingHorizontal: 5,
+                }}
+              >
+                <View style={{ flexBasis: "49%" }}>
+                  <Button
+                    text={t("قائمة الطلاب")}
+                    fontSize={14}
+                    onClickFn={() =>
+                      handleOpenStudents(course.studentsList, course)
+                    }
+                    // isLoading={isLoading}
+                    // disabled={isLoading}
+                    textColor={themeStyle.TEXT_PRIMARY_COLOR}
+                    bgColor={themeStyle.WHITE_COLOR}
+                  />
                 </View>
+                <View style={{ flexBasis: "49%" }}>
+                  <Button
+                    text={t("قائمة اللقائات")}
+                    fontSize={14}
+                    onClickFn={() =>
+                      handleOpenLectures(course.lectures, course)
+                    }
+                    // isLoading={isLoading}
+                    // disabled={isLoading}
+                    textColor={themeStyle.TEXT_PRIMARY_COLOR}
+                    bgColor={themeStyle.WHITE_COLOR}
+                  />
+                </View>
+              </View>
             </View>
           );
         })}
       </View>
-      
     </ScrollView>
   );
 };
@@ -255,8 +285,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     backgroundColor: themeStyle.PRIMARY_COLOR,
-    marginTop:20
-
+    marginTop: 20,
   },
   cardListContainer: {
     width: "90%",

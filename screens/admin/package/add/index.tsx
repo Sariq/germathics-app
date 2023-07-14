@@ -16,7 +16,7 @@ import { cdnUrl, PaymentMethods } from "../../../../consts/shared";
 import CheckBox from "../../../../components/controls/checkbox";
 import BackButton from "../../../../components/back-button";
 import { v4 as uuidv4 } from 'uuid';
-
+/// package 0 = default, 1 = active, 2 = done
 
 export type TProduct = {
   id?: string;
@@ -42,6 +42,7 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null }) => {
     return {
       createdDate: new Date(),
       id: uuidv4(),
+      status: 0
     };
   };
 
@@ -61,6 +62,7 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null }) => {
     }
 
     if (studentPackage) {
+      console.log("studentPackage",studentPackage)
       setIdEditMode(true);
       const tmpPackage = {
         ...studentPackage,
@@ -78,7 +80,7 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null }) => {
       if(name == 'lecturesCount'){
         const seats = selectedProduct.seats || [];
         const startIndex = seats.length;
-        for(var i = 0; i < value; i++){
+        for(var i = startIndex; i < value; i++){
           seats.push({
             status: 0,
             lectureDate: null,
@@ -174,7 +176,7 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null }) => {
           <InputText
             onChange={(e) => handleInputChange(e, "lecturesCount")}
             label={t("عدد اللقائات")}
-            value={selectedProduct?.lecturesCount}
+            value={selectedProduct?.lecturesCount?.toString()}
           />
           {!selectedProduct?.lecturesCount && (
             <Text style={{ color: themeStyle.ERROR_COLOR }}>
@@ -193,7 +195,7 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null }) => {
           <InputText
             onChange={(e) => handleInputChange(e, "price")}
             label={t("سعر الباقة")}
-            value={selectedProduct?.price}
+            value={selectedProduct?.price?.toString()}
             keyboardType="numeric"
           />
           {!selectedProduct?.price && (
