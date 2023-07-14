@@ -29,7 +29,8 @@ export type TProduct = {
 const PackagesListScreen = ({
   pacakgesList,
   onClose,
-  onSave
+  onSave,
+  student = null
 }: any) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -110,6 +111,7 @@ const PackagesListScreen = ({
   const onSavePacakge = (newPackage) =>{
     onSave(newPackage)
     onCloseAddPackage();
+    onClose();
   }
   if (!pacakgesList) {
     return;
@@ -123,13 +125,13 @@ const PackagesListScreen = ({
 
   if(isShowPackage){
     return(
-      <PackageItemScreen onClose={onClosePackgeItem} onSave={onSavePacakge} packageItem={selectedStudentPackage}/>
+      <PackageItemScreen onClose={onClosePackgeItem} onSave={onSavePacakge} packageItem={selectedStudentPackage} />
     )
   }
 
   if(isAddPacakge){
     return(
-      <AddPackageScreen onClose={onCloseAddPackage} onSave={onSavePacakge} studentPackage={selectedStudentPackage}/>
+      <AddPackageScreen onClose={onCloseAddPackage} onSave={onSavePacakge} studentPackage={selectedStudentPackage} student={student}/>
     )
   }
 
@@ -137,7 +139,7 @@ const PackagesListScreen = ({
     <ScrollView style={styles.container}>
       <BackButton isClose={true} onClick={onClose}/>
       <View style={{ alignItems: "center", marginTop:15 }}>
-        <Text style={{ fontSize: 30 }}>{`قائمة اللقائات`}{pacakgesList.length}</Text>
+        <Text style={{ fontSize: 30 }}>{`قائمة الباقات`}</Text>
       </View>
 
       <View style={styles.cardListContainer}>
@@ -302,7 +304,7 @@ const PackagesListScreen = ({
                         }}
                       >
                         {" "}
-                        {moment(packageItem.createdDate).format("YYYY-MM-DD")}{" "}
+                        {moment(packageItem.createdDate).format("DD-MM-YYYY")}{" "}
                       </Text>
                     </View>
                   </View>

@@ -15,7 +15,8 @@ import { useNavigation } from "@react-navigation/native";
 import { cdnUrl, PaymentMethods } from "../../../../consts/shared";
 import CheckBox from "../../../../components/controls/checkbox";
 import BackButton from "../../../../components/back-button";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
+import SignuaterScreen from "../../../../components/signature";
 /// package 0 = default, 1 = active, 2 = done
 
 export type TProduct = {
@@ -27,7 +28,7 @@ export type TProduct = {
   seats: any[];
 };
 
-const AddPackageScreen = ({ onClose, onSave, studentPackage = null }) => {
+const AddPackageScreen = ({ onClose, onSave, studentPackage = null, student = null }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { menuStore, studentsStore, coursesStore } = useContext(StoreContext);
@@ -37,24 +38,23 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null }) => {
 
   const [selectedProduct, setSelectedProduct] = useState<TProduct>();
   const [coursesList, setCoursesList] = useState<TProduct>();
+  const [showSignature, setShowSignature] = useState(false);
+  const [selectedSignatrueData, setSelectedSignatrueData] = useState();
 
   const initNewProduct = () => {
     return {
       createdDate: new Date(),
       id: uuidv4(),
-      status: 0
+      status: 0,
     };
   };
 
   const isValidForm = () => {
-    return (
-        true
+    return true;
     //   selectedProduct?.name &&
     //   selectedProduct?.status &&
     //   selectedProduct?.totalPaidPrice
-    );
   };
-
 
   useEffect(() => {
     if (!coursesStore.coursesList) {
@@ -62,7 +62,7 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null }) => {
     }
 
     if (studentPackage) {
-      console.log("studentPackage",studentPackage)
+      console.log("studentPackage", studentPackage);
       setIdEditMode(true);
       const tmpPackage = {
         ...studentPackage,
@@ -76,25 +76,25 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null }) => {
   }, [coursesStore.coursesList]);
 
   const handleInputChange = (value: any, name: string) => {
-      console.log(value,name)
-      if(name == 'lecturesCount'){
-        const seats = selectedProduct.seats || [];
-        const startIndex = seats.length;
-        for(var i = startIndex; i < value; i++){
-          seats.push({
-            status: 0,
-            lectureDate: null,
-            id: uuidv4()
-          })
-        }
-        setSelectedProduct({ ...selectedProduct, [name]: value, seats: seats });
-      }else{
-        setSelectedProduct({ ...selectedProduct, [name]: value });
+    console.log(value, name);
+    if (name == "lecturesCount") {
+      const seats = selectedProduct.seats || [];
+      const startIndex = seats.length;
+      for (var i = startIndex; i < value; i++) {
+        seats.push({
+          status: 0,
+          lectureDate: null,
+          id: uuidv4(),
+        });
       }
+      setSelectedProduct({ ...selectedProduct, [name]: value, seats: seats });
+    } else {
+      setSelectedProduct({ ...selectedProduct, [name]: value });
+    }
   };
 
   const handlAddClick = () => {
-      onSave(selectedProduct)
+    onSave(selectedProduct);
     // if (selectedProduct) {
     //   setIsLoading(true);
     //     studentsStore.addPackage(studentId, selectedProduct).then((res: any) => {
@@ -136,7 +136,7 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null }) => {
         ...selectedProduct,
         paymentsList: [
           ...selectedProduct.paymentsList,
-          [{ createdDate: new Date(), id: uuidv4() }],
+          { createdDate: new Date(), id: uuidv4() },
         ],
       });
     } else {
@@ -148,12 +148,41 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null }) => {
   };
 
   const savePayment = () => {
-      console.log("xx",selectedProduct)
-  }
+    console.log("xx", selectedProduct);
+  };
 
   useEffect(() => {
     // getMenu();
   }, []);
+
+  const onSignatureClose = () => {
+    setShowSignature(false);
+  };
+  const onSignatureOpen = (index, key) => {
+    console.log("xx");
+    setSelectedSignatrueData({ index, data: selectedProduct?.paymentsList[index] });
+    setShowSignature(true);
+  };
+  const onRecipetPrint = (index) => {
+    setSelectedSignatrueData({ index, data: selectedProduct?.paymentsList[index] });
+    studentsStore.printRecipet({...selectedProduct?.paymentsList[index], ...student})
+    console.log("selectedProduct?.paymentsList[index]",selectedProduct?.paymentsList[index])
+  };
+  const onSaveSignature = (val) => {
+    console.log("xx", selectedSignatrueData);
+    handlePaymentInputChange(val, "signature", selectedSignatrueData.index);
+    setShowSignature(false);
+  };
+
+  if (showSignature) {
+    return (
+      <SignuaterScreen
+        onClose={onSignatureClose}
+        onSave={onSaveSignature}
+        signatureData={selectedSignatrueData}
+      />
+    );
+  }
 
   if (!selectedProduct) {
     return;
@@ -161,10 +190,10 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <BackButton isClose={true} onClick={onClose}/>
+      <BackButton isClose={true} onClick={onClose} />
 
       <View style={styles.inputsContainer}>
-        <Text style={{ fontSize: 30 }}>{t("اضف باقه")}</Text>
+        <Text style={{ fontSize: 30, marginTop:20 }}>{t("اضف باقه")}</Text>
 
         <View
           style={{
@@ -178,11 +207,11 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null }) => {
             label={t("عدد اللقائات")}
             value={selectedProduct?.lecturesCount?.toString()}
           />
-          {!selectedProduct?.lecturesCount && (
+          {/* {!selectedProduct?.lecturesCount && (
             <Text style={{ color: themeStyle.ERROR_COLOR }}>
               {t("invalid-name")}
             </Text>
-          )}
+          )} */}
         </View>
 
         <View
@@ -198,11 +227,11 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null }) => {
             value={selectedProduct?.price?.toString()}
             keyboardType="numeric"
           />
-          {!selectedProduct?.price && (
+          {/* {!selectedProduct?.price && (
             <Text style={{ color: themeStyle.ERROR_COLOR }}>
               {t("invalid-phone")}
             </Text>
-          )}
+          )} */}
         </View>
 
         <View style={{ width: "100%", paddingHorizontal: 50, marginTop: 25 }}>
@@ -212,81 +241,106 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null }) => {
             onClickFn={handlAddPayment}
           />
         </View>
-        <View style={{ marginTop: 20 }}>
+        <View style={{ marginTop: 20,zIndex:4 }}>
           {selectedProduct?.paymentsList?.map((paymentRow, index) => {
             return (
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  zIndex: 2,
-                  alignItems: "center",
-                }}
-              >
+              <View>
                 <View
                   style={{
-                    flexBasis: "32%",
-                    marginHorizontal: 5,
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                    zIndex: 2,
+                    alignItems: "center",
                   }}
                 >
-                  <InputText
-                    onChange={(e) =>
-                      handlePaymentInputChange(e, "amount", index)
-                    }
-                    label={t("الكميه")}
-                    value={paymentRow?.amount}
-                  />
-                  {/* {!selectedProduct?.fatherPhone && (
+                  <View
+                    style={{
+                      flexBasis: "32%",
+                      marginHorizontal: 5,
+                    }}
+                  >
+                    <InputText
+                      onChange={(e) =>
+                        handlePaymentInputChange(e, "amount", index)
+                      }
+                      label={t("المبلغ")}
+                      value={paymentRow?.amount}
+                    />
+                    {/* {!selectedProduct?.fatherPhone && (
                     <Text style={{ color: themeStyle.ERROR_COLOR }}>
                       {t("invalid-fatherNumber")}
                       {selectedProduct?.paymentsList?.length}
                     </Text>
                   )} */}
-                </View>
+                  </View>
 
-                <View
-                  style={{
-                    flexBasis: "32%",
-                    marginHorizontal: 5,
-                  }}
-                >
-                  <View style={{}}>
-                    <DropDown
-                      itemsList={PaymentMethods}
-                      defaultValue={paymentRow?.paymentMethod}
-                      onChangeFn={(e) =>
-                        handlePaymentInputChange(e, "paymentMethod", index)
-                      }
-                    />
-                    {/* {!selectedProduct?.categoryId && (
+                  <View
+                    style={{
+                      flexBasis: "32%",
+                      marginHorizontal: 11,
+                    
+                    }}
+                  >
+                    <View style={{}}>
+                      <DropDown
+                        itemsList={PaymentMethods}
+                        defaultValue={paymentRow?.paymentMethod}
+                        onChangeFn={(e) =>
+                          handlePaymentInputChange(e, "paymentMethod", index)
+                        }
+                      />
+                      {/* {!selectedProduct?.categoryId && (
                 <Text style={{ color: themeStyle.ERROR_COLOR }}>
                   {t("invalid-categoryId")}
                 </Text>
               )} */}
+                    </View>
                   </View>
-                </View>
-                <View
-                  style={{
-                    flexBasis: "32%",
-                    marginHorizontal: 5,
-                  }}
-                >
-                  <InputText
-                    onChange={(e) =>
-                      handlePaymentInputChange(e, "confirmationNumber", index)
-                    }
-                    label={t("رقم التأكيد")}
-                    value={paymentRow?.confirmationNumber}
-                  />
-                  {/* {!paymentRow?.confirmationNumber && (
+                  <View
+                    style={{
+                      flexBasis: "32%",
+                      marginHorizontal: 5,
+                    }}
+                  >
+                    <InputText
+                      onChange={(e) =>
+                        handlePaymentInputChange(e, "confirmationNumber", index)
+                      }
+                      label={t("رقم التأكيد")}
+                      value={paymentRow?.confirmationNumber}
+                    />
+                    {/* {!paymentRow?.confirmationNumber && (
                     <Text style={{ color: themeStyle.ERROR_COLOR }}>
                       {t("invalid-motherNumber")}
                     </Text>
                   )} */}
+                  </View>
+                </View>
+                <View style={{alignItems:"center"}}>
+                  {paymentRow?.signature && <Image
+                    style={styles.signutareImage}
+                    source={{ uri: paymentRow?.signature }}
+                  />}
+                  <TouchableOpacity
+                    onPress={() => onSignatureOpen(index, "signature")}
+                  >
+                    <Text>חתימה</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => onRecipetPrint(index, "signature")}
+                  >
+                    <Text>הדפס</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             );
           })}
+          {/* <View style={styles.container}>
+      <Image
+         style={styles.signutareImage}
+        source={{uri: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVEiJtZZPbBtFFMZ/M7ubXdtdb1xSFyeilBapySVU8h8OoFaooFSqiihIVIpQBKci6KEg9Q6H9kovIHoCIVQJJCKE1ENFjnAgcaSGC6rEnxBwA04Tx43t2FnvDAfjkNibxgHxnWb2e/u992bee7tCa00YFsffekFY+nUzFtjW0LrvjRXrCDIAaPLlW0nHL0SsZtVoaF98mLrx3pdhOqLtYPHChahZcYYO7KvPFxvRl5XPp1sN3adWiD1ZAqD6XYK1b/dvE5IWryTt2udLFedwc1+9kLp+vbbpoDh+6TklxBeAi9TL0taeWpdmZzQDry0AcO+jQ12RyohqqoYoo8RDwJrU+qXkjWtfi8Xxt58BdQuwQs9qC/afLwCw8tnQbqYAPsgxE1S6F3EAIXux2oQFKm0ihMsOF71dHYx+f3NND68ghCu1YIoePPQN1pGRABkJ6Bus96CutRZMydTl+TvuiRW1m3n0eDl0vRPcEysqdXn+jsQPsrHMquGeXEaY4Yk4wxWcY5V/9scqOMOVUFthatyTy8QyqwZ+kDURKoMWxNKr2EeqVKcTNOajqKoBgOE28U4tdQl5p5bwCw7BWquaZSzAPlwjlithJtp3pTImSqQRrb2Z8PHGigD4RZuNX6JYj6wj7O4TFLbCO/Mn/m8R+h6rYSUb3ekokRY6f/YukArN979jcW+V/S8g0eT/N3VN3kTqWbQ428m9/8k0P/1aIhF36PccEl6EhOcAUCrXKZXXWS3XKd2vc/TRBG9O5ELC17MmWubD2nKhUKZa26Ba2+D3P+4/MNCFwg59oWVeYhkzgN/JDR8deKBoD7Y+ljEjGZ0sosXVTvbc6RHirr2reNy1OXd6pJsQ+gqjk8VWFYmHrwBzW/n+uMPFiRwHB2I7ih8ciHFxIkd/3Omk5tCDV1t+2nNu5sxxpDFNx+huNhVT3/zMDz8usXC3ddaHBj1GHj/As08fwTS7Kt1HBTmyN29vdwAw+/wbwLVOJ3uAD1wi/dUH7Qei66PfyuRj4Ik9is+hglfbkbfR3cnZm7chlUWLdwmprtCohX4HUtlOcQjLYCu+fzGJH2QRKvP3UNz8bWk1qMxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=`}}
+      />
+    </View> */}
           {/* <View style={{ width: "50%", marginTop: 25, alignSelf: "center" }}>
             <Button text={t("اضف")} fontSize={20} onClickFn={savePayment} />
           </View> */}
@@ -294,7 +348,7 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null }) => {
 
         <View style={{ width: "100%", paddingHorizontal: 50, marginTop: 25 }}>
           <Button
-            text={t("approve")}
+            text={t("حفظ")}
             fontSize={20}
             onClickFn={handlAddClick}
             isLoading={isLoading}
@@ -325,5 +379,10 @@ const styles = StyleSheet.create({
     width: "100%",
     position: "absolute",
     bottom: 0,
+  },
+  signutareImage: {
+    height: 80,
+    width: 80,
+    alignSelf: "center",
   },
 });

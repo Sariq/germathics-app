@@ -117,6 +117,34 @@ class StudentsStore {
     });
   };
 
+  printRecipetFromServer = async (data: any) => {
+    return axiosInstance
+      .post(
+        `${
+     STUDENTS_API.ADMIN_PRINT_RECIEPT
+        }`,
+        data
+      )
+      .then(function (response) {
+        console.log("RRRRRWW", response)
+        return response;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  printRecipet = (paymentData) => {
+    return this.printRecipetFromServer(
+      paymentData,
+    ).then((res: any) => {
+      // runInAction(() => {
+      //   this.studentsList = res;
+      // });
+      return res;
+    });
+  };
+
   deleteStudentsFromServer = async (data: any) => {
     return axiosInstance
       .post(

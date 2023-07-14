@@ -18,6 +18,7 @@ import BackButton from "../../../../components/back-button";
 import { LinearGradient } from "expo-linear-gradient";
 import StudentsListScreen from "../../students/list";
 import AddLectureScreen from "../add";
+import moment from "moment";
 
 export type TProduct = {
   id?: string;
@@ -160,7 +161,8 @@ const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) =>
     return (
       <StudentsListScreen
         ids={selctedCourseStudentsList}
-        title={`${title} - لقاء ${selectedLecture.id + 1}`}
+        title={`${title}`}
+        subTitle={` لقاء - ${moment(selectedLecture.createdDate).format("DD/MM/YYYY")}`}
         isLecture={true}
         onApperanceChange={onApperanceChange}
         lectureData={selectedLecture}

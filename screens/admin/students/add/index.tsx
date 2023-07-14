@@ -184,7 +184,7 @@ const AddStudentScreen = ({ route }) => {
   console.log("selectedProduct.packagesList",student)
   if(isShowPackagesList){
     return(
-      <PackagesListScreen pacakgesList={selectedProduct.packagesList} onClose={onClosePackagesList} onSave={onSavePacakge}/>
+      <PackagesListScreen student={selectedProduct} pacakgesList={selectedProduct.packagesList} onClose={onClosePackagesList} onSave={onSavePacakge}/>
     )
   }
 

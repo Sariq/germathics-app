@@ -32,6 +32,7 @@ const StudentsListScreen = ({
   isAppeared,
   lectureData,
   onClose = null,
+  subTitle = ''
 }: any) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -219,6 +220,7 @@ const StudentsListScreen = ({
       <View style={{ alignItems: "center", marginTop: 15 }}>
         <Text style={{ fontSize: 30 }}>{`قائمة الطلاب`}</Text>
         <Text style={{ fontSize: 25 }}>{`${title ? title : ""}`}</Text>
+        <Text style={{ fontSize: 25 }}>{`${subTitle ? subTitle : ""}`}</Text>
       </View>
       <View
         style={{

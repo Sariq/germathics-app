@@ -46,6 +46,7 @@ export const STUDENTS_API = {
     ADMIN_GET_STUDENTS_LIST_API : "admin/students/",
     ADMIN_ADD_STUDENT_API : "admin/students/add",
     ADMIN_ADD_PACKAGE_API : "/api/admin/students/add/package",
+    ADMIN_PRINT_RECIEPT : "admin/students/generateReceipt",
     ADMIN_UPDATE_STUDENT_API : "admin/students/update",
     ADMIN_UPDATE_COURSE_API : "admin/categories/update",
 }

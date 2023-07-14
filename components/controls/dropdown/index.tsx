@@ -21,7 +21,7 @@ const DropDown = ({ itemsList, defaultValue, onChangeFn }: TProps) => {
   }, [value])
 
   return (
-    <View style={{flexDirection: "row-reverse"}}>
+    <View style={{flexDirection: "row-reverse",}}>
   <DropDownPicker
       open={open}
       value={(value)}
@@ -29,12 +29,12 @@ const DropDown = ({ itemsList, defaultValue, onChangeFn }: TProps) => {
       setOpen={setOpen}
       setValue={onSetValue}
       setItems={setItems}
-      // containerStyle={{}}
+      //  containerStyle={{margin:30}}
       // childrenContainerStyle={{
       //   justifyContent: 'flex-end',
       // }}
-      // itemStyle={{justifyContent: 'flex-end', left:100}}
-      // dropDownStyle={{backgroundColor: '#fafafa', height: 100}}
+      //  itemStyle={{justifyContent: 'flex-end', left:100, margin:20}}
+      //  dropDownStyle={{backgroundColor: '#fafafa', margin:10}}
     />
     </View>
   
