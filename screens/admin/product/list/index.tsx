@@ -235,13 +235,13 @@ const CoursesListScreen = ({ route }) => {
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                  justifyContent: "space-between",
+                  justifyContent: "center",
                   marginTop: 18,
                   width: "100%",
                   paddingHorizontal: 5,
                 }}
               >
-                <View style={{ flexBasis: "49%" }}>
+                {/* <View style={{ flexBasis: "49%" }}>
                   <Button
                     text={t("قائمة الطلاب")}
                     fontSize={14}
@@ -253,8 +253,8 @@ const CoursesListScreen = ({ route }) => {
                     textColor={themeStyle.TEXT_PRIMARY_COLOR}
                     bgColor={themeStyle.WHITE_COLOR}
                   />
-                </View>
-                <View style={{ flexBasis: "49%" }}>
+                </View> */}
+                <View style={{ flexBasis: "49%", }}>
                   <Button
                     text={t("قائمة اللقائات")}
                     fontSize={14}

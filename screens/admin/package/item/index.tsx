@@ -18,8 +18,11 @@ export type TProduct = {
 const PackageItemScreen = ({ onClose, onSave, packageItem }) => {
   const { t } = useTranslation();
 
+  const [packageData, setPackageData] = useState();
+
   useEffect(() => {
     // getMenu();
+    setPackageData(packageItem);
   }, []);
 
   const handleSeatClick = (seat) => {
@@ -50,8 +53,14 @@ const PackageItemScreen = ({ onClose, onSave, packageItem }) => {
     }
   };
 
+  const onSeatStatusChange = (seatsList)=>{
+    const tmpPackage = {...packageData, seats: seatsList}
+    setPackageData(tmpPackage);
+    onSave(tmpPackage)
+  }
+
   console.log("packageItem", packageItem);
-  if (!packageItem) {
+  if (!packageData) {
     return;
   }
 
@@ -68,9 +77,10 @@ const PackageItemScreen = ({ onClose, onSave, packageItem }) => {
           backgroundColor: getBgColorByStatus(packageItem.status),
           margin: 15,
           height: "100%",
+          paddingVertical:20
         }}
       >
-        <SeatsScreen seats={packageItem.seats} />
+        <SeatsScreen seats={packageItem.seats} onSave={onSeatStatusChange}/>
 
         {/* 
         <View style={{ width: "100%", paddingHorizontal: 50, marginTop: 25 }}>

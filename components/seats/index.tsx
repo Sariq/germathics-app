@@ -9,6 +9,7 @@ import BackButton from "../back-button";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import themeStyle from "../../styles/theme.style";
 import moment from "moment";
+import PaymentFailedDialog from "../dialogs/payment-failed";
 
 export type TProduct = {
   seats: any[];
@@ -17,12 +18,36 @@ export type TProduct = {
 const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
   const { t } = useTranslation();
 
+  const [showSeatsOptionsDialog, setShowSeatsOptionsDialog] = useState(false);
+  const [selectedSeat, setSelectedSeat] = useState();
+  const [seatsList, setSeatsList] = useState();
+
   useEffect(() => {
-    // getMenu();
+    setSeatsList(seats)
   }, []);
 
   const handleSeatClick = (seat) => {
     console.log(seat);
+    setSelectedSeat(seat);
+    setShowSeatsOptionsDialog(true)
+  };
+  const handleSeatOptionAnswer = (value) => {
+    console.log(value);
+    // const tmpSelectedSeat = {...selectedSeat, status: value};
+    // setSelectedSeat(tmpSelectedSeat)
+    const tmpSeatsList = seatsList.map((seat)=>{
+        if(seat.id == selectedSeat.id){
+            return {
+                ...seat,
+                status: value
+            }
+        }else{
+            return seat;
+        }
+    })
+    setSeatsList(tmpSeatsList)
+    onSave(tmpSeatsList);
+    setShowSeatsOptionsDialog(false)
   };
 
   const getStatusIcon = (status) => {
@@ -39,7 +64,7 @@ const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
   };
 
   console.log("seats", seats);
-  if (!seats) {
+  if (!seatsList) {
     return;
   }
 
@@ -50,16 +75,15 @@ const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
 
       <View
         style={{
-          marginTop: 60,
           flexDirection: "row",
           flexWrap: "wrap",
           justifyContent: "flex-end",
           backgroundColor: themeStyle.PRIMARY_COLOR,
-          margin:15,
-          height: "100%"
+          height: "100%",
+          marginTop:-20
         }}
       >
-        {seats.map((seat) => {
+        {seatsList.map((seat) => {
           return (
             <View style={[styles.seatContainer]}>
                 <Text style={{color:themeStyle.WHITE_COLOR, height:20, marginBottom:5}}>{seat.lectureDate && moment(seat.lectureDate).format("DD-MM-YY")}</Text>
@@ -82,6 +106,11 @@ const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
           />
         </View> */}
       </View>
+      <PaymentFailedDialog
+        handleAnswer={handleSeatOptionAnswer}
+        isOpen={showSeatsOptionsDialog}
+        value={selectedSeat?.status}
+      />
     </ScrollView>
   );
 };
@@ -92,7 +121,6 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: "100%",
-    marginBottom: 30,
   },
   inputsContainer: {
     width: "100%",
@@ -107,12 +135,12 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   seatContainer: {
-    margin: 15,
     padding: 10,
     width:90,
     height:50,
     alignItems:"center",
-    borderColor: themeStyle.WHITE_COLOR
+    borderColor: themeStyle.WHITE_COLOR,
+    marginVertical:20
   },
   seatIconContainer: {
     borderWidth: 1,

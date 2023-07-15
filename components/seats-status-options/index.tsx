@@ -39,6 +39,7 @@ const SeatsStatusOptionsScreen = ({ value, onSave }) => {
     console.log(seatOption);
     onSave(seatOption.value)
   };
+  console.log("baa",value)
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -66,7 +67,7 @@ const SeatsStatusOptionsScreen = ({ value, onSave }) => {
           return (
             <View>
               <TouchableOpacity
-                style={[styles.seatContainer, {borderColor: value ===seatStatus.value ? themeStyle.SUCCESS_COLOR : themeStyle.WHITE_COLOR }]}
+                style={[styles.seatContainer, {borderColor: value === seatStatus.value ? themeStyle.SUCCESS_COLOR : themeStyle.WHITE_COLOR }]}
                 onPress={() => handleSeatOptionClick(seatStatus)}
               >
                 <Text style={{color: themeStyle.WHITE_COLOR, fontSize: 20}}>{(seatStatus.label)}</Text>

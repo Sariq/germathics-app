@@ -9,17 +9,19 @@ import { useState, useEffect } from "react";
 import Button from "../../components/controls/button/button";
 import themeStyle from "../../styles/theme.style";
 import { useTranslation } from "react-i18next";
-
+import seatsStatusOptions from "../seats-status-options";
+import SeatsStatusOptionsScreen from "../seats-status-options"
+import BackButton from "../back-button";
 type TProps = {
   isOpen: boolean;
   handleAnswer?: any;
-  errorMessage?: string;
+  value?: any;
 };
 
 export default function PaymentFailedDialog({
   isOpen,
   handleAnswer,
-  errorMessage,
+  value,
 }: TProps) {
   const { t } = useTranslation();
   const [visible, setVisible] = useState(isOpen);
@@ -32,6 +34,12 @@ export default function PaymentFailedDialog({
     handleAnswer && handleAnswer(value);
     setVisible(false);
   };
+
+  const onApperanceChange = (value: boolean) => {
+    handleAnswer && handleAnswer(value);
+    setVisible(false);
+  };
+
   return (
     <Provider>
       <Portal>
@@ -44,57 +52,29 @@ export default function PaymentFailedDialog({
           style={{
             alignItems: "center",
             justifyContent: "center",
-            paddingVertical: 30,
             borderRadius: 10,
+            backgroundColor: themeStyle.SECONDARY_COLOR
           }}
           visible={visible}
           dismissable={false}
         >
-          <Dialog.Title>
-            <Icon
-              icon="exclamation-mark"
-              size={50}
-              style={{ color: theme.GRAY_700 }}
-            />
-          </Dialog.Title>
+     
+     
           <Dialog.Content>
-            <Text
-              style={{
-                fontSize: 20,
-                textAlign: "center",
-                fontWeight: "bold",
-              }}
-            >
-              {t("payment-failed")}
-            </Text>
-            <Text
-              style={{
-                fontSize: 16,
-                textAlign: "center",
-                fontWeight: "bold",
-                marginTop: 10,
-              }}
-            >
-              {errorMessage}
-            </Text>
+
+          <View style={{marginTop:-20, right:-60}}>
+          <BackButton isClose={true} onClick={hideDialog} />
+
+          </View>
+          <View style={{paddingTop:60}}>
+          <SeatsStatusOptionsScreen
+                      value={value}
+                      onSave={(value) => onApperanceChange(value)}
+                    />
+          </View>
+   
           </Dialog.Content>
-          <Dialog.Actions>
-            <View
-              style={{
-                flexDirection: "row",
-                width: "50%",
-                justifyContent: "space-between",
-              }}
-            >
-              <Button
-                onClickFn={() => hideDialog(true)}
-                text={t("ok")}
-                bgColor={themeStyle.SUCCESS_COLOR}
-                textColor={themeStyle.WHITE_COLOR}
-                fontSize={16}
-              />
-            </View>
-          </Dialog.Actions>
+    
         </Dialog>
       </Portal>
     </Provider>

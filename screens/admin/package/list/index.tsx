@@ -117,11 +117,11 @@ const PackagesListScreen = ({
     return;
   }
 
-  if(isShowSeats){
-    return(
-      <SeatsScreen onClose={onCloseSeats} onSave={onSavePacakge} seats={selectedSeats}/>
-    )
-  }
+  // if(isShowSeats){
+  //   return(
+  //     <SeatsScreen onClose={onCloseSeats} onSave={onSavePacakge} seats={selectedSeats}/>
+  //   )
+  // }
 
   if(isShowPackage){
     return(
