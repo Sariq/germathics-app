@@ -55,6 +55,26 @@ const DashboardScreen = () => {
           key: "students-list",
         },
         {
+          title: "اضف مرشد",
+          icon: "user-plus",
+          key: "add-employe",
+        },
+        {
+          title: "قائمة المرشدين",
+          icon: "users",
+          key: "employes-list",
+        },
+        {
+          title: "דוח תשלומים",
+          icon: "user-plus",
+          key: "payment-report",
+        },
+        {
+          title: "דוח עובדים",
+          icon: "users",
+          key: "employe-reports",
+        },
+        {
           title: "signout",
           icon: "logout-icon",
           key: "signout",
@@ -64,6 +84,7 @@ const DashboardScreen = () => {
   }, []);
 
   const actionHandler = (key: string) => {
+    console.log("key",key)
     switch (key) {
       // case "phone":
       //   navigation.navigate("insert-customer-name");
@@ -103,6 +124,15 @@ const DashboardScreen = () => {
         break;
       case "add-student":
         navigation.navigate("admin-add-student");
+        break;
+      case "employes-list":
+        navigation.navigate("admin-employes-list", { categoryId: null });
+        break;
+      case "add-employe":
+        navigation.navigate("admin-add-employe");
+        break;
+      case "payment-report":
+        navigation.navigate("admin-payment-report");
         break;
       case "openTerms":
         navigation.navigate("terms-and-conditions");

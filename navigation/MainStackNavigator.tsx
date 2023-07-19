@@ -16,8 +16,12 @@ import insertCustomerName from "../screens/insert-customer-name";
 import OrdersListScreen from "../screens/admin/order/list";
 import AddCourseScreen from "../screens/admin/product/add";
 import AddStudentScreen from "../screens/admin/students/add";
+import AddEmployeScreen from "../screens/admin/employes/add";
+import EpmloyeItemScreen from "../screens/admin/employes/item";
+import EmployesListScreen from "../screens/admin/employes/list";
 import AddPackageScreen from "../screens/admin/package/add";
 import CoursesListScreen from "../screens/admin/product/list";
+import PaymentReportScreen from "../screens/admin/payment/report";
 import StudentsListScreen from "../screens/admin/students/list";
 import StudentItemScreen from "../screens/admin/students/item";
 import LecturesListScreen from "../screens/admin/lectures/list";
@@ -91,12 +95,19 @@ export const MainStackNavigator = () => {
       <Stack.Screen name="admin-dashboard" component={DashboardScreen} />
       {/* <Stack.Screen name="admin-add-product" component={AddProductScreen}  initialParams={{ categoryId: null, product: null }}/> */}
       <Stack.Screen name="admin-add-course" component={AddCourseScreen}  initialParams={{ categoryId: null, product: null }}/>
-      <Stack.Screen name="admin-add-student" component={AddStudentScreen}  initialParams={{ categoryId: null, student: null }}/>
       <Stack.Screen name="admin-add-package" component={AddPackageScreen}  initialParams={{ categoryId: null, student: null }}/>
       <Stack.Screen name="admin-courses-list" component={CoursesListScreen}  initialParams={{ categoryId: null, product: null }}/>
+      
+      <Stack.Screen name="admin-add-student" component={AddStudentScreen}  initialParams={{ categoryId: null, student: null }}/>
       <Stack.Screen name="admin-students-list" component={StudentsListScreen}  initialParams={{ categoryId: null, product: null, studentIds: null }}/>
       <Stack.Screen name="admin-students-item" component={StudentItemScreen}  initialParams={{ categoryId: null, product: null, student: null }}/>
+      
+      <Stack.Screen name="admin-add-employe" component={AddEmployeScreen}  initialParams={{ categoryId: null, student: null }}/>
+      <Stack.Screen name="admin-employes-list" component={EmployesListScreen}  initialParams={{ categoryId: null, product: null, studentIds: null }}/>
+      <Stack.Screen name="admin-employes-item" component={EpmloyeItemScreen}  initialParams={{ categoryId: null, product: null, student: null }}/>
+      
       <Stack.Screen name="admin-lectures-list" component={LecturesListScreen}  initialParams={{ categoryId: null, product: null, studentIds: null }}/>
+      <Stack.Screen name="admin-payment-report" component={PaymentReportScreen}  initialParams={{ categoryId: null, product: null, studentIds: null }}/>
       <Stack.Screen name="becoin" component={BcoinScreen} />
       <Stack.Screen name="cart" component={CartScreen} />
       <Stack.Screen name="profile" component={ProfileScreen} />

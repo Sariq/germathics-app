@@ -77,7 +77,7 @@ const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
         style={{
           flexDirection: "row",
           flexWrap: "wrap",
-          justifyContent: "flex-end",
+          justifyContent: "flex-start",
           backgroundColor: themeStyle.PRIMARY_COLOR,
           height: "100%",
           marginTop:-20

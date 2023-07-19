@@ -5,20 +5,20 @@ import {
   CALANDER_API,
   TRANSLATIONS_API,
   COURSES_API,
-  STUDENTS_API,
+  EMPLOYES_API,
 } from "../../consts/api";
 import { fromBase64, toBase64 } from "../../helpers/convert-base64";
 
-class StudentsStore {
-  studentsList = [];
+class EmployesStore {
+  employesList = [];
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  getStudentsFromServer = async (ids: any) => {
+  getEmployesFromServer = async (ids: any) => {
     return axiosInstance
-      .post(`${STUDENTS_API.ADMIN_GET_STUDENTS_LIST_API}`, { ids: ids })
+      .post(`${EMPLOYES_API.ADMIN_GET_EMPLOYES_LIST_API}`, { ids: ids })
       .then(function (response) {
         return response;
       })
@@ -27,17 +27,17 @@ class StudentsStore {
       });
   };
 
-  getStudents = (ids?: any) => {
-    return this.getStudentsFromServer(ids).then((res: any) => {
+  getEmployes = (ids?: any) => {
+    return this.getEmployesFromServer(ids).then((res: any) => {
       runInAction(() => {
         console.log("RRRRRRESSS", res);
-        this.studentsList = res;
+        this.employesList = res;
       });
       return res;
     });
   };
 
-  updateStudentsFromServer = async (data: any) => {
+  updateEmployesFromServer = async (data: any) => {
     return axiosInstance
       .post(
         `${TRANSLATIONS_API.CONTROLLER}/${TRANSLATIONS_API.UPDATE_TRANSLATIONS}`,
@@ -51,22 +51,22 @@ class StudentsStore {
       });
   };
 
-  updateStudents = (data: any) => {
-    return this.updateStudentsFromServer(data).then((res: any) => {
+  updateEmployes = (data: any) => {
+    return this.updateEmployesFromServer(data).then((res: any) => {
       runInAction(() => {
-        this.studentsList = res;
+        this.employesList = res;
       });
       return res;
     });
   };
 
-  addStudentsFromServer = async (data: any, isEditMode?: boolean) => {
+  addEmployesFromServer = async (data: any, isEditMode?: boolean) => {
     return axiosInstance
       .post(
         `${
           isEditMode
-            ? STUDENTS_API.ADMIN_UPDATE_STUDENT_API
-            : STUDENTS_API.ADMIN_ADD_STUDENT_API
+            ? EMPLOYES_API.ADMIN_UPDATE_EMPLOYE_API
+            : EMPLOYES_API.ADMIN_ADD_EMPLOYE_API
         }`,
         data
       )
@@ -78,10 +78,10 @@ class StudentsStore {
       });
   };
 
-  addStudents = (data: any, isEditMode?: boolean) => {
-    return this.addStudentsFromServer(data, isEditMode).then((res: any) => {
+  addEmployes = (data: any, isEditMode?: boolean) => {
+    return this.addEmployesFromServer(data, isEditMode).then((res: any) => {
       runInAction(() => {
-        //this.studentsList = res;
+        //this.employesList = res;
       });
       return res;
     });
@@ -92,8 +92,8 @@ class StudentsStore {
       .post(
         `${
           isEditMode
-            ? STUDENTS_API.ADMIN_UPDATE_STUDENT_API
-            : STUDENTS_API.ADMIN_ADD_PACKAGE_API
+            ? EMPLOYES_API.ADMIN_UPDATE_STUDENT_API
+            : EMPLOYES_API.ADMIN_ADD_PACKAGE_API
         }`,
         data
       )
@@ -105,13 +105,13 @@ class StudentsStore {
       });
   };
 
-  addPackage = (studentId: any, studentPackage: any, isEditMode?: boolean) => {
+  addPackage = (employeId: any, employePackage: any, isEditMode?: boolean) => {
     return this.addPackageFromServer(
-      { studentId, studentPackage },
+      { employeId, employePackage },
       isEditMode
     ).then((res: any) => {
       runInAction(() => {
-        this.studentsList = res;
+        this.employesList = res;
       });
       return res;
     });
@@ -121,7 +121,7 @@ class StudentsStore {
     return axiosInstance
       .post(
         `${
-     STUDENTS_API.ADMIN_PRINT_RECIEPT
+     EMPLOYES_API.ADMIN_PRINT_RECIEPT
         }`,
         data
       )
@@ -139,13 +139,13 @@ class StudentsStore {
       paymentData,
     ).then((res: any) => {
       // runInAction(() => {
-      //   this.studentsList = res;
+      //   this.employesList = res;
       // });
       return res;
     });
   };
 
-  deleteStudentsFromServer = async (data: any) => {
+  deleteEmployesFromServer = async (data: any) => {
     return axiosInstance
       .post(
         `${TRANSLATIONS_API.CONTROLLER}/${TRANSLATIONS_API.DELETE_TRANSLATIONS}`,
@@ -159,10 +159,10 @@ class StudentsStore {
       });
   };
 
-  deleteStudents = (data: any) => {
-    return this.deleteStudentsFromServer(data).then((res: any) => {
+  deleteEmployes = (data: any) => {
+    return this.deleteEmployesFromServer(data).then((res: any) => {
       runInAction(() => {
-        this.studentsList = res;
+        this.employesList = res;
       });
       return res;
     });
@@ -171,7 +171,7 @@ class StudentsStore {
   sendPaymentReportFromServer = async (data: any) => {
     return axiosInstance
       .post(
-        `${STUDENTS_API.SEND_PAYMENT_REPORT}`,
+        `${EMPLOYES_API.SEND_PAYMENT_REPORT}`,
         data
       )
       .then(function (response) {
@@ -185,10 +185,10 @@ class StudentsStore {
   sendPaymentReport = (data: any) => {
     return this.sendPaymentReportFromServer(data).then((res: any) => {
       // runInAction(() => {
-      //   this.studentsList = res;
+      //   this.employesList = res;
       // });
       return res;
     });
   };
 }
-export const studentsStore = new StudentsStore();
+export const employesStore = new EmployesStore();

@@ -17,7 +17,6 @@ import CheckBox from "../../../../components/controls/checkbox";
 import BackButton from "../../../../components/back-button";
 import AddPackageScreen from "../../package/add";
 import PackagesListScreen from "../../package/list";
-import { v4 as uuidv4 } from "uuid";
 
 export type TProduct = {
   id?: string;
@@ -32,11 +31,13 @@ export type TProduct = {
   packagesList?: any;
 };
 
-const AddStudentScreen = ({ route }) => {
+
+
+const AddEmployeScreen = ({ route }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { student } = route.params;
-  const { menuStore, studentsStore, coursesStore } = useContext(StoreContext);
+  const { menuStore, employesStore, coursesStore } = useContext(StoreContext);
 
   const [isEditMode, setIdEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -48,17 +49,17 @@ const AddStudentScreen = ({ route }) => {
 
   const initNewProduct = () => {
     return {
-      categoryId: "",
       name: "ساري",
-      status: "",
+      status: 0,
       phone: "0542454362",
-      packagesList: [],
+      attendanceList: []
     };
   };
 
   const isValidForm = () => {
     return (
-      selectedProduct?.name && selectedProduct?.status
+      selectedProduct?.name &&
+      selectedProduct?.status 
       // selectedProduct?.totalPaidPrice
     );
   };
@@ -69,7 +70,7 @@ const AddStudentScreen = ({ route }) => {
       // if (categoryId && cours.categoryId === categoryId) {
       //   setSelectedCategoryId(index);
       // }
-      console.log(course.name);
+      console.log(course.name)
       return {
         label: course.name,
         value: course._id,
@@ -105,60 +106,10 @@ const AddStudentScreen = ({ route }) => {
   const handlAddClick = () => {
     if (selectedProduct) {
       setIsLoading(true);
-      //uploadImage(imgFile).then((res) => {
-      let updatedData: TProduct = null;
-
-      if (!isEditMode) {
-        updatedData = {
-          ...selectedProduct,
-          packagesList: [
-            {
-              createdDate: new Date(),
-              id: uuidv4(),
-              status: 0,
-              lecturesCount: 5,
-              seats: [
-                {
-                  status: 0,
-                  lectureDate: null,
-                  id: uuidv4(),
-                },
-                {
-                  status: 0,
-                  lectureDate: null,
-                  id: uuidv4(),
-                },
-                {
-                  status: 0,
-                  lectureDate: null,
-                  id: uuidv4(),
-                },
-                {
-                  status: 0,
-                  lectureDate: null,
-                  id: uuidv4(),
-                },
-                {
-                  status: 0,
-                  lectureDate: null,
-                  id: uuidv4(),
-                },
-              ],
-            },
-          ],
-        };
-      } else {
-        updatedData = { ...selectedProduct };
-      }
-
-      setSelectedProduct(updatedData);
-      studentsStore.addStudents(updatedData, isEditMode).then((res: any) => {
+      employesStore.addEmployes(selectedProduct, isEditMode).then((res: any) => {
         setIsLoading(false);
-        //navigateToMenu();
         navigation.navigate("admin-dashboard");
       });
-
-      //});
     }
   };
 
@@ -166,12 +117,13 @@ const AddStudentScreen = ({ route }) => {
     navigation.navigate("menuScreen");
   };
   const goToPackagesList = () => {
-    navigation.navigate("admin-add-package", { studentId: selectedProduct.id });
+    navigation.navigate("admin-add-package",{studentId: selectedProduct.id});
   };
 
   const addPackage = () => {
     setIsAddPacakge(true);
   };
+
 
   const onCloseAddPackage = () => {
     setIsAddPacakge(false);
@@ -184,30 +136,23 @@ const AddStudentScreen = ({ route }) => {
     setIsShowPackagesList(true);
   };
 
-  const onSavePacakge = (newPackage: any) => {
-    console.log("newPackage", newPackage);
+  const onSavePacakge = (newPackage:any) => {
+    console.log("newPackage",newPackage)
 
     setIsAddPacakge(false);
-    const foundedPackage = selectedProduct.packagesList.find(
-      (pacakge) => pacakge.id === newPackage.id
-    );
-    if (foundedPackage) {
-      const updatedPackagesList = selectedProduct.packagesList.map(
-        (pacakge) => {
-          if (pacakge.id === newPackage.id) {
+    const foundedPackage = selectedProduct.packagesList.find((pacakge)=> pacakge.id === newPackage.id);
+    if(foundedPackage){
+      const updatedPackagesList = selectedProduct.packagesList.map((pacakge)=> {
+        if(pacakge.id === newPackage.id){
             return newPackage;
-          } else {
-            return pacakge;
-          }
+        }else{
+          return pacakge;
         }
-      );
-      setSelectedProduct({
-        ...selectedProduct,
-        packagesList: updatedPackagesList,
-      });
-    } else {
-      selectedProduct.packagesList.push(newPackage);
-      setSelectedProduct({ ...selectedProduct });
+        });
+        setSelectedProduct({...selectedProduct, packagesList: updatedPackagesList})
+    }else{
+      selectedProduct.packagesList.push(newPackage)
+      setSelectedProduct({...selectedProduct})
     }
   };
 
@@ -219,22 +164,17 @@ const AddStudentScreen = ({ route }) => {
     return;
   }
 
-  if (isAddPacakge) {
-    return (
-      <AddPackageScreen onClose={onCloseAddPackage} onSave={onSavePacakge} />
-    );
+  if(isAddPacakge){
+    return(
+      <AddPackageScreen onClose={onCloseAddPackage} onSave={onSavePacakge}/>
+    )
   }
 
-  console.log("selectedProduct.packagesList", student);
-  if (isShowPackagesList) {
-    return (
-      <PackagesListScreen
-        student={selectedProduct}
-        pacakgesList={selectedProduct.packagesList}
-        onClose={onClosePackagesList}
-        onSave={onSavePacakge}
-      />
-    );
+  console.log("selectedProduct.packagesList",student)
+  if(isShowPackagesList){
+    return(
+      <PackagesListScreen student={selectedProduct} pacakgesList={selectedProduct.packagesList} onClose={onClosePackagesList} onSave={onSavePacakge}/>
+    )
   }
 
   return (
@@ -242,7 +182,7 @@ const AddStudentScreen = ({ route }) => {
       <BackButton />
 
       <View style={styles.inputsContainer}>
-        <Text style={{ fontSize: 30 }}>{t("add-student")}</Text>
+        <Text style={{ fontSize: 30,marginTop:20 }}>{t("اضف مرشد")}</Text>
 
         <View
           style={{
@@ -256,11 +196,6 @@ const AddStudentScreen = ({ route }) => {
             label={t("الاسم")}
             value={selectedProduct?.name}
           />
-          {!selectedProduct?.name && (
-            <Text style={{ color: themeStyle.ERROR_COLOR }}>
-              {t("invalid-name")}
-            </Text>
-          )}
         </View>
 
         <View
@@ -272,16 +207,12 @@ const AddStudentScreen = ({ route }) => {
         >
           <InputText
             onChange={(e) => handleInputChange(e, "phone")}
-            label={t("هاتف الطالب")}
+            label={t("رقم الهاتف")}
             value={selectedProduct?.phone}
             keyboardType="numeric"
           />
-          {!selectedProduct?.phone && (
-            <Text style={{ color: themeStyle.ERROR_COLOR }}>
-              {t("invalid-phone")}
-            </Text>
-          )}
         </View>
+
 
         <View
           style={{
@@ -291,75 +222,13 @@ const AddStudentScreen = ({ route }) => {
           }}
         >
           <InputText
-            onChange={(e) => handleInputChange(e, "fatherNumber")}
-            label={t("هاتف الاب")}
-            value={selectedProduct?.fatherPhone}
+            onChange={(e) => handleInputChange(e, "idNumber")}
+            label={t("رقم الهوية")}
+            value={selectedProduct?.idNumber}
           />
         </View>
 
-        <View
-          style={{
-            width: "100%",
-            marginTop: 15,
-            alignItems: "flex-start",
-          }}
-        >
-          <InputText
-            onChange={(e) => handleInputChange(e, "motherNumber")}
-            label={t("هاتف الام")}
-            value={selectedProduct?.motherNumber}
-          />
-        </View>
 
-        <View
-          style={{
-            marginTop: 30,
-            alignItems: "flex-start",
-            width: "100%",
-            zIndex: 1,
-          }}
-        >
-          <DropDown
-            itemsList={studentStatuses}
-            defaultValue={selectedProduct?.status}
-            onChangeFn={(e) => handleInputChange(e, "status")}
-          />
-        </View>
-
-        {(selectedProduct?.status === "paid" ||
-          selectedProduct?.status === "registered") && (
-          <View
-            style={{
-              width: "100%",
-              marginTop: 30,
-              alignItems: "flex-start",
-              zIndex: 1,
-            }}
-          >
-            {coursesList && (
-              <View style={{ alignItems: "flex-start" }}>
-                <DropDown
-                  itemsList={coursesList}
-                  defaultValue={selectedProduct?.categoryId}
-                  onChangeFn={(e) => handleInputChange(e, "categoryId")}
-                />
-                {/* {!selectedProduct?.categoryId && (
-                <Text style={{ color: themeStyle.ERROR_COLOR }}>
-                  {t("invalid-categoryId")}
-                </Text>
-              )} */}
-              </View>
-            )}
-          </View>
-        )}
-
-        <View style={{ width: "100%", paddingHorizontal: 50, marginTop: 25 }}>
-          <Button
-            text={t("قائمة الباقات")}
-            fontSize={20}
-            onClickFn={openPacakgedList}
-          />
-        </View>
 
         {/* 
         <View
@@ -385,7 +254,7 @@ const AddStudentScreen = ({ route }) => {
             fontSize={20}
             onClickFn={handlAddClick}
             isLoading={isLoading}
-            disabled={isLoading || !isValidForm()}
+            disabled={isLoading}
           />
         </View>
       </View>
@@ -393,7 +262,7 @@ const AddStudentScreen = ({ route }) => {
   );
 };
 
-export default observer(AddStudentScreen);
+export default observer(AddEmployeScreen);
 
 const styles = StyleSheet.create({
   container: {

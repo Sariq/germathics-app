@@ -32,6 +32,7 @@ import { observer } from "mobx-react";
 import { StoreContext } from "./stores";
 import { ordersStore } from "./stores/orders";
 import { calanderStore } from "./stores/calander";
+import { employesStore } from "./stores/employes";
 import { translationsStore } from "./stores/translations";
 import InterntConnectionDialog from "./components/dialogs/internet-connection";
 import UpdateVersion from "./components/dialogs/update-app-version";
@@ -483,6 +484,7 @@ const App = () => {
           ordersStore: ordersStore,
           calanderStore: calanderStore,
           translationsStore: translationsStore,
+          employesStore: employesStore,
         }}
       >
         <View style={{ height: "100%", backgroundColor: "#e0e0e1" }}>

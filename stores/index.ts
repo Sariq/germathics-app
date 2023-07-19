@@ -10,6 +10,7 @@ import { calanderStore } from "./calander";
 import { translationsStore } from "./translations";
 import { coursesStore } from "./courses";
 import { studentsStore } from "./students";
+import { employesStore } from "./employes";
 
 export const StoreContext = createContext({ 
     cartStore: cartStore, 
@@ -23,4 +24,5 @@ export const StoreContext = createContext({
     ordersStore: ordersStore,
     calanderStore: calanderStore,
     translationsStore: translationsStore,
+    employesStore: employesStore,
 });

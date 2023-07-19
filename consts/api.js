@@ -49,6 +49,16 @@ export const STUDENTS_API = {
     ADMIN_PRINT_RECIEPT : "admin/students/generateReceipt",
     ADMIN_UPDATE_STUDENT_API : "admin/students/update",
     ADMIN_UPDATE_COURSE_API : "admin/categories/update",
+    SEND_PAYMENT_REPORT : "admin/students/paymentByMonth",
+}
+export const EMPLOYES_API = {
+    ADMIN_GET_EMPLOYES_LIST_API : "admin/employes/",
+    ADMIN_ADD_EMPLOYE_API : "admin/employe/add",
+    ADMIN_ADD_PACKAGE_API : "/api/admin/employes/add/package",
+    ADMIN_PRINT_RECIEPT : "admin/employes/generateReceipt",
+    ADMIN_UPDATE_EMPLOYE_API : "admin/employes/update",
+    ADMIN_UPDATE_COURSE_API : "admin/categories/update",
+    SEND_PAYMENT_REPORT : "admin/employes/paymentByMonth",
 }
 export const MENU_API = {
     CONTROLLER: "config",
