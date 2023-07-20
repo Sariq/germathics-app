@@ -29,6 +29,7 @@ const DropDown = ({ itemsList, defaultValue, onChangeFn }: TProps) => {
       setOpen={setOpen}
       setValue={onSetValue}
       setItems={setItems}
+      style={{height:60, marginTop:8}}
       //  containerStyle={{margin:30}}
       // childrenContainerStyle={{
       //   justifyContent: 'flex-end',

@@ -260,7 +260,7 @@ const PackagesListScreen = ({
                       </Text>
                     </View>
                   </View>
-
+{/* 
                   <View style={{ flexDirection: "row", marginTop: 15 }}>
                     <View>
                       <Text
@@ -283,7 +283,7 @@ const PackagesListScreen = ({
                         {packageItem.price}{" "}
                       </Text>
                     </View>
-                  </View>
+                  </View> */}
 
                   <View style={{ flexDirection: "row", marginTop: 15 }}>
                     <View>

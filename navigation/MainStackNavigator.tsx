@@ -30,6 +30,7 @@ import DashboardScreen from "../screens/admin/dashboard/main";
 import HomeScreen from "../screens/home/home";
 import uploadImages from "../screens/admin/upload-images/upload-images";
 import EditTranslationsScreen from "../screens/admin/edit-translations";
+import EmployeReportScreen from "../screens/admin/employes/report";
 
 const Stack = createStackNavigator();
 const TransitionScreen = {
@@ -105,7 +106,8 @@ export const MainStackNavigator = () => {
       <Stack.Screen name="admin-add-employe" component={AddEmployeScreen}  initialParams={{ categoryId: null, student: null }}/>
       <Stack.Screen name="admin-employes-list" component={EmployesListScreen}  initialParams={{ categoryId: null, product: null, studentIds: null }}/>
       <Stack.Screen name="admin-employes-item" component={EpmloyeItemScreen}  initialParams={{ categoryId: null, product: null, student: null }}/>
-      
+      <Stack.Screen name="admin-employe-report" component={EmployeReportScreen}  initialParams={{ categoryId: null, product: null, studentIds: null }}/>
+
       <Stack.Screen name="admin-lectures-list" component={LecturesListScreen}  initialParams={{ categoryId: null, product: null, studentIds: null }}/>
       <Stack.Screen name="admin-payment-report" component={PaymentReportScreen}  initialParams={{ categoryId: null, product: null, studentIds: null }}/>
       <Stack.Screen name="becoin" component={BcoinScreen} />

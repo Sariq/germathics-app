@@ -20,16 +20,16 @@ export type TProduct = {
   name: string;
 };
 
-const AddCourseScreen = ({ route }) => {
+const EmployeReportScreen = ({ route }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
-  const { menuStore, languageStore } = useContext(StoreContext);
+  const { menuStore, employesStore } = useContext(StoreContext);
 
   const [isEditMode, setIdEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [selectedProduct, setSelectedProduct] = useState<TProduct>();
+  const [selectedProduct, setSelectedProduct] = useState();
 
   const initNewProduct = () => {
     return {
@@ -39,10 +39,7 @@ const AddCourseScreen = ({ route }) => {
   };
 
   const isValidForm = () => {
-    return (
-      (selectedProduct?.name
-       )
-    );
+    return selectedProduct?.name;
   };
 
   useEffect(() => {
@@ -60,37 +57,24 @@ const AddCourseScreen = ({ route }) => {
     //   };
     //   setSelectedProduct(tmpProduct);
     // } else {
-     setSelectedProduct(initNewProduct());
+    setSelectedProduct(initNewProduct());
     // }
   }, []);
-
-
 
   const handleInputChange = (value: any, name: string) => {
     setSelectedProduct({ ...selectedProduct, [name]: value });
   };
 
   const handlAddClick = () => {
-    if (selectedProduct ) {
+    if (selectedProduct) {
       setIsLoading(true);
       //uploadImage(imgFile).then((res) => {
-      let updatedData: TProduct = null;
-    
-        updatedData = { ...selectedProduct };
 
 
-      setSelectedProduct(updatedData);
-      menuStore
-        .addOrUpdateProduct(updatedData, isEditMode)
-        .then((res: any) => {
-          menuStore.getMenu();
-          setIsLoading(false);
-          navigation.navigate("admin-dashboard");
-
-          //navigateToMenu();
-        });
-
-      //});
+        employesStore.sendEmployeReport(selectedProduct).then((res: any) => {
+        setIsLoading(false);
+        // navigation.navigate("admin-dashboard");
+      });
     }
   };
 
@@ -99,9 +83,31 @@ const AddCourseScreen = ({ route }) => {
   };
 
   useEffect(() => {
-   // getMenu();
+    // getMenu();
+    setSelectedProduct({
+        year:  new Date().getFullYear(),
+        month:  new Date().getMonth() + 1
+    })
   }, []);
 
+
+  const startYear = 2023;
+  const currentYear = new Date().getFullYear() + 1;
+  const numberOfYears = currentYear - startYear; // Change this value to determine the number of years to include
+  const yearsArray = Array.from({ length: numberOfYears }, (_, index) => {
+    const year = startYear + index;
+    return { label: year, value: year };
+  });
+
+  const monthsArray = [];
+const numberOfMonths = 12;
+for (let i = 0; i < numberOfMonths; i++) {
+  const monthIndex = i;
+  monthsArray.push({ label: monthIndex + 1, value: monthIndex + 1 });
+}
+
+console.log("monthsArray",monthsArray);
+   
   if (!selectedProduct) {
     return;
   }
@@ -111,102 +117,47 @@ const AddCourseScreen = ({ route }) => {
       <BackButton />
 
       <View style={styles.inputsContainer}>
-        <Text style={{  fontSize: 30 }}>{t("اضف دورة")}</Text>
-
+        <Text style={{ fontSize: 30 }}>{t("דוח עובדים")}</Text>
         <View
-          style={{
-            width: "100%",
-            marginTop: 30,
-          }}
-        >
-          <View
-            style={{
-              flexBasis: "49%",
-              marginTop: 15,
-              alignItems: "flex-start",
-            }}
-          >
-            <InputText
-              onChange={(e) => handleInputChange(e, "name")}
-              label={t("name")}
-              value={selectedProduct?.name}
-            />
-            {!selectedProduct?.name && (
-              <Text style={{ color: themeStyle.ERROR_COLOR }}>
-                {t("invalid-name")}
-              </Text>
-            )}
-          </View>
-  
+        style={{
+          width: "100%",
+          marginVertical: 20,
+          alignItems: "center",
+          flexDirection: "row",
+          justifyContent: "space-around",
+          zIndex: 2,
+        }}
+      >
+        <View style={{ flexBasis: "40%" }}>
+          <DropDown
+            itemsList={yearsArray}
+            defaultValue={selectedProduct?.year}
+            onChangeFn={(e) => handleInputChange(e, "year")}
+          />
         </View>
+        <View style={{ flexBasis: "40%" }}>
+          <DropDown
+            itemsList={monthsArray}
+            defaultValue={selectedProduct?.month}
+            onChangeFn={(e) => handleInputChange(e, "month")}
+          />
+        </View>
+      </View>
         <View
           style={{
             justifyContent: "space-around",
             width: "100%",
             marginTop: 30,
           }}
-        >
-
-          </View>
-
-        {/* <View
-          style={{
-            width: "100%",
-            marginTop: 20,
-            alignItems: "flex-start",
-            zIndex: 11,
-          }}
-        >
-          {categoryList && (
-            <View style={{ alignItems: "flex-start" }}>
-              <DropDown
-                itemsList={categoryList}
-                defaultValue={selectedCategoryId}
-                onChangeFn={(e) => handleInputChange(e, "categoryId")}
-              />
-              {!selectedProduct?.categoryId && (
-                <Text style={{ color: themeStyle.ERROR_COLOR }}>
-                  {t("invalid-categoryId")}
-                </Text>
-              )}
-            </View>
-          )}
-        </View> */}
-
-
-        
-   
-{/* 
-        <View
-          style={{
-            width: "100%",
-            marginTop: 40,
-            alignItems: "center",
-            flexDirection: "row",
-          }}
-        >
-          <Text style={{ fontSize: 20, marginRight: 10 }}>
-            {t("is-inStore")}
-          </Text>
-          <CheckBox
-            onChange={(e) => handleInputChange(e, "isInStore")}
-            value={selectedProduct?.isInStore}
-          />
-        </View> */}
-
-   
-
-
-
-          
+        ></View>
 
         <View style={{ width: "100%", paddingHorizontal: 50, marginTop: 25 }}>
           <Button
-            text={t("حفظ")}
+            text={t("שלח דוח")}
             fontSize={20}
             onClickFn={handlAddClick}
             isLoading={isLoading}
-            bgColor={themeStyle.SUCCESS_COLOR}
+            disabled={isLoading}
           />
         </View>
       </View>
@@ -214,7 +165,7 @@ const AddCourseScreen = ({ route }) => {
   );
 };
 
-export default observer(AddCourseScreen);
+export default observer(EmployeReportScreen);
 
 const styles = StyleSheet.create({
   container: {

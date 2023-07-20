@@ -130,11 +130,12 @@ const AddLectureScreen = ({ onClose, onSave }) => {
 
         <View style={{ width: "100%", paddingHorizontal: 50, marginTop: 25 }}>
           <Button
-            text={t("اضف")}
+            text={t("حفظ")}
             fontSize={20}
             onClickFn={handlAddClick}
             isLoading={isLoading}
             disabled={isLoading}
+            bgColor={themeStyle.SUCCESS_COLOR}
           />
         </View>
       </View>

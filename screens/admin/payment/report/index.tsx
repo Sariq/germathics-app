@@ -92,8 +92,8 @@ const PaymentReportScreen = ({ route }) => {
 
 
   const startYear = 2023;
-  const currentYear = new Date().getFullYear();
-  const numberOfYears = 3 + currentYear - startYear; // Change this value to determine the number of years to include
+  const currentYear = new Date().getFullYear() + 1;
+  const numberOfYears = currentYear - startYear; // Change this value to determine the number of years to include
   const yearsArray = Array.from({ length: numberOfYears }, (_, index) => {
     const year = startYear + index;
     return { label: year, value: year };

@@ -226,7 +226,7 @@ const CoursesListScreen = ({ route }) => {
                       style={{ fontSize: 20, color: themeStyle.WHITE_COLOR }}
                     >
                       {" "}
-                      {course.lectures.length}{" "}
+                      {course.lectures?.length}{" "}
                     </Text>
                   </View>
                 </View>

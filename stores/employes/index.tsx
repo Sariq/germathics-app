@@ -168,10 +168,10 @@ class EmployesStore {
     });
   };
   
-  sendPaymentReportFromServer = async (data: any) => {
+  sendEmployeReportFromServer = async (data: any) => {
     return axiosInstance
       .post(
-        `${EMPLOYES_API.SEND_PAYMENT_REPORT}`,
+        `${EMPLOYES_API.SEND_EMPLOYE_REPORT}`,
         data
       )
       .then(function (response) {
@@ -182,8 +182,8 @@ class EmployesStore {
       });
   };
 
-  sendPaymentReport = (data: any) => {
-    return this.sendPaymentReportFromServer(data).then((res: any) => {
+  sendEmployeReport = (data: any) => {
+    return this.sendEmployeReportFromServer(data).then((res: any) => {
       // runInAction(() => {
       //   this.employesList = res;
       // });

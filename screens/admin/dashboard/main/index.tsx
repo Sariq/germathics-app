@@ -56,22 +56,22 @@ const DashboardScreen = () => {
         },
         {
           title: "اضف مرشد",
-          icon: "user-plus",
+          icon: "add-employe",
           key: "add-employe",
         },
         {
           title: "قائمة المرشدين",
-          icon: "users",
+          icon: "employe-list",
           key: "employes-list",
         },
         {
           title: "דוח תשלומים",
-          icon: "user-plus",
+          icon: "payment-report",
           key: "payment-report",
         },
         {
           title: "דוח עובדים",
-          icon: "users",
+          icon: "employe-report",
           key: "employe-reports",
         },
         {
@@ -134,6 +134,9 @@ const DashboardScreen = () => {
       case "payment-report":
         navigation.navigate("admin-payment-report");
         break;
+      case "employe-reports":
+        navigation.navigate("admin-employe-report");
+        break;
       case "openTerms":
         navigation.navigate("terms-and-conditions");
         break;
@@ -165,7 +168,7 @@ const DashboardScreen = () => {
 
   const renderItems = () => {
     return itemsList.map((item, index) => (
-      <View style={{padding: 30, marginVertical:10, marginHorizontal:5, borderRadius:20, backgroundColor:"#001A5f"}}>
+      <View style={{padding: 30, marginVertical:10, marginHorizontal:5, borderRadius:20, backgroundColor:"#001A5f", width:"45%"}}>
            {/* <LinearGradient
           colors={[
             "rgba(207, 207, 207, 0.6)",

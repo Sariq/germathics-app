@@ -381,11 +381,12 @@ const AddStudentScreen = ({ route }) => {
 
         <View style={{ width: "100%", paddingHorizontal: 50, marginTop: 25 }}>
           <Button
-            text={t("approve")}
+            text={t("حفظ")}
             fontSize={20}
             onClickFn={handlAddClick}
             isLoading={isLoading}
             disabled={isLoading || !isValidForm()}
+            bgColor={themeStyle.SUCCESS_COLOR}
           />
         </View>
       </View>

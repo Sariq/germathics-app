@@ -284,7 +284,7 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null, student = nu
                     <View style={{}}>
                       <DropDown
                         itemsList={PaymentMethods}
-                        defaultValue={paymentRow?.paymentMethod}
+                        defaultValue={paymentRow?.paymentMethod || ""}
                         onChangeFn={(e) =>
                           handlePaymentInputChange(e, "paymentMethod", index)
                         }
@@ -316,21 +316,25 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null, student = nu
                   )} */}
                   </View>
                 </View>
-                <View style={{alignItems:"center"}}>
+                <View style={{alignItems:"center", marginTop:10}}>
                   {paymentRow?.signature && <Image
                     style={styles.signutareImage}
                     source={{ uri: paymentRow?.signature }}
                   />}
-                  <TouchableOpacity
+                  <View style={{flexDirection:"row", alignItems:"center", marginTop:10}}>
+                  <TouchableOpacity style={{}}
                     onPress={() => onSignatureOpen(index, "signature")}
                   >
-                    <Text>חתימה</Text>
+                    <Text style={{fontSize:18}}>חתימה</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity
+                  <Text style={{top:-2}}> | </Text>
+                  <TouchableOpacity style={{}}
                     onPress={() => onRecipetPrint(index, "signature")}
                   >
-                    <Text>הדפס</Text>
+                    <Text style={{fontSize:18}}>הדפס</Text>
                   </TouchableOpacity>
+                  </View>
+       
                 </View>
               </View>
             );
@@ -353,6 +357,7 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null, student = nu
             onClickFn={handlAddClick}
             isLoading={isLoading}
             disabled={isLoading || !isValidForm()}
+            bgColor={themeStyle.SUCCESS_COLOR}
           />
         </View>
       </View>
