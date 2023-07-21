@@ -15,7 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import { cdnUrl, PaymentMethods } from "../../../../consts/shared";
 import CheckBox from "../../../../components/controls/checkbox";
 import BackButton from "../../../../components/back-button";
-import { v4 as uuidv4 } from "uuid";
+import { uuidv4 } from "../../../../utils/shared";
 import SignuaterScreen from "../../../../components/signature";
 /// package 0 = default, 1 = active, 2 = done
 
@@ -62,7 +62,6 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null, student = nu
     }
 
     if (studentPackage) {
-      console.log("studentPackage", studentPackage);
       setIdEditMode(true);
       const tmpPackage = {
         ...studentPackage,
@@ -76,7 +75,6 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null, student = nu
   }, [coursesStore.coursesList]);
 
   const handleInputChange = (value: any, name: string) => {
-    console.log(value, name);
     if (name == "lecturesCount") {
       const seats = selectedProduct.seats || [];
       const startIndex = seats.length;
@@ -147,29 +145,18 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null, student = nu
     }
   };
 
-  const savePayment = () => {
-    console.log("xx", selectedProduct);
-  };
-
-  useEffect(() => {
-    // getMenu();
-  }, []);
-
   const onSignatureClose = () => {
     setShowSignature(false);
   };
   const onSignatureOpen = (index, key) => {
-    console.log("xx");
     setSelectedSignatrueData({ index, data: selectedProduct?.paymentsList[index] });
     setShowSignature(true);
   };
   const onRecipetPrint = (index) => {
     setSelectedSignatrueData({ index, data: selectedProduct?.paymentsList[index] });
     studentsStore.printRecipet({...selectedProduct?.paymentsList[index], ...student})
-    console.log("selectedProduct?.paymentsList[index]",selectedProduct?.paymentsList[index])
   };
   const onSaveSignature = (val) => {
-    console.log("xx", selectedSignatrueData);
     handlePaymentInputChange(val, "signature", selectedSignatrueData.index);
     setShowSignature(false);
   };
@@ -386,8 +373,9 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   signutareImage: {
-    height: 80,
-    width: 80,
+    height: 60,
+    width: 60,
     alignSelf: "center",
+    backgroundColor:themeStyle.WHITE_COLOR
   },
 });

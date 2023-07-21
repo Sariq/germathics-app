@@ -27,14 +27,10 @@ const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
   }, []);
 
   const handleSeatClick = (seat) => {
-    console.log(seat);
     setSelectedSeat(seat);
     setShowSeatsOptionsDialog(true)
   };
   const handleSeatOptionAnswer = (value) => {
-    console.log(value);
-    // const tmpSelectedSeat = {...selectedSeat, status: value};
-    // setSelectedSeat(tmpSelectedSeat)
     const tmpSeatsList = seatsList.map((seat)=>{
         if(seat.id == selectedSeat.id){
             return {
@@ -63,7 +59,6 @@ const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
     }
   };
 
-  console.log("seats", seats);
   if (!seatsList) {
     return;
   }
@@ -78,9 +73,7 @@ const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
           flexDirection: "row",
           flexWrap: "wrap",
           justifyContent: "flex-start",
-          backgroundColor: themeStyle.PRIMARY_COLOR,
           height: "100%",
-          marginTop:-20
         }}
       >
         {seatsList.map((seat) => {

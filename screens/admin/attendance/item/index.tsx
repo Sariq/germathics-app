@@ -26,7 +26,6 @@ const AttendanceItemScreen = ({ onClose, onSave, packageItem }) => {
   }, []);
 
   const handleSeatClick = (seat) => {
-    console.log(seat);
   };
 
   const getStatusIcon = (status) => {
@@ -59,7 +58,6 @@ const AttendanceItemScreen = ({ onClose, onSave, packageItem }) => {
     onSave(tmpPackage)
   }
 
-  console.log("packageItem", packageItem);
   if (!packageData) {
     return;
   }

@@ -64,22 +64,8 @@ const EmployesListScreen = ({
   };
 
   useEffect(() => {
-    // console.log("product?.extras.size.options", product?.extras.size.options);
-    // if (product) {
-    //   setIdEditMode(true);
-    //   setSelectedCategoryId(product.categoryId);
-    //   setSelectedSubCategoryId(product.subCategoryId);
-    //   let tmpProduct = {
-    //     ...product,
-    //     mediumPrice: product?.extras.size.options["medium"].price,
-    //     mediumCount: product?.extras.size.options["medium"].count,
-    //     largePrice: product?.extras.size.options["large"].price,
-    //     largeCount: product?.extras.size.options["large"].count,
-    //   };
-    //   setSelectedProduct(tmpProduct);
-    // } else {
+
     setSelectedProduct(initNewProduct());
-    // }
   }, []);
 
   const handleSearchInputChange = (value: any) => {
@@ -118,14 +104,8 @@ const EmployesListScreen = ({
   };
 
   useEffect(() => {
-    console.log("ids", ids);
-
     employesStore.getEmployes(ids);
   }, []);
-
-  useEffect(() => {
-    console.log("employesStore.employesList", employesStore.employesList);
-  }, [employesStore.employesList]);
 
   const handleStudentClick = (student) => {
       navigation.navigate("admin-employes-item", { student });
@@ -141,7 +121,6 @@ const EmployesListScreen = ({
     const student = lectureStudentsList.find(
       (student) => student.studentId === id
     );
-    console.log("studentstudentstudent", student);
     return student?.isAppeard;
   };
 
@@ -167,10 +146,6 @@ const EmployesListScreen = ({
   };
 
   const getPaidDeltaColor = (student) => {
-    console.log(
-      student.name,
-      student.apperanceCount - student.totalLecturesPaid
-    );
     if (student.status === "paid") {
       const delta = student.apperanceCount - student.totalLecturesPaid;
       let color = null;
@@ -192,15 +167,11 @@ const EmployesListScreen = ({
     let currentSeatStatus = null;
     student.packagesList.forEach((currentPackage) => {
       currentPackage.seats.forEach((seat) => {
-        console.log("XXXX", seat.lectureId);
-
         if (seat.lectureId == lectureData.id) {
           currentSeatStatus = seat.status;
         }
       });
     });
-    console.log("XXXX", currentSeatStatus);
-
     return currentSeatStatus;
   };
 

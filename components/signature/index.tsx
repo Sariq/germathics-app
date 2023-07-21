@@ -8,62 +8,48 @@ import {
   View,
   StyleSheet,
 } from "react-native";
-import { SignatureView } from "react-native-signature-capture-view";
+// import { SignatureView } from "react-native-signature-capture-view";
+import Signature from "react-native-signature-canvas";
+
 import BackButton from "../back-button";
 import themeStyle from "../../styles/theme.style";
 
 const SignuaterScreen = ({ onClose, signatureData, onSave }) => {
-  const signatureRef = useRef(null);
-  const [text, setText] = useState("");
-  console.log("signatureData", signatureData);
+  const [signature, setSign] = useState(null);
+
+  const handleOK = (signature) => {
+    setSign(signature);
+    onSave(signature);
+
+  };
+
+  const handleEmpty = () => {
+    setSign(null);
+
+  };
+  
+  const style = `.m-signature-pad--footer
+  .button {
+    background-color: red;
+    color: #FFF;
+  }`;
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <BackButton isClose={true} onClick={onClose} />
       <View style={{ marginVertical: 15, alignItems:"center" }}>
         <Text style={{fontSize:25}}>المبلغ</Text>
         <Text style={{fontSize:20, marginTop:5}}>{signatureData.data.amount}</Text>
       </View>
-      <SignatureView
-        style={{
-          borderWidth: 2,
-          height: 200,
-        }}
-        ref={signatureRef}
-        // onSave is automatically called whenever signature-pad onEnd is called and saveSignature is called
-        onSave={(val) => {
-          //  a base64 encoded image
-          console.log("saved signature");
-          console.log(val);
-          setText(val);
-        }}
-        onClear={() => {
-          console.log("cleared signature");
-          setText("");
-        }}
+      <Signature
+        onOK={handleOK}
+        onEmpty={handleEmpty}
+        descriptionText="Sign"
+        clearText="Clear"
+        confirmText="Save"
+        webStyle={style}
+        style={{height:"100%"}}
       />
-      <View
-        style={{ flexDirection: "row", justifyContent: "center", height: 50 }}
-      >
-        <TouchableOpacity
-          style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
-          onPress={() => {
-            signatureRef.current.clearSignature();
-          }}
-        >
-          <Text>Clear</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
-          onPress={() => {
-            signatureRef.current.saveSignature();
-            onSave(text);
-          }}
-        >
-          <Text>Save</Text>
-        </TouchableOpacity>
-      </View>
-  
-    </ScrollView>
+    </View>
   );
 };
 

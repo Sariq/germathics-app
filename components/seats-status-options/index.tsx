@@ -36,10 +36,8 @@ const SeatsStatusOptionsScreen = ({ value, onSave }) => {
   }, []);
 
   const handleSeatOptionClick = (seatOption) => {
-    console.log(seatOption);
     onSave(seatOption.value)
   };
-  console.log("baa",value)
 
   const getStatusIcon = (status) => {
     switch (status) {

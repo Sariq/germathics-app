@@ -70,13 +70,9 @@ const EpmloyeItemScreen = ({ route }: any) => {
   },[])
 
   const onSaveAttendace = (data) => {
-    console.log("data",data)
-    console.log("student",student)
     setIsShowAddAttendance(false);
     setIsLoading(true);
-
     const foundAttendance = student.attendanceList.find((attendance)=> attendance.id === data.id);
-    console.log("foundAttendance",foundAttendance)
     let tmpAttendanceList = [];
     if(foundAttendance?.length > 0){
       tmpAttendanceList = student.attendanceList.map((attendance)=>{
@@ -90,8 +86,6 @@ const EpmloyeItemScreen = ({ route }: any) => {
       tmpAttendanceList.push(data);
     }
  
-    console.log("tmpAttendanceList",tmpAttendanceList)
-
     const tempStudent = {
       ...student,
       attendanceList: tmpAttendanceList

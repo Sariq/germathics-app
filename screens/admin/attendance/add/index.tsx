@@ -15,7 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import { cdnUrl, PaymentMethods } from "../../../../consts/shared";
 import CheckBox from "../../../../components/controls/checkbox";
 import BackButton from "../../../../components/back-button";
-import { v4 as uuidv4 } from "uuid";
+import { uuidv4 } from "../../../../utils/shared";
 import SignuaterScreen from "../../../../components/signature";
 /// package 0 = default, 1 = active, 2 = done
 
@@ -73,7 +73,6 @@ const AddAttendanceScreen = ({
     }
 
     if (attendanceData) {
-      console.log("attendanceData", attendanceData);
       setIdEditMode(true);
 
       setSelectedProduct(attendanceData);
@@ -85,8 +84,6 @@ const AddAttendanceScreen = ({
   }, [coursesStore.coursesList]);
 
   const handleInputChange = (value: any, name: string) => {
-    console.log(value, name);
-    
     if (name == "day" || name == "month" || name == "year") {
       let date = selectedProduct.attendanceDate;
        
@@ -162,7 +159,6 @@ const AddAttendanceScreen = ({
   };
 
   const savePayment = () => {
-    console.log("xx", selectedProduct);
   };
 
   useEffect(() => {
@@ -173,7 +169,6 @@ const AddAttendanceScreen = ({
     setShowSignature(false);
   };
   const onSignatureOpen = (index, key) => {
-    console.log("xx");
     setSelectedSignatrueData({
       index,
       data: selectedProduct?.paymentsList[index],
@@ -195,7 +190,6 @@ const AddAttendanceScreen = ({
     );
   };
   const onSaveSignature = (val) => {
-    console.log("xx", selectedSignatrueData);
     handlePaymentInputChange(val, "signature", selectedSignatrueData.index);
     setShowSignature(false);
   };

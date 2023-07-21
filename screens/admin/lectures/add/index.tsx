@@ -16,7 +16,7 @@ import { cdnUrl } from "../../../../consts/shared";
 import CheckBox from "../../../../components/controls/checkbox";
 import BackButton from "../../../../components/back-button";
 import moment from "moment";
-import { v4 as uuidv4 } from 'uuid';
+import { uuidv4 } from "../../../../utils/shared";
 
 
 export type TProduct = {

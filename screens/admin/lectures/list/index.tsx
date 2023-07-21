@@ -56,22 +56,7 @@ const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) =>
   };
 
   useEffect(() => {
-    // console.log("product?.extras.size.options", product?.extras.size.options);
-    // if (product) {
-    //   setIdEditMode(true);
-    //   setSelectedCategoryId(product.categoryId);
-    //   setSelectedSubCategoryId(product.subCategoryId);
-    //   let tmpProduct = {
-    //     ...product,
-    //     mediumPrice: product?.extras.size.options["medium"].price,
-    //     mediumCount: product?.extras.size.options["medium"].count,
-    //     largePrice: product?.extras.size.options["large"].price,
-    //     largeCount: product?.extras.size.options["large"].count,
-    //   };
-    //   setSelectedProduct(tmpProduct);
-    // } else {
     setSelectedProduct(initNewProduct());
-    // }
   }, []);
 
   const handleInputChange = (value: any, name: string) => {
@@ -113,11 +98,6 @@ const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) =>
     setSelctedCourseStudentsList(undefined);
   };
 
-  useEffect(() => {
-    console.log("ids", lectures);
-
-    //studentsStore.getStudents(lectures.studentsLis.map((student)=> student.id));
-  }, []);
 
   // const onApperanceChange = (isAppeard, studentId) => {
   //   coursesStore.updateStudentAppearance({

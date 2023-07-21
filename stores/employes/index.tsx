@@ -30,7 +30,6 @@ class EmployesStore {
   getEmployes = (ids?: any) => {
     return this.getEmployesFromServer(ids).then((res: any) => {
       runInAction(() => {
-        console.log("RRRRRRESSS", res);
         this.employesList = res;
       });
       return res;
@@ -126,7 +125,6 @@ class EmployesStore {
         data
       )
       .then(function (response) {
-        console.log("RRRRRWW", response)
         return response;
       })
       .catch((error) => {

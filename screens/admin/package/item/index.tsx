@@ -21,13 +21,9 @@ const PackageItemScreen = ({ onClose, onSave, packageItem }) => {
   const [packageData, setPackageData] = useState();
 
   useEffect(() => {
-    // getMenu();
     setPackageData(packageItem);
   }, []);
 
-  const handleSeatClick = (seat) => {
-    console.log(seat);
-  };
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -59,7 +55,6 @@ const PackageItemScreen = ({ onClose, onSave, packageItem }) => {
     onSave(tmpPackage)
   }
 
-  console.log("packageItem", packageItem);
   if (!packageData) {
     return;
   }

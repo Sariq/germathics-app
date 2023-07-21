@@ -52,22 +52,7 @@ const CoursesListScreen = ({ route }) => {
   };
 
   useEffect(() => {
-    // console.log("product?.extras.size.options", product?.extras.size.options);
-    // if (product) {
-    //   setIdEditMode(true);
-    //   setSelectedCategoryId(product.categoryId);
-    //   setSelectedSubCategoryId(product.subCategoryId);
-    //   let tmpProduct = {
-    //     ...product,
-    //     mediumPrice: product?.extras.size.options["medium"].price,
-    //     mediumCount: product?.extras.size.options["medium"].count,
-    //     largePrice: product?.extras.size.options["large"].price,
-    //     largeCount: product?.extras.size.options["large"].count,
-    //   };
-    //   setSelectedProduct(tmpProduct);
-    // } else {
     setSelectedProduct(initNewProduct());
-    // }
   }, []);
 
   const handleInputChange = (value: any, name: string) => {
@@ -95,7 +80,6 @@ const CoursesListScreen = ({ route }) => {
 
   const handleOpenStudents = (studentsIds: any, course: any) => {
     setSelctedCourse(course);
-    console.log("LLLL", studentsIds);
     setSelctedCourseStudentsList(studentsIds);
   };
   const onStudentsListClose = (studentsIds: any, course: any) => {
@@ -114,27 +98,21 @@ const CoursesListScreen = ({ route }) => {
   const onSaveLecture = (lecturesList: any) => {
     const tmpCourse = { ...selctedCourse };
     tmpCourse.lectures = lecturesList;
-    console.log("tmpCourse", tmpCourse);
     menuStore.addOrUpdateProduct(tmpCourse, true).then((res: any) => {
       menuStore.getMenu();
       setIsLoading(false);
-      //navigateToMenu();
     });
-
-    console.log("newlecturesssss", lecturesList);
   };
 
   useEffect(() => {
     coursesStore.getCourses();
   }, []);
 
-  console.log();
   if (!coursesStore.coursesList) {
     return;
   }
 
   if (selctedCourseStudentsList) {
-    console.log(selctedCourseStudentsList.length);
     return (
       <StudentsListScreen
         title={selctedCourse.name}

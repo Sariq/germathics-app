@@ -98,7 +98,6 @@ const printOrder = async (order, status) => {
       .newline(3)
       .cut();
 
-    console.log("Success:", status);
     return status;
 
   } catch (e) {

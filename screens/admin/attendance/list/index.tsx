@@ -76,7 +76,6 @@ const AttendanceListScreen = ({
   };
 
   const onEditClick = (student) => {
-    console.log("SSSSattendance", student)
     setSelectedAttendance(student);
     setIsShowAddAttendance(true);
   };

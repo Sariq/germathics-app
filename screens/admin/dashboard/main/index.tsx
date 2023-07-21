@@ -84,7 +84,6 @@ const DashboardScreen = () => {
   }, []);
 
   const actionHandler = (key: string) => {
-    console.log("key",key)
     switch (key) {
       // case "phone":
       //   navigation.navigate("insert-customer-name");

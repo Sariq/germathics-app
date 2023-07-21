@@ -64,22 +64,8 @@ const StudentsListScreen = ({
   };
 
   useEffect(() => {
-    // console.log("product?.extras.size.options", product?.extras.size.options);
-    // if (product) {
-    //   setIdEditMode(true);
-    //   setSelectedCategoryId(product.categoryId);
-    //   setSelectedSubCategoryId(product.subCategoryId);
-    //   let tmpProduct = {
-    //     ...product,
-    //     mediumPrice: product?.extras.size.options["medium"].price,
-    //     mediumCount: product?.extras.size.options["medium"].count,
-    //     largePrice: product?.extras.size.options["large"].price,
-    //     largeCount: product?.extras.size.options["large"].count,
-    //   };
-    //   setSelectedProduct(tmpProduct);
-    // } else {
+
     setSelectedProduct(initNewProduct());
-    // }
   }, []);
 
   const handleSearchInputChange = (value: any) => {
@@ -118,14 +104,8 @@ const StudentsListScreen = ({
   };
 
   useEffect(() => {
-    console.log("ids", ids);
-
     studentsStore.getStudents(ids);
   }, []);
-
-  useEffect(() => {
-    console.log("studentsStore.studentsList", studentsStore.studentsList);
-  }, [studentsStore.studentsList]);
 
   const handleStudentClick = (student) => {
     if (!isLecture) {
@@ -137,14 +117,6 @@ const StudentsListScreen = ({
     if (!isLecture) {
       navigation.navigate("admin-add-student", { student });
     }
-  };
-
-  const getIsAppearedByStudentId = (id: any) => {
-    const student = lectureStudentsList.find(
-      (student) => student.studentId === id
-    );
-    console.log("studentstudentstudent", student);
-    return student?.isAppeard;
   };
 
   const filterList = (studentsList) => {
@@ -169,10 +141,6 @@ const StudentsListScreen = ({
   };
 
   const getPaidDeltaColor = (student) => {
-    console.log(
-      student.name,
-      student.apperanceCount - student.totalLecturesPaid
-    );
     if (student.status === "paid") {
       const delta = student.apperanceCount - student.totalLecturesPaid;
       let color = null;
@@ -194,15 +162,11 @@ const StudentsListScreen = ({
     let currentSeatStatus = null;
     student.packagesList.forEach((currentPackage) => {
       currentPackage.seats.forEach((seat) => {
-        console.log("XXXX", seat.lectureId);
-
         if (seat.lectureId == lectureData.id) {
           currentSeatStatus = seat.status;
         }
       });
     });
-    console.log("XXXX", currentSeatStatus);
-
     return currentSeatStatus;
   };
 

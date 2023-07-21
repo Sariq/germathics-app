@@ -32,7 +32,6 @@ async function cacheImage(uri, cacheUri, callback) {
       path: downloaded.uri,
     };
   } catch (error) {
-    console.log("dddd", error)
 
     return {
       cached: false,
@@ -60,7 +59,6 @@ const CustomFastImage = (props) => {
       const cacheFileUri = `${FileSystem.cacheDirectory}${cacheKey}`;
       let imgXistsInCache = await findImageInCache(cacheFileUri);
       if (imgXistsInCache.exists) {
-        console.log("CACCC")
         setUri(cacheFileUri);
       } else {
         let cached = await cacheImage(uri, cacheFileUri, () => {});

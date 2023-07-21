@@ -30,7 +30,6 @@ class StudentsStore {
   getStudents = (ids?: any) => {
     return this.getStudentsFromServer(ids).then((res: any) => {
       runInAction(() => {
-        console.log("RRRRRRESSS", res);
         this.studentsList = res;
       });
       return res;
@@ -126,7 +125,6 @@ class StudentsStore {
         data
       )
       .then(function (response) {
-        console.log("RRRRRWW", response)
         return response;
       })
       .catch((error) => {

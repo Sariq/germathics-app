@@ -17,7 +17,7 @@ import CheckBox from "../../../../components/controls/checkbox";
 import BackButton from "../../../../components/back-button";
 import AddPackageScreen from "../../package/add";
 import PackagesListScreen from "../../package/list";
-import { v4 as uuidv4 } from "uuid";
+import { uuidv4 } from "../../../../utils/shared";
 
 export type TProduct = {
   id?: string;
@@ -69,7 +69,6 @@ const AddStudentScreen = ({ route }) => {
       // if (categoryId && cours.categoryId === categoryId) {
       //   setSelectedCategoryId(index);
       // }
-      console.log(course.name);
       return {
         label: course.name,
         value: course._id,
@@ -102,6 +101,43 @@ const AddStudentScreen = ({ route }) => {
     setSelectedProduct({ ...selectedProduct, [name]: value });
   };
 
+  const getNewPackage = () => {
+    const newPackage = {
+      createdDate: new Date(),
+      id: uuidv4(),
+      status: 0,
+      lecturesCount: 5,
+      seats: [
+        {
+          status: 0,
+          lectureDate: null,
+          id: uuidv4(),
+        },
+        {
+          status: 0,
+          lectureDate: null,
+          id: uuidv4(),
+        },
+        {
+          status: 0,
+          lectureDate: null,
+          id: uuidv4(),
+        },
+        {
+          status: 0,
+          lectureDate: null,
+          id: uuidv4(),
+        },
+        {
+          status: 0,
+          lectureDate: null,
+          id: uuidv4(),
+        },
+      ],
+    }
+    return newPackage;
+  }
+
   const handlAddClick = () => {
     if (selectedProduct) {
       setIsLoading(true);
@@ -111,41 +147,7 @@ const AddStudentScreen = ({ route }) => {
       if (!isEditMode) {
         updatedData = {
           ...selectedProduct,
-          packagesList: [
-            {
-              createdDate: new Date(),
-              id: uuidv4(),
-              status: 0,
-              lecturesCount: 5,
-              seats: [
-                {
-                  status: 0,
-                  lectureDate: null,
-                  id: uuidv4(),
-                },
-                {
-                  status: 0,
-                  lectureDate: null,
-                  id: uuidv4(),
-                },
-                {
-                  status: 0,
-                  lectureDate: null,
-                  id: uuidv4(),
-                },
-                {
-                  status: 0,
-                  lectureDate: null,
-                  id: uuidv4(),
-                },
-                {
-                  status: 0,
-                  lectureDate: null,
-                  id: uuidv4(),
-                },
-              ],
-            },
-          ],
+          packagesList: [getNewPackage()],
         };
       } else {
         updatedData = { ...selectedProduct };
@@ -184,23 +186,38 @@ const AddStudentScreen = ({ route }) => {
     setIsShowPackagesList(true);
   };
 
-  const onSavePacakge = (newPackage: any) => {
-    console.log("newPackage", newPackage);
+  const getPackageStatus = (packageData) => {
+    const emptySeats = packageData.seats.filter((seat) => seat.status === 0);
+    if (emptySeats.length === 0) {
+      return 2;
+    } else {
+      return 1;
+    }
+  };
 
+  const onSavePacakge = (newPackage: any) => {
+    let isAddNewPackge = false;
     setIsAddPacakge(false);
     const foundedPackage = selectedProduct.packagesList.find(
       (pacakge) => pacakge.id === newPackage.id
     );
     if (foundedPackage) {
-      const updatedPackagesList = selectedProduct.packagesList.map(
+      let updatedPackagesList = selectedProduct.packagesList.map(
         (pacakge) => {
           if (pacakge.id === newPackage.id) {
-            return newPackage;
+            const packageStatus = getPackageStatus(newPackage)
+            if (packageStatus === 2) {
+              isAddNewPackge = true;
+            }
+            return {...newPackage, status: packageStatus};
           } else {
             return pacakge;
           }
         }
       );
+      if(isAddNewPackge){
+        updatedPackagesList.push(getNewPackage())
+      }
       setSelectedProduct({
         ...selectedProduct,
         packagesList: updatedPackagesList,
@@ -225,7 +242,6 @@ const AddStudentScreen = ({ route }) => {
     );
   }
 
-  console.log("selectedProduct.packagesList", student);
   if (isShowPackagesList) {
     return (
       <PackagesListScreen
