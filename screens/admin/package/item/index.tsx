@@ -58,7 +58,8 @@ const PackageItemScreen = ({ onClose, onSave, packageItem }) => {
   if (!packageData) {
     return;
   }
-
+  
+  console.log("packageItemsxxx",packageItem)
   return (
     <ScrollView style={styles.container}>
       <BackButton isClose={true} onClick={onClose} />

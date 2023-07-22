@@ -41,7 +41,7 @@ const AddStudentScreen = ({ route }) => {
   const [isEditMode, setIdEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [selectedProduct, setSelectedProduct] = useState<TProduct>();
+  const [selectedProduct, setSelectedProduct] = useState();
   const [coursesList, setCoursesList] = useState<TProduct>();
   const [isAddPacakge, setIsAddPacakge] = useState(false);
   const [isShowPackagesList, setIsShowPackagesList] = useState(false);
@@ -200,6 +200,13 @@ const AddStudentScreen = ({ route }) => {
     }
   };
 
+  const checkIsPayDelay = (currentPackageList) => {
+    let isPayDelay = false;
+    const packegsL = currentPackageList.filter((pack)=>pack.isPayDelay);
+      isPayDelay = packegsL.length > 0;
+    return isPayDelay;
+  }
+
   const onSavePacakge = (newPackage: any) => {
     let isAddNewPackge = false;
     setIsAddPacakge(false);
@@ -223,19 +230,25 @@ const AddStudentScreen = ({ route }) => {
       if(isAddNewPackge){
         updatedPackagesList.push(getNewPackage())
       }
+      const isPayDelay = checkIsPayDelay(updatedPackagesList)
       setSelectedProduct({
         ...selectedProduct,
         packagesList: updatedPackagesList,
+        isPayDelay
       });
       studentsStore.addStudents({
         ...selectedProduct,
         packagesList: updatedPackagesList,
+        isPayDelay
       }, isEditMode)
     } else {
       selectedProduct.packagesList.push(newPackage);
-      setSelectedProduct({ ...selectedProduct });
+      const isPayDelay = checkIsPayDelay(selectedProduct.packagesList)
+
+      setSelectedProduct({ ...selectedProduct, isPayDelay });
       studentsStore.addStudents({
         ...selectedProduct,
+        isPayDelay
       }, isEditMode)
     }
     console.log("newPackage",newPackage)

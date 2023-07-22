@@ -106,11 +106,27 @@ const PackagesListScreen = ({
     setIsShowPackge(false);
   };
 
+  const checkIsPayDelay = (currentPackage) => {
+    let isPayDelay = currentPackage.isPayDelay ||  false;
+    const isPaidLessPackagePrice = Number(currentPackage.price) - Number(currentPackage.totalPaid) > 0;
+    const usedSeats = currentPackage.seats.filter((seat)=>seat.status != 0);
+    console.log("usedSeats",usedSeats)
+      isPayDelay = usedSeats.length >= 3 && isPaidLessPackagePrice;
+    return isPayDelay;
+  }
 
 
   const onSavePacakge = (newPackage) =>{
-    onSave(newPackage)
+    let tmpAppearanceCount = 0;
+    newPackage.seats.forEach(seat => {
+      if(seat.status != 0){
+        tmpAppearanceCount = tmpAppearanceCount + 1;
+      }
+    });
+    const isPayDelay = checkIsPayDelay(newPackage);
+    onSave({...newPackage, appearanceCount: tmpAppearanceCount, isPayDelay})
     onCloseAddPackage();
+    onClosePackgeItem();
     //  onClose();
   }
   if (!pacakgesList) {
@@ -122,6 +138,8 @@ const PackagesListScreen = ({
   //     <SeatsScreen onClose={onCloseSeats} onSave={onSavePacakge} seats={selectedSeats}/>
   //   )
   // }
+
+  console.log("selectedStudentPackage",selectedStudentPackage)
 
   if(isShowPackage){
     return(

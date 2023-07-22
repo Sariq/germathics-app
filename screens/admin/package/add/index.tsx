@@ -52,6 +52,7 @@ const AddPackageScreen = ({
       createdDate: new Date(),
       id: uuidv4(),
       status: 0,
+      totalPaid: 0
     };
   };
 
@@ -98,7 +99,11 @@ const AddPackageScreen = ({
   };
 
   const handlAddClick = () => {
-    onSave(selectedProduct);
+    let tmpTotalPaid = 0;
+     selectedProduct?.paymentsList.forEach((paymentRow)=>{
+      tmpTotalPaid = Number(tmpTotalPaid) + Number(paymentRow.amount)
+    })
+    onSave({...selectedProduct, totalPaid: tmpTotalPaid});
     // if (selectedProduct) {
     //   setIsLoading(true);
     //     studentsStore.addPackage(studentId, selectedProduct).then((res: any) => {

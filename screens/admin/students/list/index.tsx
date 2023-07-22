@@ -146,6 +146,8 @@ const StudentsListScreen = ({
     return null;
   };
 
+
+
   const getSeatValue = (student) => {
     let currentSeatStatus = null;
     student.packagesList.forEach((currentPackage) => {
@@ -233,7 +235,7 @@ const StudentsListScreen = ({
                   styles.cardContainer,
                   {
                     backgroundColor:
-                      getPaidDeltaColor(student) || themeStyle.STUDENT_COLOR,
+                    student.isPayDelay ? themeStyle.ORANGE_COLOR : themeStyle.STUDENT_COLOR,
                   },
                 ]}
               >
