@@ -28,7 +28,12 @@ export type TProduct = {
   seats: any[];
 };
 
-const AddPackageScreen = ({ onClose, onSave, studentPackage = null, student = null }) => {
+const AddPackageScreen = ({
+  onClose,
+  onSave,
+  studentPackage = null,
+  student = null,
+}) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
   const { menuStore, studentsStore, coursesStore } = useContext(StoreContext);
@@ -40,6 +45,7 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null, student = nu
   const [coursesList, setCoursesList] = useState<TProduct>();
   const [showSignature, setShowSignature] = useState(false);
   const [selectedSignatrueData, setSelectedSignatrueData] = useState();
+  const [activePaymentRow, setActivePaymentRow] = useState();
 
   const initNewProduct = () => {
     return {
@@ -149,16 +155,28 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null, student = nu
     setShowSignature(false);
   };
   const onSignatureOpen = (index, key) => {
-    setSelectedSignatrueData({ index, data: selectedProduct?.paymentsList[index] });
+    setSelectedSignatrueData({
+      index,
+      data: selectedProduct?.paymentsList[index],
+    });
     setShowSignature(true);
   };
   const onRecipetPrint = (index) => {
-    setSelectedSignatrueData({ index, data: selectedProduct?.paymentsList[index] });
-    studentsStore.printRecipet({...selectedProduct?.paymentsList[index], ...student})
+    setSelectedSignatrueData({
+      index,
+      data: selectedProduct?.paymentsList[index],
+    });
+    studentsStore.printRecipet({
+      ...selectedProduct?.paymentsList[index],
+      ...student,
+    });
   };
   const onSaveSignature = (val) => {
     handlePaymentInputChange(val, "signature", selectedSignatrueData.index);
     setShowSignature(false);
+  };
+  const handleActivePaymentRow = (row) => {
+    setActivePaymentRow(row);
   };
 
   if (showSignature) {
@@ -180,7 +198,7 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null, student = nu
       <BackButton isClose={true} onClick={onClose} />
 
       <View style={styles.inputsContainer}>
-        <Text style={{ fontSize: 30, marginTop:20 }}>{t("اضف باقه")}</Text>
+        <Text style={{ fontSize: 30, marginTop: 20 }}>{t("اضف باقه")}</Text>
 
         <View
           style={{
@@ -228,16 +246,20 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null, student = nu
             onClickFn={handlAddPayment}
           />
         </View>
-        <View style={{ marginTop: 20,zIndex:4 }}>
+        <View style={{ marginTop: 20, zIndex: 4 }}>
           {selectedProduct?.paymentsList?.map((paymentRow, index) => {
             return (
-              <View>
+              <View
+                style={{
+                  zIndex: activePaymentRow?.id === paymentRow.id ? 2 : 0,
+                }}
+              >
                 <View
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-around",
-                    zIndex: 2,
                     alignItems: "center",
+                    zIndex: activePaymentRow?.id === paymentRow.id ? 2 : 0,
                   }}
                 >
                   <View
@@ -265,7 +287,6 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null, student = nu
                     style={{
                       flexBasis: "32%",
                       marginHorizontal: 11,
-                    
                     }}
                   >
                     <View style={{}}>
@@ -275,6 +296,7 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null, student = nu
                         onChangeFn={(e) =>
                           handlePaymentInputChange(e, "paymentMethod", index)
                         }
+                        onHandleOpen={() => handleActivePaymentRow(paymentRow)}
                       />
                       {/* {!selectedProduct?.categoryId && (
                 <Text style={{ color: themeStyle.ERROR_COLOR }}>
@@ -303,25 +325,34 @@ const AddPackageScreen = ({ onClose, onSave, studentPackage = null, student = nu
                   )} */}
                   </View>
                 </View>
-                <View style={{alignItems:"center", marginTop:10}}>
-                  {paymentRow?.signature && <Image
-                    style={styles.signutareImage}
-                    source={{ uri: paymentRow?.signature }}
-                  />}
-                  <View style={{flexDirection:"row", alignItems:"center", marginTop:10}}>
-                  <TouchableOpacity style={{}}
-                    onPress={() => onSignatureOpen(index, "signature")}
+                <View style={{ alignItems: "center", marginTop: 10 }}>
+                  {paymentRow?.signature && (
+                    <Image
+                      style={styles.signutareImage}
+                      source={{ uri: paymentRow?.signature }}
+                    />
+                  )}
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      marginTop: 10,
+                    }}
                   >
-                    <Text style={{fontSize:18}}>חתימה</Text>
-                  </TouchableOpacity>
-                  <Text style={{top:-2}}> | </Text>
-                  <TouchableOpacity style={{}}
-                    onPress={() => onRecipetPrint(index, "signature")}
-                  >
-                    <Text style={{fontSize:18}}>הדפס</Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{}}
+                      onPress={() => onSignatureOpen(index, "signature")}
+                    >
+                      <Text style={{ fontSize: 18 }}>חתימה</Text>
+                    </TouchableOpacity>
+                    <Text style={{ top: -2 }}> | </Text>
+                    <TouchableOpacity
+                      style={{}}
+                      onPress={() => onRecipetPrint(index, "signature")}
+                    >
+                      <Text style={{ fontSize: 18 }}>הדפס</Text>
+                    </TouchableOpacity>
                   </View>
-       
                 </View>
               </View>
             );
@@ -376,6 +407,6 @@ const styles = StyleSheet.create({
     height: 60,
     width: 60,
     alignSelf: "center",
-    backgroundColor:themeStyle.WHITE_COLOR
+    backgroundColor: themeStyle.WHITE_COLOR,
   },
 });

@@ -117,7 +117,7 @@ const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) =>
       lectureId: selectedLecture.id,
       lectureDate: selectedLecture.createdDate
     }).then((res)=>{
-      studentsStore.getStudents();
+      studentsStore.getStudents(selctedCourseStudentsList);
     })
   };
 
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     borderRadius: 10,
-    backgroundColor: themeStyle.PRIMARY_COLOR,
+    backgroundColor: themeStyle.LECTURE_COLOR,
     alignItems:"center"
   },
   cardListContainer: {

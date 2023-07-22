@@ -223,7 +223,7 @@ const EmployesListScreen = ({
                 styles.cardContainer,
                 {
                   backgroundColor:
-                    getPaidDeltaColor(student) || themeStyle.PRIMARY_COLOR,
+                    getPaidDeltaColor(student) || themeStyle.EMPLOYE_COLOR,
                 },
               ]}
             >

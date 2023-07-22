@@ -62,11 +62,11 @@ export default function PaymentFailedDialog({
      
           <Dialog.Content>
 
-          <View style={{marginTop:-20, right:-60}}>
+          <View style={{marginTop:0, right:-60}}>
           <BackButton isClose={true} onClick={hideDialog} />
 
           </View>
-          <View style={{paddingTop:60}}>
+          <View style={{marginTop:60, height:"100%"}}>
           <SeatsStatusOptionsScreen
                       value={value}
                       onSave={(value) => onApperanceChange(value)}

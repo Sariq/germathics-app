@@ -9,6 +9,7 @@ import { StoreContext } from "../../../../stores";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import BackButton from "../../../../components/back-button";
+import themeStyle from "../../../../styles/theme.style";
 
 const AddEmployeScreen = ({ route }) => {
   const { t } = useTranslation();
@@ -120,6 +121,7 @@ const AddEmployeScreen = ({ route }) => {
             onClickFn={handlAddClick}
             isLoading={isLoading}
             disabled={isLoading}
+            bgColor={themeStyle.SUCCESS_COLOR}
           />
         </View>
       </View>

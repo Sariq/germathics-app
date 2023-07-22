@@ -77,7 +77,7 @@ class CoursesStore {
   updateStudentAppearance = (data: any) => {
     return this.updateStudentAppearanceFromServer(data).then((res:any) => {
       runInAction(() => {
-        this.coursesList = res;
+        //this.coursesList = res;
       })
       return res;
     })

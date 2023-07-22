@@ -80,7 +80,7 @@ class StudentsStore {
   addStudents = (data: any, isEditMode?: boolean) => {
     return this.addStudentsFromServer(data, isEditMode).then((res: any) => {
       runInAction(() => {
-        //this.studentsList = res;
+        this.studentsList = res;
       });
       return res;
     });
@@ -188,5 +188,9 @@ class StudentsStore {
       return res;
     });
   };
+
+  resetStudentsList = () =>{
+    this.studentsList = [];
+  }
 }
 export const studentsStore = new StudentsStore();

@@ -1,4 +1,10 @@
-import { StyleSheet, View, TextInput, Image } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import InputText from "../../../../components/controls/input";
 import Button from "../../../../components/controls/button/button";
 import Text from "../../../../components/controls/Text";
@@ -32,7 +38,7 @@ const StudentsListScreen = ({
   isAppeared,
   lectureData,
   onClose = null,
-  subTitle = ''
+  subTitle = "",
 }: any) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -46,7 +52,7 @@ const StudentsListScreen = ({
   const [statusValue, setStatusValue] = useState("");
 
   const [selectedProduct, setSelectedProduct] = useState<TProduct>();
-  const [studentsList, setStudentsList] = useState<TProduct>();
+  const [studentsList, setStudentsList] = useState([]);
   const [lectureStudentsList, setLecutreStudentsList] = useState(
     lectureData?.studentsList || []
   );
@@ -64,7 +70,6 @@ const StudentsListScreen = ({
   };
 
   useEffect(() => {
-
     setSelectedProduct(initNewProduct());
   }, []);
 
@@ -104,6 +109,7 @@ const StudentsListScreen = ({
   };
 
   useEffect(() => {
+    setStudentsList([]);
     studentsStore.getStudents(ids);
   }, []);
 
@@ -120,7 +126,7 @@ const StudentsListScreen = ({
   };
 
   const filterList = (studentsList) => {
-    let filteredSearch = studentsList;
+    let filteredSearch = studentsList || [];
 
     if (searchValue !== "") {
       filteredSearch = filteredSearch.filter((student) => {
@@ -170,14 +176,25 @@ const StudentsListScreen = ({
     return currentSeatStatus;
   };
 
-  if (!selectedProduct || !studentsStore.studentsList) {
+  const handleOnClose = () => {
+    console.log("close");
+    onClose();
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setStudentsList(studentsStore.studentsList);
+    }, 1000);
+  }, [studentsStore.studentsList]);
+
+  if (!selectedProduct || !studentsList) {
     return;
   }
 
   return (
     <ScrollView style={styles.container}>
       {onClose ? (
-        <BackButton isClose={true} onClick={onClose} />
+        <BackButton isClose={true} onClick={handleOnClose} />
       ) : (
         <BackButton />
       )}
@@ -217,92 +234,101 @@ const StudentsListScreen = ({
         </View>
       </View>
       <View style={styles.cardListContainer}>
-        {filterList(studentsStore.studentsList).map((student) => {
-          return (
-            <View
-              style={[
-                styles.cardContainer,
-                {
-                  backgroundColor:
-                    getPaidDeltaColor(student) || themeStyle.PRIMARY_COLOR,
-                },
-              ]}
-            >
-              { !onClose && 
-              
-              <>
+        {studentsList.length == 0 ? (
+          <View style={{ height: "100%", justifyContent: "center" }}>
+            <ActivityIndicator
+              animating={true}
+              color={themeStyle.PRIMARY_COLOR}
+              size={'large'}
+            />
+          </View>
+        ) : (
+          filterList(studentsList)?.map((student) => {
+            return (
               <View
-                style={{
-                  position: "absolute",
-                  right: 0,
-                  top: 0,
-                  height: 40,
-                  width: 40,
-                  backgroundColor: themeStyle.WHITE_COLOR_300,
-                  borderBottomLeftRadius: 20,
-                }}
+                style={[
+                  styles.cardContainer,
+                  {
+                    backgroundColor:
+                      getPaidDeltaColor(student) || themeStyle.STUDENT_COLOR,
+                  },
+                ]}
               >
-                <View>
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: themeStyle.WHITE_COLOR_300,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      borderBottomStartRadius: 20,
-                      height: 40,
-                      width: 40,
-                    }}
-                  >
-                    <Icon
-                      icon="trash"
-                      size={20}
+                {!onClose && (
+                  <>
+                    <View
                       style={{
-                        color: "red",
+                        position: "absolute",
+                        right: 0,
+                        top: 0,
+                        height: 40,
+                        width: 40,
+                        backgroundColor: themeStyle.WHITE_COLOR_300,
+                        borderBottomLeftRadius: 20,
                       }}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-              <View
-                style={{
-                  position: "absolute",
-                  right: 0,
-                  bottom: 0,
-                  height: 40,
-                  width: 40,
-                  backgroundColor: themeStyle.WHITE_COLOR_300,
-                  borderTopStartRadius: 20,
-                }}
-              >
+                    >
+                      <View>
+                        <TouchableOpacity
+                          style={{
+                            backgroundColor: themeStyle.WHITE_COLOR_300,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            borderBottomStartRadius: 20,
+                            height: 40,
+                            width: 40,
+                          }}
+                        >
+                          <Icon
+                            icon="trash"
+                            size={20}
+                            style={{
+                              color: "red",
+                            }}
+                          />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        position: "absolute",
+                        right: 0,
+                        bottom: 0,
+                        height: 40,
+                        width: 40,
+                        backgroundColor: themeStyle.WHITE_COLOR_300,
+                        borderTopStartRadius: 20,
+                      }}
+                    >
+                      <TouchableOpacity
+                        style={{
+                          alignItems: "center",
+                          justifyContent: "center",
+                          height: "100%",
+                          width: "100%",
+                          position: "relative",
+                        }}
+                        onPress={() => {
+                          //onRemoveProduct(product, index);
+                          onEditClick(student);
+                        }}
+                      >
+                        <Icon
+                          icon="pencil"
+                          size={18}
+                          style={{
+                            color: themeStyle.PRIMARY_COLOR,
+                          }}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </>
+                )}
                 <TouchableOpacity
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    height: "100%",
-                    width: "100%",
-                    position: "relative",
-                  }}
                   onPress={() => {
-                    //onRemoveProduct(product, index);
-                    onEditClick(student);
+                    handleStudentClick(student);
                   }}
                 >
-                  <Icon
-                    icon="pencil"
-                    size={18}
-                    style={{
-                      color: themeStyle.PRIMARY_COLOR,
-                    }}
-                  />
-                </TouchableOpacity>
-              </View>
-              </>}
-              <TouchableOpacity
-                onPress={() => {
-                  handleStudentClick(student);
-                }}
-              >
-                {/* <LinearGradient
+                  {/* <LinearGradient
                 colors={[
                   "rgba(207, 207, 207, 0.4)",
                   "rgba(207, 207, 207, 0.4)",
@@ -312,84 +338,85 @@ const StudentsListScreen = ({
                 style={[styles.background]}
               /> */}
 
-                <View
-                  style={{ flexDirection: "column", paddingHorizontal: 10 }}
-                >
-                  <View style={{ flexDirection: "row" }}>
-                    <View>
-                      <Text
-                        style={{
-                          fontSize: 20,
-                          color: themeStyle.WHITE_COLOR,
-                        }}
-                      >
-                        {t("الاسم")}:
-                      </Text>
+                  <View
+                    style={{ flexDirection: "column", paddingHorizontal: 10 }}
+                  >
+                    <View style={{ flexDirection: "row" }}>
+                      <View>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            color: themeStyle.WHITE_COLOR,
+                          }}
+                        >
+                          {t("الاسم")}:
+                        </Text>
+                      </View>
+                      <View>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            color: themeStyle.WHITE_COLOR,
+                          }}
+                        >
+                          {" "}
+                          {student.name}{" "}
+                        </Text>
+                      </View>
                     </View>
-                    <View>
-                      <Text
-                        style={{
-                          fontSize: 20,
-                          color: themeStyle.WHITE_COLOR,
-                        }}
-                      >
-                        {" "}
-                        {student.name}{" "}
-                      </Text>
+
+                    <View style={{ flexDirection: "row", marginTop: 15 }}>
+                      <View>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            color: themeStyle.WHITE_COLOR,
+                          }}
+                        >
+                          {t("رقم الهاتف")}:
+                        </Text>
+                      </View>
+                      <View>
+                        <Text
+                          style={{
+                            fontSize: 20,
+                            color: themeStyle.WHITE_COLOR,
+                          }}
+                        >
+                          {" "}
+                          {student.phone}{" "}
+                        </Text>
+                      </View>
                     </View>
                   </View>
-
+                </TouchableOpacity>
+                {isLecture && (
                   <View style={{ flexDirection: "row", marginTop: 15 }}>
                     <View>
                       <Text
-                        style={{
-                          fontSize: 20,
-                          color: themeStyle.WHITE_COLOR,
-                        }}
+                        style={{ fontSize: 20, color: themeStyle.WHITE_COLOR }}
                       >
-                        {t("رقم الهاتف")}:
+                        {t("حضور")}:
                       </Text>
                     </View>
                     <View>
-                      <Text
-                        style={{
-                          fontSize: 20,
-                          color: themeStyle.WHITE_COLOR,
-                        }}
-                      >
-                        {" "}
-                        {student.phone}{" "}
-                      </Text>
-                    </View>
-                  </View>
-
-       
-                </View>
-              </TouchableOpacity>
-              {isLecture && (
-                <View style={{ flexDirection: "row", marginTop: 15 }}>
-                  <View>
-                    <Text
-                      style={{ fontSize: 20, color: themeStyle.WHITE_COLOR }}
-                    >
-                      {t("حضور")}:
-                    </Text>
-                  </View>
-                  <View>
-                    {/* <CheckBox
+                      {/* <CheckBox
                       onChange={(e) => onApperanceChange(e, student._id)}
                       value={getIsAppearedByStudentId(student._id)}
                     /> */}
-                    <SeatsStatusOptionsScreen
-                      value={getSeatValue(student)}
-                      onSave={(value) => onApperanceChange(value, student._id)}
-                    />
+                      <SeatsStatusOptionsScreen
+                        value={getSeatValue(student)}
+                        onSave={(value) =>
+                          onApperanceChange(value, student._id)
+                        }
+                      />
+                    </View>
                   </View>
-                </View>
-              )}
-            </View>
-          );
-        })}
+                )}
+              </View>
+            );
+          })
+        )}
       </View>
     </ScrollView>
   );

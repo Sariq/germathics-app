@@ -2,7 +2,7 @@ export default {
     FONT_SIZE_SMALL: 12,
     FONT_SIZE_MEDIUM: 14,
     FONT_SIZE_LARGE: 26,
-    PRIMARY_COLOR: '#001A5f',
+    PRIMARY_COLOR: '#5F264A',
     ERROR_COLOR: 'red',
     SECONDARY_COLOR: '#A7AED3',
     WHITE_COLOR: 'white',
@@ -17,6 +17,13 @@ export default {
     FONT_WEIGHT_LIGHT: 200,
     FONT_WEIGHT_MEDIUM: 600,
     FONT_WEIGHT_HEAVY: 800,
+
+    COURSE_COLOR: '#1F6E8C',
+    STUDENT_COLOR: '#0E2954',
+    LECTURE_COLOR: '#ECB365',
+    PACKAGE_COLOR: '#84A7A1',
+    EMPLOYE_COLOR: '#B8621B',
+
     
     TEXT_PRIMARY_COLOR: "black"
   };

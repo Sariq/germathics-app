@@ -65,6 +65,7 @@ const AddStudentScreen = ({ route }) => {
 
   const initCoursesList = () => {
     const courses = coursesStore.coursesList;
+    console.log("courses",courses)
     let mappedCategories = courses.map((course, index) => {
       // if (categoryId && cours.categoryId === categoryId) {
       //   setSelectedCategoryId(index);
@@ -157,7 +158,11 @@ const AddStudentScreen = ({ route }) => {
       studentsStore.addStudents(updatedData, isEditMode).then((res: any) => {
         setIsLoading(false);
         //navigateToMenu();
+        // if (!isEditMode) {
         navigation.navigate("admin-dashboard");
+        // }else{
+        //   studentsStore.getStudents();
+        // }
       });
 
       //});
@@ -222,15 +227,36 @@ const AddStudentScreen = ({ route }) => {
         ...selectedProduct,
         packagesList: updatedPackagesList,
       });
+      studentsStore.addStudents({
+        ...selectedProduct,
+        packagesList: updatedPackagesList,
+      }, isEditMode)
     } else {
       selectedProduct.packagesList.push(newPackage);
       setSelectedProduct({ ...selectedProduct });
+      studentsStore.addStudents({
+        ...selectedProduct,
+      }, isEditMode)
     }
+    console.log("newPackage",newPackage)
+  
+
   };
 
   useEffect(() => {
     // getMenu();
-  }, []);
+    if(selectedProduct){
+      updateSelectedProduct(studentsStore.studentsList);
+    }
+  }, [studentsStore.studentsList]);
+
+
+  const updateSelectedProduct = (tmpStudentsList) =>{
+    console.log("selectedProduct",tmpStudentsList)
+    //const tmpStudent = tmpStudentsList.find((student)=> student._id == selectedProduct?._id);
+  //  console.log("tmpStudent",tmpStudent)
+    //setSelectedProduct(tmpStudent);
+  }
 
   if (!selectedProduct) {
     return;
@@ -241,6 +267,7 @@ const AddStudentScreen = ({ route }) => {
       <AddPackageScreen onClose={onCloseAddPackage} onSave={onSavePacakge} />
     );
   }
+  
 
   if (isShowPackagesList) {
     return (
@@ -374,6 +401,7 @@ const AddStudentScreen = ({ route }) => {
             text={t("قائمة الباقات")}
             fontSize={20}
             onClickFn={openPacakgedList}
+            bgColor={themeStyle.PACKAGE_COLOR}
           />
         </View>
 

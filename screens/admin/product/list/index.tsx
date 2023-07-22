@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 15,
     borderRadius: 10,
-    backgroundColor: themeStyle.PRIMARY_COLOR,
+    backgroundColor: themeStyle.COURSE_COLOR,
     marginTop: 20,
   },
   cardListContainer: {

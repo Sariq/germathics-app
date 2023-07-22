@@ -111,7 +111,7 @@ const PackagesListScreen = ({
   const onSavePacakge = (newPackage) =>{
     onSave(newPackage)
     onCloseAddPackage();
-    onClose();
+    //  onClose();
   }
   if (!pacakgesList) {
     return;
@@ -337,7 +337,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     position: "relative",
     padding: 15,
-    backgroundColor: themeStyle.PRIMARY_COLOR
+    backgroundColor: themeStyle.PACKAGE_COLOR
 
   },
   cardListContainer: {

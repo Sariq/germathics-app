@@ -30,13 +30,19 @@ const seatOptions = [
 
 const SeatsStatusOptionsScreen = ({ value, onSave }) => {
   const { t } = useTranslation();
+  const [defaultValue, setDefaultValue] = useState(value)
+
+  useEffect(()=>{
+    setDefaultValue(value)
+  },[value])
 
   useEffect(() => {
     // getMenu();
   }, []);
 
   const handleSeatOptionClick = (seatOption) => {
-    onSave(seatOption.value)
+    onSave(seatOption.value);
+    setDefaultValue(seatOption.value)
   };
 
   const getStatusIcon = (status) => {
@@ -65,7 +71,7 @@ const SeatsStatusOptionsScreen = ({ value, onSave }) => {
           return (
             <View>
               <TouchableOpacity
-                style={[styles.seatContainer, {borderColor: value === seatStatus.value ? themeStyle.SUCCESS_COLOR : themeStyle.WHITE_COLOR }]}
+                style={[styles.seatContainer, {borderColor: defaultValue === seatStatus.value ? '#7A9D54' : themeStyle.WHITE_COLOR }]}
                 onPress={() => handleSeatOptionClick(seatStatus)}
               >
                 <Text style={{color: themeStyle.WHITE_COLOR, fontSize: 20}}>{(seatStatus.label)}</Text>
@@ -108,7 +114,7 @@ const styles = StyleSheet.create({
   },
   seatContainer: {
     marginHorizontal: 15,
-    borderWidth: 1,
+    borderWidth: 2,
     width:30,
     height:30,
     color: themeStyle.WHITE_COLOR,
