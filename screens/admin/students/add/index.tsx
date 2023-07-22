@@ -49,9 +49,9 @@ const AddStudentScreen = ({ route }) => {
   const initNewProduct = () => {
     return {
       categoryId: "",
-      name: "ساري",
+      name: "",
       status: "",
-      phone: "0542454362",
+      phone: "",
       packagesList: [],
     };
   };
@@ -285,7 +285,7 @@ const AddStudentScreen = ({ route }) => {
       <BackButton />
 
       <View style={styles.inputsContainer}>
-        <Text style={{ fontSize: 30 }}>{t("add-student")}</Text>
+        <Text style={{ fontSize: 30, marginTop:15 }}>{t("اضف طالب")}</Text>
 
         <View
           style={{
@@ -299,11 +299,11 @@ const AddStudentScreen = ({ route }) => {
             label={t("الاسم")}
             value={selectedProduct?.name}
           />
-          {!selectedProduct?.name && (
+          {/* {!selectedProduct?.name && (
             <Text style={{ color: themeStyle.ERROR_COLOR }}>
               {t("invalid-name")}
             </Text>
-          )}
+          )} */}
         </View>
 
         <View
@@ -319,11 +319,11 @@ const AddStudentScreen = ({ route }) => {
             value={selectedProduct?.phone}
             keyboardType="numeric"
           />
-          {!selectedProduct?.phone && (
+          {/* {!selectedProduct?.phone && (
             <Text style={{ color: themeStyle.ERROR_COLOR }}>
               {t("invalid-phone")}
             </Text>
-          )}
+          )} */}
         </View>
 
         <View

@@ -80,25 +80,6 @@ const StudentsListScreen = ({
     setStatusValue(value);
   };
 
-  const handlAddClick = () => {
-    if (selectedProduct) {
-      setIsLoading(true);
-      //uploadImage(imgFile).then((res) => {
-      let updatedData: TProduct = null;
-
-      updatedData = { ...selectedProduct };
-
-      setSelectedProduct(updatedData);
-      menuStore.addOrUpdateProduct(updatedData, isEditMode).then((res: any) => {
-        menuStore.getMenu();
-        setIsLoading(false);
-        //navigateToMenu();
-      });
-
-      //});
-    }
-  };
-
   const navigateToMenu = () => {
     navigation.navigate("menuScreen");
   };
@@ -109,6 +90,7 @@ const StudentsListScreen = ({
   };
 
   useEffect(() => {
+    setIsLoading(true)
     setStudentsList([]);
     studentsStore.getStudents(ids);
   }, []);
@@ -130,7 +112,7 @@ const StudentsListScreen = ({
 
     if (searchValue !== "") {
       filteredSearch = filteredSearch.filter((student) => {
-        if (student.name.toLowerCase().includes(searchValue.toLowerCase())) {
+        if (student.name.toLowerCase().includes(searchValue.toLowerCase()) || student.phone.includes(searchValue)) {
           return student;
         }
       });
@@ -184,6 +166,7 @@ const StudentsListScreen = ({
   useEffect(() => {
     setTimeout(() => {
       setStudentsList(studentsStore.studentsList);
+      setIsLoading(false)
     }, 1000);
   }, [studentsStore.studentsList]);
 
@@ -198,12 +181,12 @@ const StudentsListScreen = ({
       ) : (
         <BackButton />
       )}
-      <View style={{ alignItems: "center", marginTop: 15 }}>
+      <View style={{ alignItems: "center", marginVertical: 15 }}>
         <Text style={{ fontSize: 30 }}>{`قائمة الطلاب`}</Text>
         <Text style={{ fontSize: 25 }}>{`${title ? title : ""}`}</Text>
         <Text style={{ fontSize: 25 }}>{`${subTitle ? subTitle : ""}`}</Text>
       </View>
-      <View
+      {!onClose && ( <View
         style={{
           width: "100%",
           marginVertical: 20,
@@ -216,7 +199,7 @@ const StudentsListScreen = ({
         <View style={{ flexBasis: "49%" }}>
           <InputText
             onChange={(e) => handleSearchInputChange(e)}
-            label={t("name")}
+            label={t("بحث")}
             value={searchValue}
           />
           {!selectedProduct?.name && (
@@ -232,9 +215,9 @@ const StudentsListScreen = ({
             onChangeFn={(e) => handleStatusChange(e)}
           />
         </View>
-      </View>
-      <View style={styles.cardListContainer}>
-        {studentsList.length == 0 ? (
+      </View>)}
+      <View style={[styles.cardListContainer]}>
+        {studentsList.length == 0 && isLoading ? (
           <View style={{ height: "100%", justifyContent: "center" }}>
             <ActivityIndicator
               animating={true}

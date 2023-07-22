@@ -104,6 +104,40 @@ const AddLectureScreen = ({ onClose, onSave }) => {
     // getMenu();
   }, []);
 
+  const handleDateChange =  (value: any, name: string) => {
+      let date = selectedProduct.createdDate;
+       
+      switch(name){
+        case "day":
+          date = new Date(new Date(date).getFullYear(), new Date(date).getMonth(), value);
+          break;
+          case "month":
+            date = new Date(new Date(date).getFullYear(), value - 1, new Date(date).getDate());
+            break;
+            case "year":
+              date = new Date(value, new Date(date).getMonth(), new Date(date).getDate());
+         break;
+      }
+
+      setSelectedProduct({ ...selectedProduct, createdDate: date });
+
+  }
+
+
+
+  const monthsArray = [];
+const numberOfMonths = 12;
+for (let i = 0; i < numberOfMonths; i++) {
+  const monthIndex = i;
+  monthsArray.push({ label: monthIndex + 1, value: monthIndex + 1 });
+}
+const daysArray = [];
+const numberOfDays = 31;
+for (let i = 0; i < numberOfDays; i++) {
+  const dayIndex = i;
+  daysArray.push({ label: dayIndex + 1, value: dayIndex + 1 });
+}
+
   if (!selectedProduct) {
     return;
   }
@@ -114,6 +148,32 @@ const AddLectureScreen = ({ onClose, onSave }) => {
 
       <View style={styles.inputsContainer}>
         <Text style={{ fontSize: 30 }}>{t("اضف لقاء")}</Text>
+        <View
+        style={{
+          width: "100%",
+          marginVertical: 20,
+          alignItems: "center",
+          flexDirection: "row",
+          justifyContent: "space-around",
+          zIndex: 2,
+        }}
+      >
+   
+        <View style={{ flexBasis: "40%" }}>
+          <DropDown
+            itemsList={monthsArray}
+            defaultValue={new Date(selectedProduct?.createdDate).getMonth() +1}
+            onChangeFn={(e) => handleDateChange(e, "month")}
+          />
+        </View>
+        <View style={{ flexBasis: "30%" }}>
+            <DropDown
+              itemsList={daysArray}
+              defaultValue={new Date(selectedProduct?.createdDate).getDate()}
+              onChangeFn={(e) => handleDateChange(e, "day")}
+            />
+          </View>
+      </View>
         <View
           style={{
             width: "100%",
