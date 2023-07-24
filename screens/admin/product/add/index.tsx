@@ -24,7 +24,7 @@ const AddCourseScreen = ({ route }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
-  const { menuStore, languageStore } = useContext(StoreContext);
+  const { coursesStore, languageStore } = useContext(StoreContext);
 
   const [isEditMode, setIdEditMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -80,15 +80,19 @@ const AddCourseScreen = ({ route }) => {
 
 
       setSelectedProduct(updatedData);
-      menuStore
-        .addOrUpdateProduct(updatedData, isEditMode)
+      coursesStore.addCourses(updatedData, isEditMode)
         .then((res: any) => {
-          menuStore.getMenu();
           setIsLoading(false);
           navigation.navigate("admin-dashboard");
-
-          //navigateToMenu();
         });
+      // menuStore
+      //   .addOrUpdateProduct(updatedData, isEditMode)
+      //   .then((res: any) => {
+      //     setIsLoading(false);
+      //     navigation.navigate("admin-dashboard");
+
+      //     //navigateToMenu();
+      //   });
 
       //});
     }

@@ -18,19 +18,19 @@ import BackButton from "../../../../components/back-button";
 import { LinearGradient } from "expo-linear-gradient";
 import SeatsScreen from "../../../../components/seats";
 import PackageItemScreen from "../item";
+import { orderBy } from "lodash";
 
-import AddPackageScreen from "../add"
+import AddPackageScreen from "../add";
 import moment from "moment";
 export type TProduct = {
   pacakgesList: string;
-
 };
 
 const PackagesListScreen = ({
   pacakgesList,
   onClose,
   onSave,
-  student = null
+  student = null,
 }: any) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -49,7 +49,6 @@ const PackagesListScreen = ({
   const [selectedSeats, setSelectedSeats] = useState<TProduct>();
   const [studentsList, setStudentsList] = useState<TProduct>();
 
-
   const initNewProduct = () => {
     return {
       categoryId: "",
@@ -57,7 +56,6 @@ const PackagesListScreen = ({
       count: 10,
     };
   };
-
 
   const navigateToMenu = () => {
     navigation.navigate("menuScreen");
@@ -68,19 +66,15 @@ const PackagesListScreen = ({
     return course;
   };
 
-
   const addPackage = () => {
     setSelectedStudentPackage(null);
     setIsAddPacakge(true);
   };
 
-
   const onCloseAddPackage = () => {
     setSelectedStudentPackage(null);
     setIsAddPacakge(false);
   };
-
-
 
   const onEditClick = (student) => {
     setSelectedStudentPackage(student);
@@ -107,28 +101,33 @@ const PackagesListScreen = ({
   };
 
   const checkIsPayDelay = (currentPackage) => {
-    let isPayDelay = currentPackage.isPayDelay ||  false;
-    const isPaidLessPackagePrice = Number(currentPackage.price) - Number(currentPackage.totalPaid) > 0;
-    const usedSeats = currentPackage.seats.filter((seat)=>seat.status != 0);
-    console.log("usedSeats",usedSeats)
-      isPayDelay = usedSeats.length >= 3 && isPaidLessPackagePrice;
+    let isPayDelay = currentPackage.isPayDelay || false;
+    const isPaidLessPackagePrice =
+      Number(currentPackage.price) - Number(currentPackage.totalPaid) > 0;
+    const usedSeats = currentPackage.seats.filter((seat) => seat.status != 0);
+    console.log("usedSeats", usedSeats);
+    isPayDelay = usedSeats.length >= 3 && isPaidLessPackagePrice;
     return isPayDelay;
-  }
+  };
 
-
-  const onSavePacakge = (newPackage) =>{
+  const onSavePacakge = (newPackage) => {
     let tmpAppearanceCount = 0;
-    newPackage.seats.forEach(seat => {
-      if(seat.status != 0){
+    newPackage.seats.forEach((seat) => {
+      if (seat.status != 0) {
         tmpAppearanceCount = tmpAppearanceCount + 1;
       }
     });
     const isPayDelay = checkIsPayDelay(newPackage);
-    onSave({...newPackage, appearanceCount: tmpAppearanceCount, isPayDelay})
+    onSave({ ...newPackage, appearanceCount: tmpAppearanceCount, isPayDelay });
     onCloseAddPackage();
     onClosePackgeItem();
     //  onClose();
+  };
+
+  const filterList = (itemsList) => {
+    return orderBy(itemsList,['createdDate'], ["desc"])
   }
+
   if (!pacakgesList) {
     return;
   }
@@ -139,39 +138,43 @@ const PackagesListScreen = ({
   //   )
   // }
 
-  console.log("selectedStudentPackage",selectedStudentPackage)
+  console.log("selectedStudentPackage", selectedStudentPackage);
 
-  if(isShowPackage){
-    return(
-      <PackageItemScreen onClose={onClosePackgeItem} onSave={onSavePacakge} packageItem={selectedStudentPackage} />
-    )
+  if (isShowPackage) {
+    return (
+      <PackageItemScreen
+        onClose={onClosePackgeItem}
+        onSave={onSavePacakge}
+        packageItem={selectedStudentPackage}
+      />
+    );
   }
 
-  if(isAddPacakge){
-    return(
-      <AddPackageScreen onClose={onCloseAddPackage} onSave={onSavePacakge} studentPackage={selectedStudentPackage} student={student}/>
-    )
+  if (isAddPacakge) {
+    return (
+      <AddPackageScreen
+        onClose={onCloseAddPackage}
+        onSave={onSavePacakge}
+        studentPackage={selectedStudentPackage}
+        student={student}
+      />
+    );
   }
 
   return (
     <ScrollView style={styles.container}>
-      <BackButton isClose={true} onClick={onClose}/>
-      <View style={{ alignItems: "center", marginTop:15 }}>
+      <BackButton isClose={true} onClick={onClose} />
+      <View style={{ alignItems: "center", marginTop: 15 }}>
         <Text style={{ fontSize: 30 }}>{`قائمة الباقات`}</Text>
       </View>
-
+      <View style={{ width: "100%", paddingHorizontal: 50, marginTop: 25 }}>
+        <Button text={t("اضف باقه")} fontSize={20} onClickFn={addPackage} />
+      </View>
       <View style={styles.cardListContainer}>
-        {pacakgesList.map((packageItem) => {
+        {filterList(pacakgesList).map((packageItem) => {
           return (
-            <View
-              style={[
-                styles.cardContainer,
-                {
-              
-                },
-              ]}
-            >
-              <View
+            <View style={[styles.cardContainer, {}]}>
+              {/* <View
                 style={{
                   position: "absolute",
                   right: 0,
@@ -203,43 +206,44 @@ const PackagesListScreen = ({
                     />
                   </TouchableOpacity>
                 </View>
-              </View>
+              </View> */}
               <View
                 style={{
                   position: "absolute",
                   right: 0,
-                  bottom: 0,
+                  top: 0,
                   height: 40,
                   width: 40,
                   backgroundColor: themeStyle.WHITE_COLOR_300,
-                  borderTopStartRadius: 20,
+                  borderBottomLeftRadius: 20,
+                  zIndex: 5,
                 }}
               >
-                  <TouchableOpacity
+                <TouchableOpacity
+                  style={{
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%",
+                    width: "100%",
+                    position: "relative",
+                  }}
+                  onPress={() => {
+                    //onRemoveProduct(product, index);
+                    onEditClick(packageItem);
+                  }}
+                >
+                  <Icon
+                    icon="pencil"
+                    size={18}
                     style={{
-                      alignItems: "center",
-                      justifyContent: "center",
-                      height:"100%",
-                      width:"100%",
-                      position:"relative",
+                      color: themeStyle.PRIMARY_COLOR,
                     }}
-                    onPress={() => {
-                      //onRemoveProduct(product, index);
-                      onEditClick(packageItem);
-                    }}
-                  >
-                    <Icon
-                      icon="pencil"
-                      size={18}
-                      style={{
-                        color: themeStyle.PRIMARY_COLOR,
-                      }}
-                    />
-                  </TouchableOpacity>
+                  />
+                </TouchableOpacity>
               </View>
               <TouchableOpacity
                 onPress={() => {
-                 handlePackageClick(packageItem);
+                  handlePackageClick(packageItem);
                 }}
               >
                 {/* <LinearGradient
@@ -278,7 +282,7 @@ const PackagesListScreen = ({
                       </Text>
                     </View>
                   </View>
-{/* 
+                  {/* 
                   <View style={{ flexDirection: "row", marginTop: 15 }}>
                     <View>
                       <Text
@@ -322,25 +326,19 @@ const PackagesListScreen = ({
                         }}
                       >
                         {" "}
-                        {moment(packageItem.createdDate).format("DD-MM-YYYY")}{" "}
+                        {moment(packageItem.createdDate).format(
+                          "DD-MM-YYYY"
+                        )}{" "}
                       </Text>
                     </View>
                   </View>
                 </View>
               </TouchableOpacity>
-
             </View>
           );
         })}
- 
       </View>
-      <View style={{ width: "100%", paddingHorizontal: 50, marginTop: 25 }}>
-          <Button
-            text={t("اضف باقه")}
-            fontSize={20}
-            onClickFn={addPackage}
-          />
-        </View>
+
     </ScrollView>
   );
 };
@@ -355,15 +353,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     position: "relative",
     padding: 15,
-    backgroundColor: themeStyle.PACKAGE_COLOR
-
+    backgroundColor: themeStyle.PACKAGE_COLOR,
   },
   cardListContainer: {
     width: "90%",
     alignSelf: "center",
     flexDirection: "column",
     overflow: "hidden",
-    marginTop:20
+    marginTop: 20,
   },
   container: {
     width: "100%",

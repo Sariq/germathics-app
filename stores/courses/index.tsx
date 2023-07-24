@@ -83,10 +83,12 @@ class CoursesStore {
     })
   };
 
-  addCoursesFromServer = async (data: any) => {
+  addCoursesFromServer = async (data: any, isEditMode: boolean) => {
     return axiosInstance
       .post(
-        `${TRANSLATIONS_API.CONTROLLER}/${TRANSLATIONS_API.ADD_TRANSLATIONS}`,
+        isEditMode
+        ? COURSES_API.ADMIN_UPDATE_COURSE_API
+        : COURSES_API.ADMIN_ADD_COURSE_API,
         data
       )
       .then(function (response) {
@@ -97,8 +99,8 @@ class CoursesStore {
       });
   };
 
-  addCourses = (data: any) => {
-    return this.addCoursesFromServer(data).then((res:any) => {
+  addCourses = (data: any, isEditMode: boolean) => {
+    return this.addCoursesFromServer(data,isEditMode).then((res:any) => {
       runInAction(() => {
         this.coursesList = res;
       })

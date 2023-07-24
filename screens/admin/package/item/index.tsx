@@ -43,7 +43,7 @@ const PackageItemScreen = ({ onClose, onSave, packageItem }) => {
       case 0:
         return themeStyle.ORANGE_COLOR;
       case 1:
-        return themeStyle.PRIMARY_COLOR;
+        return themeStyle.ORANGE_COLOR;
       case 2:
         return themeStyle.SUCCESS_COLOR;
     }
@@ -73,7 +73,8 @@ const PackageItemScreen = ({ onClose, onSave, packageItem }) => {
           backgroundColor: getBgColorByStatus(packageItem.status),
           margin: 15,
           height: "100%",
-          paddingVertical:20
+          paddingVertical:20,
+          borderRadius:20
         }}
       >
         <SeatsScreen seats={packageItem.seats} onSave={onSeatStatusChange}/>

@@ -19,6 +19,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import StudentsListScreen from "../../students/list";
 import AddLectureScreen from "../add";
 import moment from "moment";
+import { orderBy } from "lodash";
+
 
 export type TProduct = {
   id?: string;
@@ -152,6 +154,10 @@ const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) =>
     );
   }
 
+  const filterList = (itemsList) => {
+    return orderBy(itemsList,['createdDate'], ["desc"])
+  }
+
   if(isAddLecture){
     return <AddLectureScreen onClose={onAddLectureClose} onSave={onLectureSave}/>
   }
@@ -167,8 +173,17 @@ const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) =>
         <Text style={{ fontSize: 25 }}>{`${title ? title : ''}`}</Text>
 
       </View>
+      <View style={{ width: "100%", paddingHorizontal: 50, marginTop: 25 }}>
+          <Button
+            text={t("اضف لقاء")}
+            fontSize={20}
+            onClickFn={handleAddLecture}
+            isLoading={isLoading}
+            disabled={isLoading || !isValidForm()}
+          />
+        </View>
       <View style={styles.cardListContainer}>
-        {lecturesList?.map((lecture, index) => {
+        {filterList(lecturesList)?.map((lecture, index) => {
           return (
             <View style={styles.cardContainer}>
         
@@ -207,7 +222,7 @@ const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) =>
                     <Text style={{ fontSize: 20, color: themeStyle.WHITE_COLOR  }}>{t("لقاء")}:</Text>
                   </View>
                   <View>
-                    <Text style={{ fontSize: 20, color: themeStyle.WHITE_COLOR  }}> {index + 1} </Text>
+                    <Text style={{ fontSize: 20, color: themeStyle.WHITE_COLOR  }}> {moment(lecture.createdDate).format("DD-MM-YY")} </Text>
                   </View>
                 </View>
                 {/* <View style={{ flexDirection: "row", marginTop: 10 }}>
@@ -246,15 +261,7 @@ const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) =>
         })}
       </View>
 
-      <View style={{ width: "100%", paddingHorizontal: 50, marginTop: 25 }}>
-          <Button
-            text={t("اضف لقاء")}
-            fontSize={20}
-            onClickFn={handleAddLecture}
-            isLoading={isLoading}
-            disabled={isLoading || !isValidForm()}
-          />
-        </View>
+   
     </ScrollView>
   );
 };

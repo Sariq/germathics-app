@@ -33,6 +33,10 @@ export const studentStatuses = [
     label: "paid",
     value: "paid",
   },
+  {
+    label: "לא פעיל",
+    value: "inActive",
+  },
 ];
 
 export const PaymentMethods = [

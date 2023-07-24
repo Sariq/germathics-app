@@ -1,12 +1,12 @@
 // export const SITE_URL = "https://api.buffaloburger.co.il/";
 
 // //PROD
-export const BASE_URL = "https://jellyfish-app-9hxts.ondigitalocean.app/api";
-export const WS_URL = "wss://cjellyfish-app-9hxts.ondigitalocean.app";
+// export const BASE_URL = "https://jellyfish-app-9hxts.ondigitalocean.app/api";
+// export const WS_URL = "wss://cjellyfish-app-9hxts.ondigitalocean.app";
 
 //DEV
-// export const BASE_URL = "http://192.168.1.234:1111/api";
-// export const WS_URL = "ws://192.168.1.234:1111";
+export const BASE_URL = "http://192.168.1.234:1111/api";
+export const WS_URL = "ws://192.168.1.234:1111";
 
 // export const BASE_URL = "http://10.0.0.38:1111/api";
 // export const WS_URL = "ws://10.0.0.38:1111";
@@ -44,6 +44,7 @@ export const COURSES_API = {
 }
 export const STUDENTS_API = {
     ADMIN_GET_STUDENTS_LIST_API : "admin/students/",
+    ADMIN_GET_STUDENTS_PAY_DELAY_API : "admin/students/payDelay",
     ADMIN_ADD_STUDENT_API : "admin/students/add",
     ADMIN_ADD_PACKAGE_API : "/api/admin/students/add/package",
     ADMIN_PRINT_RECIEPT : "admin/students/generateReceipt",

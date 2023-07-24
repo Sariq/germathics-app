@@ -372,7 +372,7 @@ const AddStudentScreen = ({ route }) => {
             marginTop: 30,
             alignItems: "flex-start",
             width: "100%",
-            zIndex: 1,
+            zIndex: 2,
           }}
         >
           <DropDown
@@ -457,7 +457,6 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: "100%",
-    marginBottom: 30,
   },
   inputsContainer: {
     width: "100%",

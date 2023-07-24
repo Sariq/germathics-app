@@ -100,7 +100,7 @@ const AddPackageScreen = ({
 
   const handlAddClick = () => {
     let tmpTotalPaid = 0;
-     selectedProduct?.paymentsList.forEach((paymentRow)=>{
+     selectedProduct?.paymentsList?.forEach((paymentRow)=>{
       tmpTotalPaid = Number(tmpTotalPaid) + Number(paymentRow.amount)
     })
     onSave({...selectedProduct, totalPaid: tmpTotalPaid});

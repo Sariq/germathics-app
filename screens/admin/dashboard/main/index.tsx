@@ -65,6 +65,11 @@ const DashboardScreen = () => {
           key: "employes-list",
         },
         {
+          title: "עיכוב בתשלום",
+          icon: "student-pay-delay",
+          key: "student-pay-delay",
+        },
+        {
           title: "דוח תשלומים",
           icon: "payment-report",
           key: "payment-report",
@@ -135,6 +140,9 @@ const DashboardScreen = () => {
         break;
       case "employe-reports":
         navigation.navigate("admin-employe-report");
+        break;
+      case "student-pay-delay":
+        navigation.navigate("admin-student-pay-delay");
         break;
       case "openTerms":
         navigation.navigate("terms-and-conditions");

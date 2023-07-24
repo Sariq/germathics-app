@@ -11,10 +11,31 @@ import { fromBase64, toBase64 } from "../../helpers/convert-base64";
 
 class StudentsStore {
   studentsList = [];
+  studentsPayDelay = [];
 
   constructor() {
     makeAutoObservable(this);
   }
+
+  getStudentsPayDelayFromServer = async (ids: any) => {
+    return axiosInstance
+      .post(`${STUDENTS_API.ADMIN_GET_STUDENTS_PAY_DELAY_API}`, { ids: ids })
+      .then(function (response) {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  getStudentsPayDelay = (ids?: any) => {
+    return this.getStudentsPayDelayFromServer(ids).then((res: any) => {
+      runInAction(() => {
+        this.studentsPayDelay = res;
+      });
+      return res;
+    });
+  };
 
   getStudentsFromServer = async (ids: any) => {
     return axiosInstance

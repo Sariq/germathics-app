@@ -271,6 +271,8 @@ const EmployesListScreen = ({
                   width: 40,
                   backgroundColor: themeStyle.WHITE_COLOR_300,
                   borderTopStartRadius: 20,
+                  zIndex:5
+
                 }}
               >
                 <TouchableOpacity

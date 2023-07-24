@@ -10,6 +10,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import themeStyle from "../../styles/theme.style";
 import moment from "moment";
 import PaymentFailedDialog from "../dialogs/payment-failed";
+import { StoreContext } from "../../stores";
 
 export type TProduct = {
   seats: any[];
@@ -17,6 +18,7 @@ export type TProduct = {
 
 const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
   const { t } = useTranslation();
+  const { coursesStore } = useContext(StoreContext);
 
   const [showSeatsOptionsDialog, setShowSeatsOptionsDialog] = useState(false);
   const [selectedSeat, setSelectedSeat] = useState();
@@ -59,6 +61,11 @@ const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
     }
   };
 
+  const getCourseById = (courseId) => {
+    const courses = coursesStore.getCoursesByIds([courseId]);
+    return courses[0];
+  }
+
   if (!seatsList) {
     return;
   }
@@ -79,6 +86,7 @@ const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
         {seatsList.map((seat) => {
           return (
             <View style={[styles.seatContainer]}>
+                <Text style={{color:themeStyle.WHITE_COLOR, height:20, marginBottom:5}}>{getCourseById(seat?.categoryId)?.name}</Text>
                 <Text style={{color:themeStyle.WHITE_COLOR, height:20, marginBottom:5}}>{seat.lectureDate && moment(seat.lectureDate).format("DD-MM-YY")}</Text>
               <TouchableOpacity
                 style={[styles.seatIconContainer]}
@@ -136,7 +144,7 @@ const styles = StyleSheet.create({
     marginVertical:20
   },
   seatIconContainer: {
-    borderWidth: 1,
+    borderWidth: 2,
     padding: 10,
     width:40,
     height:40,

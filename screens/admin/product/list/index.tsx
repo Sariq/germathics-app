@@ -16,6 +16,7 @@ import { cdnUrl } from "../../../../consts/shared";
 import CheckBox from "../../../../components/controls/checkbox";
 import BackButton from "../../../../components/back-button";
 import { LinearGradient } from "expo-linear-gradient";
+import { orderBy } from "lodash";
 
 import StudentsListScreen from "../../students/list";
 import LecturesListScreen from "../../lectures/list";
@@ -108,6 +109,11 @@ const CoursesListScreen = ({ route }) => {
     coursesStore.getCourses();
   }, []);
 
+
+  const filterList = (itemsList) => {
+    return orderBy(itemsList,['createdDate'], ["desc"])
+  }
+
   if (!coursesStore.coursesList) {
     return;
   }
@@ -141,10 +147,10 @@ const CoursesListScreen = ({ route }) => {
         <Text style={{ fontSize: 30 }}>{"قائمة الدورات"}</Text>
       </View>
       <View style={styles.cardListContainer}>
-        {coursesStore.coursesList?.map((course) => {
+        {(coursesStore.coursesList)?.map((course) => {
           return (
             <View style={styles.cardContainer}>
-              <View
+              {/* <View
                 style={{
                   position: "absolute",
                   right: -10,
@@ -172,7 +178,7 @@ const CoursesListScreen = ({ route }) => {
                     />
                   </TouchableOpacity>
                 </View>
-              </View>
+              </View> */}
               <View style={{ flexDirection: "column", paddingHorizontal: 10 }}>
                 <View style={{ flexDirection: "row" }}>
                   <View>

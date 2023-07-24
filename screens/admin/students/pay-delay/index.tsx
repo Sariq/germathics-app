@@ -30,7 +30,7 @@ export type TProduct = {
   count: string;
 };
 
-const StudentsListScreen = ({
+const StudentsPayDelayScreen = ({
   ids,
   title,
   isLecture,
@@ -92,13 +92,13 @@ const StudentsListScreen = ({
   useEffect(() => {
     setIsLoading(true)
     setStudentsList([]);
-    studentsStore.getStudents(ids);
+    studentsStore.getStudentsPayDelay(ids);
   }, []);
 
   const handleStudentClick = (student) => {
-    if (!isLecture) {
-      navigation.navigate("admin-students-item", { student });
-    }
+    // if (!isLecture) {
+    //   navigation.navigate("admin-students-item", { student });
+    // }
   };
 
   const onEditClick = (student) => {
@@ -154,7 +154,7 @@ const StudentsListScreen = ({
 
   useEffect(() => {
     setTimeout(() => {
-      setStudentsList(studentsStore.studentsList);
+      setStudentsList(studentsStore.studentsPayDelay);
       setIsLoading(false)
     }, 1000);
   }, [studentsStore.studentsList]);
@@ -420,7 +420,7 @@ const StudentsListScreen = ({
   );
 };
 
-export default observer(StudentsListScreen);
+export default observer(StudentsPayDelayScreen);
 
 const styles = StyleSheet.create({
   cardContainer: {
