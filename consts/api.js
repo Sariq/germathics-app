@@ -5,8 +5,8 @@
 // export const WS_URL = "wss://cjellyfish-app-9hxts.ondigitalocean.app";
 
 //DEV
-export const BASE_URL = "http://192.168.1.234:1111/api";
-export const WS_URL = "ws://192.168.1.234:1111";
+// export const BASE_URL = "http://192.168.1.234:1111/api";
+// export const WS_URL = "ws://192.168.1.234:1111";
 
 // export const BASE_URL = "http://10.0.0.38:1111/api";
 // export const WS_URL = "ws://10.0.0.38:1111";
@@ -49,6 +49,7 @@ export const STUDENTS_API = {
     ADMIN_ADD_PACKAGE_API : "/api/admin/students/add/package",
     ADMIN_PRINT_RECIEPT : "admin/students/generateReceipt",
     ADMIN_UPDATE_STUDENT_API : "admin/students/update",
+    ADMIN_UPDATE_STUDENTS_CATEGORY_API : "admin/students/updateCategory/byIds",
     ADMIN_UPDATE_COURSE_API : "admin/categories/update",
     SEND_PAYMENT_REPORT : "admin/students/paymentByMonth",
 }

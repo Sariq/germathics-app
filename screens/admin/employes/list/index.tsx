@@ -230,7 +230,7 @@ const EmployesListScreen = ({
               { !onClose && 
               
               <>
-              <View
+              {/* <View
                 style={{
                   position: "absolute",
                   right: 0,
@@ -261,7 +261,7 @@ const EmployesListScreen = ({
                     />
                   </TouchableOpacity>
                 </View>
-              </View>
+              </View> */}
               <View
                 style={{
                   position: "absolute",

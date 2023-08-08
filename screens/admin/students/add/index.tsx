@@ -399,11 +399,6 @@ const AddStudentScreen = ({ route }) => {
                   defaultValue={selectedProduct?.categoryId}
                   onChangeFn={(e) => handleInputChange(e, "categoryId")}
                 />
-                {/* {!selectedProduct?.categoryId && (
-                <Text style={{ color: themeStyle.ERROR_COLOR }}>
-                  {t("invalid-categoryId")}
-                </Text>
-              )} */}
               </View>
             )}
           </View>

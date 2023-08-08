@@ -144,7 +144,7 @@ const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) =>
       <StudentsListScreen
         ids={selctedCourseStudentsList}
         title={`${title}`}
-        subTitle={` لقاء - ${moment(selectedLecture.createdDate).format("DD/MM/YYYY")}`}
+        subTitle={` لقاء - ${moment(selectedLecture.createdDate).format("DD-MM-YY | HH:mm")}`}
         isLecture={true}
         onApperanceChange={onApperanceChange}
         lectureData={selectedLecture}
@@ -155,7 +155,7 @@ const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) =>
   }
 
   const filterList = (itemsList) => {
-    return orderBy(itemsList,['createdDate'], ["desc"])
+    return orderBy(itemsList.map((item)=>{return {...item, createdDate: new Date(item.createdDate)}}),['createdDate'], ["desc"])
   }
 
   if(isAddLecture){
@@ -222,7 +222,7 @@ const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) =>
                     <Text style={{ fontSize: 20, color: themeStyle.WHITE_COLOR  }}>{t("لقاء")}:</Text>
                   </View>
                   <View>
-                    <Text style={{ fontSize: 20, color: themeStyle.WHITE_COLOR  }}> {moment(lecture.createdDate).format("DD-MM-YY")} </Text>
+                    <Text style={{ fontSize: 20, color: themeStyle.WHITE_COLOR  }}> {moment(lecture.createdDate).format("DD-MM-YY | HH:mm")} </Text>
                   </View>
                 </View>
                 {/* <View style={{ flexDirection: "row", marginTop: 10 }}>

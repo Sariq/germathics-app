@@ -79,9 +79,9 @@ const CoursesListScreen = ({ route }) => {
     }
   };
 
-  const handleOpenStudents = (studentsIds: any, course: any) => {
+  const handleOpenStudents = (course: any) => {
     setSelctedCourse(course);
-    setSelctedCourseStudentsList(studentsIds);
+    setSelctedCourseStudentsList(course?.studentsList);
   };
   const onStudentsListClose = (studentsIds: any, course: any) => {
     setSelctedCourseStudentsList(undefined);
@@ -108,6 +108,10 @@ const CoursesListScreen = ({ route }) => {
   useEffect(() => {
     coursesStore.getCourses();
   }, []);
+
+  useEffect(() => {
+    handleOpenStudents(selctedCourse)
+  }, [coursesStore.coursesList]);
 
 
   const filterList = (itemsList) => {
@@ -219,26 +223,26 @@ const CoursesListScreen = ({ route }) => {
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                  justifyContent: "center",
+                  justifyContent: "space-around",
                   marginTop: 18,
                   width: "100%",
                   paddingHorizontal: 5,
                 }}
               >
-                {/* <View style={{ flexBasis: "49%" }}>
+                <View style={{ flexBasis: "48%" }}>
                   <Button
                     text={t("قائمة الطلاب")}
                     fontSize={14}
                     onClickFn={() =>
-                      handleOpenStudents(course.studentsList, course)
+                      handleOpenStudents(course)
                     }
                     // isLoading={isLoading}
                     // disabled={isLoading}
                     textColor={themeStyle.TEXT_PRIMARY_COLOR}
                     bgColor={themeStyle.WHITE_COLOR}
                   />
-                </View> */}
-                <View style={{ flexBasis: "49%", }}>
+                </View>
+                <View style={{ flexBasis: "48%", }}>
                   <Button
                     text={t("قائمة اللقائات")}
                     fontSize={14}

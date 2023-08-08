@@ -80,7 +80,31 @@ class StudentsStore {
     });
   };
 
+  updateStudentsCategoryFromServer = async (data: any) => {
+    return axiosInstance
+      .post(
+        `${STUDENTS_API.ADMIN_UPDATE_STUDENTS_CATEGORY_API}`,
+        data
+      )
+      .then(function (response) {
+        return response;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  updateStudentsCategory = (data: any) => {
+    return this.updateStudentsCategoryFromServer(data).then((res: any) => {
+      // runInAction(() => {
+      //   this.studentsList = res;
+      // });
+      return res;
+    });
+  };
+
   addStudentsFromServer = async (data: any, isEditMode?: boolean) => {
+    console.log("DDDDDD",data)
     return axiosInstance
       .post(
         `${

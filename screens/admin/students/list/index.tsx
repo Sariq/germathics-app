@@ -23,6 +23,7 @@ import CheckBox from "../../../../components/controls/checkbox";
 import BackButton from "../../../../components/back-button";
 import { LinearGradient } from "expo-linear-gradient";
 import SeatsStatusOptionsScreen from "../../../../components/seats-status-options";
+import { orderBy } from "lodash";
 
 export type TProduct = {
   id?: string;
@@ -56,6 +57,10 @@ const StudentsListScreen = ({
   const [lectureStudentsList, setLecutreStudentsList] = useState(
     lectureData?.studentsList || []
   );
+  const [selectedList, setSelectedList] = useState([]);
+  const [isSelectEnabeled, setIsSelectEnabeled] = useState(false);
+  const [coursesList, setCoursesList] = useState<TProduct>();
+  const [selectedCategoryId, setSelectedCategoryId] = useState();
 
   const initNewProduct = () => {
     return {
@@ -65,8 +70,32 @@ const StudentsListScreen = ({
     };
   };
 
-  const isValidForm = () => {
-    return selectedProduct?.name && selectedProduct?.count;
+  const initCoursesList = () => {
+    const courses = coursesStore.coursesList;
+    console.log("courses", courses);
+    let mappedCategories = courses.map((course, index) => {
+      // if (categoryId && cours.categoryId === categoryId) {
+      //   setSelectedCategoryId(index);
+      // }
+      return {
+        label: course.name,
+        value: course._id,
+      };
+    });
+    mappedCategories.unshift({ label: "select course", value: "" });
+    setCoursesList(mappedCategories);
+  };
+  useEffect(() => {
+    if (!coursesStore.coursesList) {
+      return;
+    }
+    initCoursesList();
+
+    // }
+  }, [coursesStore.coursesList]);
+  const handleSelectedCategoryChange = (categoryId: any) => {
+    console.log("categoryId", categoryId);
+    setSelectedCategoryId(categoryId);
   };
 
   useEffect(() => {
@@ -90,15 +119,36 @@ const StudentsListScreen = ({
   };
 
   useEffect(() => {
-    setIsLoading(true)
+    setIsLoading(true);
     setStudentsList([]);
     studentsStore.getStudents(ids);
   }, []);
 
   const handleStudentClick = (student) => {
+    if (isSelectEnabeled) {
+      if (selectedList.includes(student._id)) {
+        // If the ID exists, remove it from the array using the 'filter' method
+        setSelectedList(selectedList.filter((item) => item !== student._id));
+      } else {
+        // If the ID doesn't exist, add it to the array using the spread operator
+        setSelectedList([...selectedList, student._id]);
+      }
+      return;
+    }
     if (!isLecture) {
       navigation.navigate("admin-students-item", { student });
     }
+  };
+
+  const onUpdateStudentsCategory = () => {
+    studentsStore
+      .updateStudentsCategory({
+        ids: selectedList,
+        newCategoryId: selectedCategoryId,
+      })
+      .then((res) => {
+        coursesStore.getCourses().then((res) => handleOnClose());
+      });
   };
 
   const onEditClick = (student) => {
@@ -112,7 +162,10 @@ const StudentsListScreen = ({
 
     if (searchValue !== "") {
       filteredSearch = filteredSearch.filter((student) => {
-        if (student.name.toLowerCase().includes(searchValue.toLowerCase()) || student.phone.includes(searchValue)) {
+        if (
+          student.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+          student.phone.includes(searchValue)
+        ) {
           return student;
         }
       });
@@ -123,16 +176,15 @@ const StudentsListScreen = ({
           return student;
         }
       });
-    }else{
+    } else {
       filteredSearch = filteredSearch.filter((student) => {
-        if (student.status.toLowerCase() != 'inactive') {
+        if (student.status.toLowerCase() != "inactive") {
           return student;
         }
       });
     }
 
-
-    return filteredSearch;
+    return orderBy(filteredSearch, ["createdDate"], ["desc"]);
   };
 
   const getSeatValue = (student) => {
@@ -155,7 +207,7 @@ const StudentsListScreen = ({
   useEffect(() => {
     setTimeout(() => {
       setStudentsList(studentsStore.studentsList);
-      setIsLoading(false)
+      setIsLoading(false);
     }, 1000);
   }, [studentsStore.studentsList]);
 
@@ -165,6 +217,22 @@ const StudentsListScreen = ({
 
   return (
     <ScrollView style={styles.container}>
+      {/* <View
+        style={{
+          height: "100%",
+          justifyContent: "center",
+          position: "absolute",
+          alignSelf: "center",
+          backgroundColor: "red",
+          width: "100%",
+        }}
+      >
+        <ActivityIndicator
+          animating={true}
+          size="large"
+          color={themeStyle.PRIMARY_COLOR}
+        />
+      </View> */}
       {onClose ? (
         <BackButton isClose={true} onClick={handleOnClose} />
       ) : (
@@ -175,43 +243,147 @@ const StudentsListScreen = ({
         <Text style={{ fontSize: 25 }}>{`${title ? title : ""}`}</Text>
         <Text style={{ fontSize: 25 }}>{`${subTitle ? subTitle : ""}`}</Text>
       </View>
-      {!onClose && ( <View
+
+      <View
         style={{
           width: "100%",
           marginVertical: 20,
           alignItems: "center",
           flexDirection: "row",
           justifyContent: "space-around",
-          zIndex: 2,
+          paddingHorizontal: 20,
+          zIndex: 3,
         }}
       >
-        <View style={{ flexBasis: "49%" }}>
-          <InputText
-            onChange={(e) => handleSearchInputChange(e)}
-            label={t("بحث")}
-            value={searchValue}
-          />
-          {!selectedProduct?.name && (
-            <Text style={{ color: themeStyle.ERROR_COLOR }}>
-              {t("invalid-name")}
-            </Text>
+        <View
+          style={{
+            flexBasis: "49%",
+            justifyContent: "flex-start",
+            paddingHorizontal: 10,
+            flexDirection: "row",
+          }}
+        >
+          {!isSelectEnabeled && (
+            <TouchableOpacity
+              onPress={() => setIsSelectEnabeled(!isSelectEnabeled)}
+            >
+              <Text style={{ fontSize: 18, textDecorationLine: "underline" }}>
+                {t("اختر")}
+              </Text>
+            </TouchableOpacity>
+          )}
+          {isSelectEnabeled && (
+            <View
+              style={{
+                alignItems: "center",
+                flexDirection: "row",
+                justifyContent: "space-around",
+              }}
+            >
+              <View
+                style={{
+                  flexBasis: "49%",
+                  justifyContent: "flex-start",
+                  flexDirection: "row",
+                  opacity:
+                    selectedList.length === 0 || !selectedCategoryId ? 0.3 : 1,
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => {
+                    onUpdateStudentsCategory();
+                    setIsSelectEnabeled(!isSelectEnabeled);
+                  }}
+                  disabled={selectedList.length == 0 || !selectedCategoryId}
+                >
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      color: themeStyle.SUCCESS_COLOR,
+                      textDecorationLine: "underline",
+                    }}
+                  >
+                    {t("حفظ")}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  flexBasis: "49%",
+                  justifyContent: "flex-start",
+
+                  flexDirection: "row",
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => setIsSelectEnabeled(!isSelectEnabeled)}
+                >
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      color: themeStyle.ERROR_COLOR,
+                      textDecorationLine: "underline",
+                    }}
+                  >
+                    {t("الغاء")}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           )}
         </View>
-        <View style={{ flexBasis: "40%" }}>
-          <DropDown
-            itemsList={studentStatuses}
-            defaultValue={statusValue}
-            onChangeFn={(e) => handleStatusChange(e)}
-          />
+        <View style={{ flexBasis: "49%" }}>
+          {coursesList && isSelectEnabeled && (
+            <View style={{ alignItems: "flex-start" }}>
+              <DropDown
+                itemsList={coursesList}
+                defaultValue={selectedCategoryId}
+                onChangeFn={(e) => handleSelectedCategoryChange(e)}
+              />
+            </View>
+          )}
         </View>
-      </View>)}
+      </View>
+
+      {!onClose && (
+        <View
+          style={{
+            width: "100%",
+            marginVertical: 20,
+            alignItems: "center",
+            flexDirection: "row",
+            justifyContent: "space-around",
+            zIndex: 2,
+          }}
+        >
+          <View style={{ flexBasis: "49%" }}>
+            <InputText
+              onChange={(e) => handleSearchInputChange(e)}
+              label={t("بحث")}
+              value={searchValue}
+            />
+            {!selectedProduct?.name && (
+              <Text style={{ color: themeStyle.ERROR_COLOR }}>
+                {t("invalid-name")}
+              </Text>
+            )}
+          </View>
+          <View style={{ flexBasis: "40%" }}>
+            <DropDown
+              itemsList={studentStatuses}
+              defaultValue={statusValue}
+              onChangeFn={(e) => handleStatusChange(e)}
+            />
+          </View>
+        </View>
+      )}
       <View style={[styles.cardListContainer]}>
         {studentsList.length == 0 && isLoading ? (
           <View style={{ height: "100%", justifyContent: "center" }}>
             <ActivityIndicator
               animating={true}
               color={themeStyle.PRIMARY_COLOR}
-              size={'large'}
+              size={"large"}
             />
           </View>
         ) : (
@@ -221,11 +393,43 @@ const StudentsListScreen = ({
                 style={[
                   styles.cardContainer,
                   {
-                    backgroundColor:
-                    student.isPayDelay ? 'red' : themeStyle.STUDENT_COLOR,
+                    backgroundColor: student.isPayDelay
+                      ? "red"
+                      : themeStyle.STUDENT_COLOR,
                   },
                 ]}
               >
+                {isSelectEnabeled && (
+                  <View
+                    style={{
+                      position: "absolute",
+                      right: 0,
+                      bottom: 0,
+                      height: 40,
+                      width: 40,
+                      backgroundColor: themeStyle.WHITE_COLOR_300,
+                      borderBottomLeftRadius: 20,
+                    }}
+                  >
+                    <View>
+                      <TouchableOpacity
+                        style={{
+                          backgroundColor: themeStyle.WHITE_COLOR_300,
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderTopStartRadius: 20,
+                          height: 40,
+                          width: 40,
+                        }}
+                      >
+                        <CheckBox
+                          value={selectedList.indexOf(student._id) > -1}
+                          onChange={() => {}}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                )}
                 {!onClose && (
                   <>
                     {/* <View
@@ -269,7 +473,7 @@ const StudentsListScreen = ({
                         width: 40,
                         backgroundColor: themeStyle.WHITE_COLOR_300,
                         borderBottomLeftRadius: 20,
-                        zIndex:5
+                        zIndex: 5,
                       }}
                     >
                       <TouchableOpacity
@@ -385,7 +589,6 @@ const StudentsListScreen = ({
                         </Text>
                       </View>
                     </View>
-
                   </View>
                 </TouchableOpacity>
                 {isLecture && (
