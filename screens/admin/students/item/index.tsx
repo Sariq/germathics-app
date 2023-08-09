@@ -83,32 +83,44 @@ const StudentItemScreen = ({ route }: any) => {
 
   useEffect(() => {}, []);
 
-  useEffect(()=>{
-      if(student.categoryIdList){
-        const courses = coursesStore.getCoursesByIds([...new Set(student.categoryIdList)]);
-        setCoursesList(courses)
-      }
- 
-  },[])
+  useEffect(() => {
+    if (student.categoryIdList) {
+      const courses = coursesStore.getCoursesByIds([
+        ...new Set(student.categoryIdList),
+      ]);
+      setCoursesList(courses);
+    }
+  }, []);
 
   const handleCallStudent = (phoneNumber) => {
     Linking.openURL(`tel:${phoneNumber}`);
   };
- 
+
   return (
     <ScrollView style={styles.container}>
       <BackButton />
-      <View  style={{position:"absolute", zIndex:1, top:15,left:10, borderWidth:3, borderRadius:50,padding:5, borderColor:themeStyle.SUCCESS_COLOR}}>
-      <TouchableOpacity onPress={()=>handleCallStudent(student.phone)}>
-      <Icon
-              icon="phone1"
-              size={25}
-              style={{ color: themeStyle.SUCCESS_COLOR }}
-            />
-      </TouchableOpacity>
+      <View
+        style={{
+          position: "absolute",
+          zIndex: 1,
+          top: 15,
+          left: 10,
+          borderWidth: 3,
+          borderRadius: 50,
+          padding: 5,
+          borderColor: themeStyle.SUCCESS_COLOR,
+        }}
+      >
+        <TouchableOpacity onPress={() => handleCallStudent(student.phone)}>
+          <Icon
+            icon="phone1"
+            size={25}
+            style={{ color: themeStyle.SUCCESS_COLOR }}
+          />
+        </TouchableOpacity>
       </View>
 
-      <View style={{ alignItems: "center", marginBottom: 20, marginTop:15, }}>
+      <View style={{ alignItems: "center", marginBottom: 20, marginTop: 15 }}>
         <Text style={{ fontSize: 30 }}>{student.name}</Text>
       </View>
       <View style={styles.cardListContainer}>
@@ -148,8 +160,6 @@ const StudentItemScreen = ({ route }: any) => {
                   // handleStudentClick(student);
                 }}
               >
-     
-
                 <View
                   style={{ flexDirection: "column", paddingHorizontal: 10 }}
                 >
@@ -216,7 +226,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     flexDirection: "column",
     overflow: "hidden",
-    marginTop:20
+    marginTop: 20,
   },
   container: {
     width: "100%",
