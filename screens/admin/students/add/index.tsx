@@ -108,6 +108,7 @@ const AddStudentScreen = ({ route }) => {
       id: uuidv4(),
       status: 0,
       lecturesCount: 5,
+      originalLecturesCount: 5,
       seats: [
         {
           status: 0,

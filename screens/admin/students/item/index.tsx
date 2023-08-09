@@ -16,6 +16,8 @@ import { cdnUrl } from "../../../../consts/shared";
 import CheckBox from "../../../../components/controls/checkbox";
 import BackButton from "../../../../components/back-button";
 import { LinearGradient } from "expo-linear-gradient";
+import * as Linking from "expo-linking";
+
 export type TProduct = {
   id?: string;
   name: string;
@@ -89,11 +91,24 @@ const StudentItemScreen = ({ route }: any) => {
  
   },[])
 
+  const handleCallStudent = (phoneNumber) => {
+    Linking.openURL(`tel:${phoneNumber}`);
+  };
  
   return (
     <ScrollView style={styles.container}>
       <BackButton />
-      <View style={{ alignItems: "center", marginBottom: 20 }}>
+      <View  style={{position:"absolute", zIndex:1, top:15,left:10, borderWidth:3, borderRadius:50,padding:5, borderColor:themeStyle.SUCCESS_COLOR}}>
+      <TouchableOpacity onPress={()=>handleCallStudent(student.phone)}>
+      <Icon
+              icon="phone1"
+              size={25}
+              style={{ color: themeStyle.SUCCESS_COLOR }}
+            />
+      </TouchableOpacity>
+      </View>
+
+      <View style={{ alignItems: "center", marginBottom: 20, marginTop:15, }}>
         <Text style={{ fontSize: 30 }}>{student.name}</Text>
       </View>
       <View style={styles.cardListContainer}>
@@ -201,6 +216,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     flexDirection: "column",
     overflow: "hidden",
+    marginTop:20
   },
   container: {
     width: "100%",

@@ -161,7 +161,7 @@ const StudentsListScreen = ({
     let filteredSearch = studentsList || [];
 
     if (searchValue !== "") {
-      filteredSearch = filteredSearch.filter((student) => {
+      filteredSearch = filteredSearch?.filter((student) => {
         if (
           student.name.toLowerCase().includes(searchValue.toLowerCase()) ||
           student.phone.includes(searchValue)
@@ -171,13 +171,13 @@ const StudentsListScreen = ({
       });
     }
     if (statusValue !== "") {
-      filteredSearch = filteredSearch.filter((student) => {
+      filteredSearch = filteredSearch?.filter((student) => {
         if (student.status.toLowerCase().includes(statusValue.toLowerCase())) {
           return student;
         }
       });
     } else {
-      filteredSearch = filteredSearch.filter((student) => {
+      filteredSearch = filteredSearch?.filter((student) => {
         if (student.status.toLowerCase() != "inactive") {
           return student;
         }

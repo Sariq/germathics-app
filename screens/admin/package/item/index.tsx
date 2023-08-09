@@ -41,7 +41,6 @@ const PackageItemScreen = ({ onClose, onSave, packageItem }) => {
   const getBgColorByStatus = (status) => {
     switch (status) {
       case 0:
-        return themeStyle.ORANGE_COLOR;
       case 1:
         return themeStyle.ORANGE_COLOR;
       case 2:
@@ -50,7 +49,7 @@ const PackageItemScreen = ({ onClose, onSave, packageItem }) => {
   };
 
   const onSeatStatusChange = (seatsList)=>{
-    const tmpPackage = {...packageData, seats: seatsList}
+    const tmpPackage = {...packageData, seats: seatsList, lecturesCount: seatsList.length}
     setPackageData(tmpPackage);
     onSave(tmpPackage)
   }

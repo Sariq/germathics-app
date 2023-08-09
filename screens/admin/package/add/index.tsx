@@ -26,6 +26,7 @@ export type TProduct = {
   paymentsList: any[];
   createdDate: any;
   seats: any[];
+  originalLecturesCount: string;
 };
 
 const AddPackageScreen = ({
@@ -92,7 +93,7 @@ const AddPackageScreen = ({
           id: uuidv4(),
         });
       }
-      setSelectedProduct({ ...selectedProduct, [name]: value, seats: seats });
+      setSelectedProduct({ ...selectedProduct, [name]: value, seats: seats, originalLecturesCount: value });
     } else {
       setSelectedProduct({ ...selectedProduct, [name]: value });
     }

@@ -11,6 +11,7 @@ import themeStyle from "../../styles/theme.style";
 import moment from "moment";
 import PaymentFailedDialog from "../dialogs/payment-failed";
 import { StoreContext } from "../../stores";
+import { uuidv4 } from "../../utils/shared";
 
 export type TProduct = {
   seats: any[];
@@ -43,6 +44,13 @@ const SeatsScreen = ({ onClose = null, onSave = null, seats }) => {
             return seat;
         }
     })
+    if(value == 3){
+      tmpSeatsList.push({
+        status: 0,
+        lectureDate: null,
+        id: uuidv4(),
+      });
+    }
     setSeatsList(tmpSeatsList)
     onSave(tmpSeatsList);
     setShowSeatsOptionsDialog(false)

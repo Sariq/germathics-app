@@ -22,6 +22,8 @@ import { orderBy } from "lodash";
 
 import AddPackageScreen from "../add";
 import moment from "moment";
+
+const payDelayMenimun = 0;
 export type TProduct = {
   pacakgesList: string;
 };
@@ -45,6 +47,7 @@ const PackagesListScreen = ({
   const [isAddPacakge, setIsAddPacakge] = useState(false);
   const [isShowSeats, setIsShowSeats] = useState(false);
   const [isShowPackage, setIsShowPackge] = useState(false);
+  const [isShowInActivePackage, setIsShowInActivePackge] = useState(false);
 
   const [selectedSeats, setSelectedSeats] = useState<TProduct>();
   const [studentsList, setStudentsList] = useState<TProduct>();
@@ -106,7 +109,7 @@ const PackagesListScreen = ({
       Number(currentPackage.price) - Number(currentPackage.totalPaid) > 0;
     const usedSeats = currentPackage.seats.filter((seat) => seat.status != 0);
     console.log("usedSeats", usedSeats);
-    isPayDelay = usedSeats.length >= 3 && isPaidLessPackagePrice;
+    isPayDelay = usedSeats.length >= payDelayMenimun && isPaidLessPackagePrice;
     return isPayDelay;
   };
 
@@ -125,8 +128,12 @@ const PackagesListScreen = ({
   };
 
   const filterList = (itemsList) => {
-    return orderBy(itemsList,['createdDate'], ["desc"])
-  }
+    let tempItemsList = itemsList;
+    if(!isShowInActivePackage){
+      tempItemsList = tempItemsList.filter((item)=> item.status !=2)
+    }
+    return orderBy(tempItemsList, ["createdDate"], ["desc"]);
+  };
 
   if (!pacakgesList) {
     return;
@@ -137,6 +144,20 @@ const PackagesListScreen = ({
   //     <SeatsScreen onClose={onCloseSeats} onSave={onSavePacakge} seats={selectedSeats}/>
   //   )
   // }
+
+  const getBgColorByStatus = (status) => {
+    switch (status) {
+      case 0:
+      case 1:
+        return themeStyle.ORANGE_COLOR;
+      case 2:
+        return themeStyle.SUCCESS_COLOR;
+    }
+  };
+
+  const handleShowInActivePackage = (value) => {
+    setIsShowInActivePackge(value);
+  }
 
   console.log("selectedStudentPackage", selectedStudentPackage);
 
@@ -170,10 +191,23 @@ const PackagesListScreen = ({
       <View style={{ width: "100%", paddingHorizontal: 50, marginTop: 25 }}>
         <Button text={t("اضف باقه")} fontSize={20} onClickFn={addPackage} />
       </View>
+      <View style={{flexDirection:'row', alignItems:'center', marginHorizontal:25, marginTop:20}}>
+      <Text style={{ fontSize: 20, marginRight:10 }}>{`اظهر الباقات المكتملة`}</Text>
+
+      <CheckBox onChange={handleShowInActivePackage} value={isShowInActivePackage} />
+
+      </View>
       <View style={styles.cardListContainer}>
         {filterList(pacakgesList).map((packageItem) => {
           return (
-            <View style={[styles.cardContainer, {}]}>
+            <View
+              style={[
+                styles.cardContainer,
+                {
+                  backgroundColor: getBgColorByStatus(packageItem.status),
+                },
+              ]}
+            >
               {/* <View
                 style={{
                   position: "absolute",
@@ -282,6 +316,30 @@ const PackagesListScreen = ({
                       </Text>
                     </View>
                   </View>
+
+                  <View style={{ flexDirection: "row" }}>
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          color: themeStyle.WHITE_COLOR,
+                        }}
+                      >
+                        {t("عدد الاساسي")}:
+                      </Text>
+                    </View>
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          color: themeStyle.WHITE_COLOR,
+                        }}
+                      >
+                        {" "}
+                        {packageItem.originalLecturesCount}{" "}
+                      </Text>
+                    </View>
+                  </View>
                   {/* 
                   <View style={{ flexDirection: "row", marginTop: 15 }}>
                     <View>
@@ -338,7 +396,6 @@ const PackagesListScreen = ({
           );
         })}
       </View>
-
     </ScrollView>
   );
 };
