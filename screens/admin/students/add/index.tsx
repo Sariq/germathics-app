@@ -89,7 +89,7 @@ const AddStudentScreen = ({ route }) => {
       setIdEditMode(true);
       const tmpStudent = {
         ...student,
-        id: student._id,
+        // id: student._id,
       };
       setSelectedProduct(tmpStudent);
     } else {
@@ -108,8 +108,8 @@ const AddStudentScreen = ({ route }) => {
       createdDate: new Date(),
       id: uuidv4(),
       status: 0,
-      lecturesCount: 5,
-      originalLecturesCount: 5,
+      lecturesCount: 8,
+      originalLecturesCount: 8,
       seats: [
         {
           status: 0,
@@ -143,8 +143,6 @@ const AddStudentScreen = ({ route }) => {
 
   const handlAddClick = () => {
     if (selectedProduct) {
-      console.log("selectedProduct:selectedProduct", selectedProduct)
-      return
       setIsLoading(true);
       //uploadImage(imgFile).then((res) => {
       let updatedData: TProduct = null;
@@ -353,7 +351,7 @@ const AddStudentScreen = ({ route }) => {
           <InputText
             onChange={(e) => handleInputChange(e, "fatherNumber")}
             label={t("هاتف الاب")}
-            value={selectedProduct?.fatherPhone}
+            value={selectedProduct?.fatherNumber}
           />
         </View>
 

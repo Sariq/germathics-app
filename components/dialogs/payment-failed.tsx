@@ -10,7 +10,7 @@ import Button from "../../components/controls/button/button";
 import themeStyle from "../../styles/theme.style";
 import { useTranslation } from "react-i18next";
 import seatsStatusOptions from "../seats-status-options";
-import SeatsStatusOptionsScreen from "../seats-status-options"
+import SeatsStatusOptionsScreen from "../seats-status-options";
 import BackButton from "../back-button";
 type TProps = {
   isOpen: boolean;
@@ -53,28 +53,22 @@ export default function PaymentFailedDialog({
             alignItems: "center",
             justifyContent: "center",
             borderRadius: 10,
-            backgroundColor: themeStyle.SECONDARY_COLOR
+            backgroundColor: themeStyle.SECONDARY_COLOR,
           }}
           visible={visible}
           dismissable={false}
         >
-     
-     
           <Dialog.Content>
-
-          <View style={{marginTop:0, right:-60}}>
-          <BackButton isClose={true} onClick={hideDialog} />
-
-          </View>
-          <View style={{marginTop:60, height:"100%"}}>
-          <SeatsStatusOptionsScreen
-                      value={value}
-                      onSave={(value) => onApperanceChange(value)}
-                    />
-          </View>
-   
+            <View style={{ marginTop: 0, right: -60 }}>
+              <BackButton isClose={true} onClick={hideDialog} />
+            </View>
+            <View style={{ marginTop: 60, height: "100%" }}>
+              <SeatsStatusOptionsScreen
+                value={value}
+                onSave={(value) => onApperanceChange(value)}
+              />
+            </View>
           </Dialog.Content>
-    
         </Dialog>
       </Portal>
     </Provider>

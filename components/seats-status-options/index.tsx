@@ -65,6 +65,7 @@ const SeatsStatusOptionsScreen = ({ value, onSave }) => {
       <View
         style={{
           flexDirection: "row",
+          
         }}
       >
         {seatOptions.map((seatStatus) => {
