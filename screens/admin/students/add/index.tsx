@@ -65,7 +65,6 @@ const AddStudentScreen = ({ route }) => {
 
   const initCoursesList = () => {
     const courses = coursesStore.coursesList;
-    console.log("courses",courses)
     let mappedCategories = courses.map((course, index) => {
       // if (categoryId && cours.categoryId === categoryId) {
       //   setSelectedCategoryId(index);
@@ -85,7 +84,6 @@ const AddStudentScreen = ({ route }) => {
     initCoursesList();
 
     if (student) {
-      console.log("student:student",student)
       setIdEditMode(true);
       const tmpStudent = {
         ...student,
@@ -253,9 +251,6 @@ const AddStudentScreen = ({ route }) => {
         isPayDelay
       }, isEditMode)
     }
-    console.log("newPackage",newPackage)
-  
-
   };
 
   useEffect(() => {
@@ -267,7 +262,6 @@ const AddStudentScreen = ({ route }) => {
 
 
   const updateSelectedProduct = (tmpStudentsList) =>{
-    console.log("selectedProduct",tmpStudentsList)
     //const tmpStudent = tmpStudentsList.find((student)=> student._id == selectedProduct?._id);
   //  console.log("tmpStudent",tmpStudent)
     //setSelectedProduct(tmpStudent);

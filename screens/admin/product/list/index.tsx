@@ -82,7 +82,6 @@ const CoursesListScreen = ({ route }) => {
     const {tmpLecturesList, lecture} = data;
     const tmpCourse = { ...selctedCourse };
     tmpCourse.lectures = tmpLecturesList;
-    console.log("tmpCourse.lectures",tmpCourse.lectures)
     menuStore.addOrUpdateProduct(tmpCourse, true, lecture).then((res: any) => {
       menuStore.getMenu();
       setIsLoading(false);

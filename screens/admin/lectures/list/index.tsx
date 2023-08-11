@@ -95,15 +95,10 @@ const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) =>
   }
 
   const onLectureSave = (newLecture) => {
-    console.log("newLecture",newLecture)
-
     let tmpLecturesList = [...lecturesList];
-    console.log("tmpLecturesList1",tmpLecturesList)
     if(isEditMode){
       tmpLecturesList = tmpLecturesList.map((lecture)=>{
         if(lecture.id === newLecture.id){
-          console.log("lecture",lecture)
-
           return  newLecture
         }else{
           return lecture

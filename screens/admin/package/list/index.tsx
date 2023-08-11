@@ -108,7 +108,6 @@ const PackagesListScreen = ({
     const isPaidLessPackagePrice =
       Number(currentPackage.price) - Number(currentPackage.totalPaid) > 0;
     const usedSeats = currentPackage.seats.filter((seat) => seat.status != 0);
-    console.log("usedSeats", usedSeats);
     isPayDelay = usedSeats.length >= payDelayMenimun && isPaidLessPackagePrice;
     return isPayDelay;
   };
@@ -159,7 +158,6 @@ const PackagesListScreen = ({
     setIsShowInActivePackge(value);
   }
 
-  console.log("selectedStudentPackage", selectedStudentPackage);
 
   if (isShowPackage) {
     return (

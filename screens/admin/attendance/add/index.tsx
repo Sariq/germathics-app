@@ -184,10 +184,6 @@ const AddAttendanceScreen = ({
       ...selectedProduct?.paymentsList[index],
       ...student,
     });
-    console.log(
-      "selectedProduct?.paymentsList[index]",
-      selectedProduct?.paymentsList[index]
-    );
   };
   const onSaveSignature = (val) => {
     handlePaymentInputChange(val, "signature", selectedSignatrueData.index);

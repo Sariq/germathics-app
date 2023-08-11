@@ -106,8 +106,6 @@ for (let i = 0; i < numberOfMonths; i++) {
   monthsArray.push({ label: monthIndex + 1, value: monthIndex + 1 });
 }
 
-console.log("monthsArray",monthsArray);
-   
   if (!selectedProduct) {
     return;
   }
