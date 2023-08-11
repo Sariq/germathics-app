@@ -24,7 +24,7 @@ export type TProduct = {
   createdDate: any;
 };
 
-const AddLectureScreen = ({ onClose, onSave }) => {
+const AddLectureScreen = ({ onClose, onSave, lecture }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
@@ -52,26 +52,21 @@ const AddLectureScreen = ({ onClose, onSave }) => {
   // };
 
   useEffect(() => {
-    // console.log("product?.extras.size.options", product?.extras.size.options);
-    // if (product) {
-    //   setIdEditMode(true);
-    //   setSelectedCategoryId(product.categoryId);
-    //   setSelectedSubCategoryId(product.subCategoryId);
-    //   let tmpProduct = {
-    //     ...product,
-    //     mediumPrice: product?.extras.size.options["medium"].price,
-    //     mediumCount: product?.extras.size.options["medium"].count,
-    //     largePrice: product?.extras.size.options["large"].price,
-    //     largeCount: product?.extras.size.options["large"].count,
-    //   };
-    //   setSelectedProduct(tmpProduct);
-    // } else {
+    if (lecture) {
+      const tmpMinutes = moment(lecture.createdDate).minutes();
+      setSelectedHour(`${moment(lecture.createdDate).hour()}:${tmpMinutes == 0 ? '00' : tmpMinutes}`);
+
+      setIdEditMode(true);
+      let tmpProduct = {
+        ...lecture,
+      };
+      setSelectedProduct(tmpProduct);
+    } else {
     setSelectedProduct(initNewProduct());
     setTimeout(() => {
       setDefaultHour();
     }, 0);
-
-    // }
+    }
   }, []);
 
   const handleInputChange = (value: any, name: string) => {
@@ -80,24 +75,6 @@ const AddLectureScreen = ({ onClose, onSave }) => {
 
   const handlAddClick = () => {
     onSave(selectedProduct);
-    // if (selectedProduct) {
-    //   setIsLoading(true);
-    //   //uploadImage(imgFile).then((res) => {
-    //   let updatedData: TProduct = null;
-
-    //   updatedData = { ...selectedProduct };
-
-    //   setSelectedProduct(updatedData);
-    //   menuStore.addOrUpdateProduct(updatedData, isEditMode).then((res: any) => {
-    //     menuStore.getMenu();
-    //     setIsLoading(false);
-    //     navigation.navigate("admin-dashboard");
-
-    //     //navigateToMenu();
-    //   });
-
-    //   //});
-    // }
   };
 
   const navigateToMenu = () => {

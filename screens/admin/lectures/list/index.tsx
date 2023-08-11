@@ -61,32 +61,6 @@ const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) =>
     setSelectedProduct(initNewProduct());
   }, []);
 
-  const handleInputChange = (value: any, name: string) => {
-    setSelectedProduct({ ...selectedProduct, [name]: value });
-  };
-
-  const handlAddClick = () => {
-    if (selectedProduct) {
-      setIsLoading(true);
-      //uploadImage(imgFile).then((res) => {
-      let updatedData: TProduct = null;
-
-      updatedData = { ...selectedProduct };
-
-      setSelectedProduct(updatedData);
-      menuStore.addOrUpdateProduct(updatedData, isEditMode).then((res: any) => {
-        menuStore.getMenu();
-        setIsLoading(false);
-        //navigateToMenu();
-      });
-
-      //});
-    }
-  };
-
-  const navigateToMenu = () => {
-    navigation.navigate("menuScreen");
-  };
 
   const handleOpenStudents = (lecture: any) => {
     setSelectedLecture(lecture);
@@ -101,16 +75,6 @@ const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) =>
   };
 
 
-  // const onApperanceChange = (isAppeard, studentId) => {
-  //   coursesStore.updateStudentAppearance({
-  //     categoryId: course._id,
-  //     lectureId: selectedLecture.id,
-  //     studentId: studentId,
-  //     isAppeard: isAppeard,
-  //   }).then((res)=>{
-  //     studentsStore.getStudents();
-  //   })
-  // };
   const onApperanceChange = (seatStatus, studentId) => {
     coursesStore.updateStudentAppearance({
       categoryId: course._id,
@@ -131,13 +95,35 @@ const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) =>
   }
 
   const onLectureSave = (newLecture) => {
-    const tmpLecturesList = [...lecturesList];
-    tmpLecturesList.push(newLecture);
+    console.log("newLecture",newLecture)
+
+    let tmpLecturesList = [...lecturesList];
+    console.log("tmpLecturesList1",tmpLecturesList)
+    if(isEditMode){
+      tmpLecturesList = tmpLecturesList.map((lecture)=>{
+        if(lecture.id === newLecture.id){
+          console.log("lecture",lecture)
+
+          return  newLecture
+        }else{
+          return lecture
+        }
+      })
+    }else{
+      tmpLecturesList.push(newLecture);
+    }
+    console.log("tmpLecturesList2",tmpLecturesList)
+
     setLecturesList(tmpLecturesList);
-    onSave(tmpLecturesList)
+    onSave({tmpLecturesList,lecture: newLecture})
     setIsAddLecture(false)
 
   }
+  const onEditClick = (lecture) => {
+      setIdEditMode(true);
+      setSelectedLecture(lecture);
+      setIsAddLecture(true);
+  };
 
   if (selctedCourseStudentsList) {
     return (
@@ -159,7 +145,7 @@ const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) =>
   }
 
   if(isAddLecture){
-    return <AddLectureScreen onClose={onAddLectureClose} onSave={onLectureSave}/>
+    return <AddLectureScreen onClose={onAddLectureClose} onSave={onLectureSave} lecture={selectedLecture}/>
   }
   return (
     <ScrollView style={styles.container}>
@@ -186,7 +172,40 @@ const LecturesListScreen = ({ lectures, course,title, onSave, onClose }: any) =>
         {filterList(lecturesList)?.map((lecture, index) => {
           return (
             <View style={styles.cardContainer}>
-        
+            <View
+                      style={{
+                        position: "absolute",
+                        right: 0,
+                        top: 0,
+                        height: 40,
+                        width: 40,
+                        backgroundColor: themeStyle.WHITE_COLOR_300,
+                        borderBottomLeftRadius: 20,
+                        zIndex: 5,
+                      }}
+                    >
+                      <TouchableOpacity
+                        style={{
+                          alignItems: "center",
+                          justifyContent: "center",
+                          height: "100%",
+                          width: "100%",
+                          position: "relative",
+                        }}
+                        onPress={() => {
+                          //onRemoveProduct(product, index);
+                          onEditClick(lecture);
+                        }}
+                      >
+                        <Icon
+                          icon="pencil"
+                          size={18}
+                          style={{
+                            color: themeStyle.PRIMARY_COLOR,
+                          }}
+                        />
+                      </TouchableOpacity>
+                    </View>
               {/* <View
                 style={{
                   position: "absolute",
@@ -271,7 +290,6 @@ export default observer(LecturesListScreen);
 const styles = StyleSheet.create({
   cardContainer: {
     width: "100%",
-    borderWidth: 1,
     padding: 10,
     marginBottom: 10,
     borderRadius: 10,

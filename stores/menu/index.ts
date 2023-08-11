@@ -196,19 +196,9 @@ class MenuStore {
   addOrUpdateProduct = (
     product: TProduct,
     isEditMode: boolean,
+    lecture?: any
   ) => {
  
-
-
-    // if (isEditMode) {
-    //   product?._id && formData.append("productId", product?._id);
-    // }
-
-    // const body = {
-    //   name: product.name,
-    //   lecturesCount: product.count
-    // }
-    console.log()
     return axiosInstance
       .post(
         `${
@@ -216,7 +206,7 @@ class MenuStore {
             ? COURSES_API.ADMIN_UPDATE_COURSE_API
             : COURSES_API.ADMIN_ADD_COURSE_API
         }`,
-        product,
+        {course: product, lecture},
       )
       .then(function (response) {
         return response;

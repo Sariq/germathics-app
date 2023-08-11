@@ -85,6 +85,7 @@ const AddStudentScreen = ({ route }) => {
     initCoursesList();
 
     if (student) {
+      console.log("student:student",student)
       setIdEditMode(true);
       const tmpStudent = {
         ...student,
@@ -142,6 +143,8 @@ const AddStudentScreen = ({ route }) => {
 
   const handlAddClick = () => {
     if (selectedProduct) {
+      console.log("selectedProduct:selectedProduct", selectedProduct)
+      return
       setIsLoading(true);
       //uploadImage(imgFile).then((res) => {
       let updatedData: TProduct = null;

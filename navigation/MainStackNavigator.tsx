@@ -1,5 +1,10 @@
 import React from "react";
-import { createStackNavigator, CardStyleInterpolators, TransitionSpecs, HeaderStyleInterpolators } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+  TransitionSpecs,
+  HeaderStyleInterpolators,
+} from "@react-navigation/stack";
 import FooterTabs from "../components/layout/footer-tabs/FooterTabs";
 import CartScreen from "../screens/cart/cart";
 import TermsAndConditionsScreen from "../screens/terms-and-conditions";
@@ -32,42 +37,43 @@ import uploadImages from "../screens/admin/upload-images/upload-images";
 import EditTranslationsScreen from "../screens/admin/edit-translations";
 import EmployeReportScreen from "../screens/admin/employes/report";
 import StudentsPayDelayScreen from "../screens/admin/students/pay-delay";
+import AddLectureScreen from "../screens/admin/lectures/add";
 
 const Stack = createStackNavigator();
 const TransitionScreen = {
-  gestureDirection: 'horizontal',
+  gestureDirection: "horizontal",
   transitionSpec: {
-      open: TransitionSpecs.TransitionIOSSpec,
-      close: TransitionSpecs.TransitionIOSSpec
+    open: TransitionSpecs.TransitionIOSSpec,
+    close: TransitionSpecs.TransitionIOSSpec,
   },
   cardStyleInterpolator: ({ current, next, layouts }) => {
-      return {
-          cardStyle: {
-              transform: [
-                  {
-                      translateX: current.progress.interpolate({
-                          inputRange: [0, 1],
-                          outputRange: [layouts.screen.width, 0]
-                      })
-                  },
-                  {
-                      translateX: next
-                          ? next.progress.interpolate({
-                                inputRange: [0, 1],
-                                outputRange: [0, -layouts.screen.width]
-                            })
-                          : 1
-                  }
-              ]
+    return {
+      cardStyle: {
+        transform: [
+          {
+            translateX: current.progress.interpolate({
+              inputRange: [0, 1],
+              outputRange: [layouts.screen.width, 0],
+            }),
           },
-          overlayStyle: {
-              opacity: current.progress.interpolate({
+          {
+            translateX: next
+              ? next.progress.interpolate({
                   inputRange: [0, 1],
-                  outputRange: [0, 0]
-              })
-          }
-      };
-  }
+                  outputRange: [0, -layouts.screen.width],
+                })
+              : 1,
+          },
+        ],
+      },
+      overlayStyle: {
+        opacity: current.progress.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 0],
+        }),
+      },
+    };
+  },
 };
 
 export const MainStackNavigator = () => {
@@ -78,52 +84,121 @@ export const MainStackNavigator = () => {
       headerMode="none"
       presentation={"presentation"}
       screenOptions={{
-        cardStyle: { backgroundColor: 'transparent' },
-        ...TransitionScreen
-
+        cardStyle: { backgroundColor: "transparent" },
+        ...TransitionScreen,
       }}
     >
-       {/* name: "menuScreen",
+      {/* name: "menuScreen",
     title: "תפריט",
     icon: "shopping-bag1",
     iconSize: 30,
     component: MenuScreen, */}
       <Stack.Screen name="menuScreen" component={FooterTabs} />
       <Stack.Screen name="homeScreen" component={HomeScreen} />
-      <Stack.Screen name="terms-and-conditions" component={TermsAndConditionsScreen} />
+      <Stack.Screen
+        name="terms-and-conditions"
+        component={TermsAndConditionsScreen}
+      />
       <Stack.Screen name="orders-status" component={OrdersStatusScreen} />
       <Stack.Screen name="admin-orders" component={OrdersListScreen} />
       <Stack.Screen name="admin-calander" component={CalanderContainer} />
       <Stack.Screen name="admin-dashboard" component={DashboardScreen} />
       {/* <Stack.Screen name="admin-add-product" component={AddProductScreen}  initialParams={{ categoryId: null, product: null }}/> */}
-      <Stack.Screen name="admin-add-course" component={AddCourseScreen}  initialParams={{ categoryId: null, product: null }}/>
-      <Stack.Screen name="admin-add-package" component={AddPackageScreen}  initialParams={{ categoryId: null, student: null }}/>
-      <Stack.Screen name="admin-courses-list" component={CoursesListScreen}  initialParams={{ categoryId: null, product: null }}/>
-      
-      <Stack.Screen name="admin-add-student" component={AddStudentScreen}  initialParams={{ categoryId: null, student: null }}/>
-      <Stack.Screen name="admin-students-list" component={StudentsListScreen}  initialParams={{ categoryId: null, product: null, studentIds: null }}/>
-      <Stack.Screen name="admin-students-item" component={StudentItemScreen}  initialParams={{ categoryId: null, product: null, student: null }}/>
-      
-      <Stack.Screen name="admin-add-employe" component={AddEmployeScreen}  initialParams={{ categoryId: null, student: null }}/>
-      <Stack.Screen name="admin-employes-list" component={EmployesListScreen}  initialParams={{ categoryId: null, product: null, studentIds: null }}/>
-      <Stack.Screen name="admin-employes-item" component={EpmloyeItemScreen}  initialParams={{ categoryId: null, product: null, student: null }}/>
-      <Stack.Screen name="admin-employe-report" component={EmployeReportScreen}  initialParams={{ categoryId: null, product: null, studentIds: null }}/>
-     
-      <Stack.Screen name="admin-student-pay-delay" component={StudentsPayDelayScreen}  initialParams={{ categoryId: null, product: null, studentIds: null }}/>
+      <Stack.Screen
+        name="admin-add-course"
+        component={AddCourseScreen}
+        initialParams={{ categoryId: null, product: null }}
+      />
+      <Stack.Screen
+        name="admin-add-package"
+        component={AddPackageScreen}
+        initialParams={{ categoryId: null, student: null }}
+      />
+      <Stack.Screen
+        name="admin-courses-list"
+        component={CoursesListScreen}
+        initialParams={{ categoryId: null, product: null }}
+      />
 
-      <Stack.Screen name="admin-lectures-list" component={LecturesListScreen}  initialParams={{ categoryId: null, product: null, studentIds: null }}/>
-      <Stack.Screen name="admin-payment-report" component={PaymentReportScreen}  initialParams={{ categoryId: null, product: null, studentIds: null }}/>
+      <Stack.Screen
+        name="admin-add-student"
+        component={AddStudentScreen}
+        initialParams={{ categoryId: null, student: null }}
+      />
+      <Stack.Screen
+        name="admin-students-list"
+        component={StudentsListScreen}
+        initialParams={{ categoryId: null, product: null, studentIds: null }}
+      />
+      <Stack.Screen
+        name="admin-students-item"
+        component={StudentItemScreen}
+        initialParams={{ categoryId: null, product: null, student: null }}
+      />
+
+      <Stack.Screen
+        name="admin-add-employe"
+        component={AddEmployeScreen}
+        initialParams={{ categoryId: null, student: null }}
+      />
+      <Stack.Screen
+        name="admin-employes-list"
+        component={EmployesListScreen}
+        initialParams={{ categoryId: null, product: null, studentIds: null }}
+      />
+      <Stack.Screen
+        name="admin-employes-item"
+        component={EpmloyeItemScreen}
+        initialParams={{ categoryId: null, product: null, student: null }}
+      />
+      <Stack.Screen
+        name="admin-employe-report"
+        component={EmployeReportScreen}
+        initialParams={{ categoryId: null, product: null, studentIds: null }}
+      />
+
+      <Stack.Screen
+        name="admin-student-pay-delay"
+        component={StudentsPayDelayScreen}
+        initialParams={{ categoryId: null, product: null, studentIds: null }}
+      />
+
+      <Stack.Screen
+        name="admin-lecture-add"
+        component={AddLectureScreen}
+        initialParams={{ lecture: null }}
+      />
+      <Stack.Screen
+        name="admin-lectures-list"
+        component={LecturesListScreen}
+        initialParams={{ categoryId: null, product: null, studentIds: null }}
+      />
+      <Stack.Screen
+        name="admin-payment-report"
+        component={PaymentReportScreen}
+        initialParams={{ categoryId: null, product: null, studentIds: null }}
+      />
       <Stack.Screen name="becoin" component={BcoinScreen} />
       <Stack.Screen name="cart" component={CartScreen} />
       <Stack.Screen name="profile" component={ProfileScreen} />
       <Stack.Screen name="login" component={LoginScreen} />
-      <Stack.Screen name="insert-customer-name" component={insertCustomerName} />
-      <Stack.Screen name="verify-code" component={VerifyCodeScreen} initialParams={{ phoneNumber: null }} />
+      <Stack.Screen
+        name="insert-customer-name"
+        component={insertCustomerName}
+      />
+      <Stack.Screen
+        name="verify-code"
+        component={VerifyCodeScreen}
+        initialParams={{ phoneNumber: null }}
+      />
       <Stack.Screen name="language" component={LanguageScreen} />
       <Stack.Screen name="order-history" component={OrderHistoryScreen} />
       <Stack.Screen name="upload-images" component={uploadImages} />
-      <Stack.Screen name="edit-translations" component={EditTranslationsScreen} />
-      <Stack.Screen 
+      <Stack.Screen
+        name="edit-translations"
+        component={EditTranslationsScreen}
+      />
+      <Stack.Screen
         name="order-submitted"
         component={OrderSubmittedScreen}
         initialParams={{ shippingMethod: null }}

@@ -71,37 +71,7 @@ const EmployesListScreen = ({
   const handleSearchInputChange = (value: any) => {
     setSearchValue(value);
   };
-  const handleStatusChange = (value: any) => {
-    setStatusValue(value);
-  };
 
-  const handlAddClick = () => {
-    if (selectedProduct) {
-      setIsLoading(true);
-      //uploadImage(imgFile).then((res) => {
-      let updatedData: TProduct = null;
-
-      updatedData = { ...selectedProduct };
-
-      setSelectedProduct(updatedData);
-      menuStore.addOrUpdateProduct(updatedData, isEditMode).then((res: any) => {
-        menuStore.getMenu();
-        setIsLoading(false);
-        //navigateToMenu();
-      });
-
-      //});
-    }
-  };
-
-  const navigateToMenu = () => {
-    navigation.navigate("menuScreen");
-  };
-
-  const getCourseById = (id: any) => {
-    const course = coursesStore.coursesList.find((course) => course._id == id);
-    return course;
-  };
 
   useEffect(() => {
     employesStore.getEmployes(ids);
@@ -115,13 +85,6 @@ const EmployesListScreen = ({
     if (!isLecture) {
       navigation.navigate("admin-add-employe", { student });
     }
-  };
-
-  const getIsAppearedByStudentId = (id: any) => {
-    const student = lectureStudentsList.find(
-      (student) => student.studentId === id
-    );
-    return student?.isAppeard;
   };
 
   const filterList = (employesList) => {

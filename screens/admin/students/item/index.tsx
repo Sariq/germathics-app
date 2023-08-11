@@ -49,38 +49,6 @@ const StudentItemScreen = ({ route }: any) => {
     return selectedProduct?.name && selectedProduct?.count;
   };
 
-  const handleInputChange = (value: any, name: string) => {
-    setSelectedProduct({ ...selectedProduct, [name]: value });
-  };
-
-  const handlAddClick = () => {
-    if (selectedProduct) {
-      setIsLoading(true);
-      //uploadImage(imgFile).then((res) => {
-      let updatedData: TProduct = null;
-
-      updatedData = { ...selectedProduct };
-
-      setSelectedProduct(updatedData);
-      menuStore.addOrUpdateProduct(updatedData, isEditMode).then((res: any) => {
-        menuStore.getMenu();
-        setIsLoading(false);
-        //navigateToMenu();
-      });
-
-      //});
-    }
-  };
-
-  const navigateToMenu = () => {
-    navigation.navigate("menuScreen");
-  };
-
-  const getCourseById = (id: any) => {
-    const course = coursesStore.coursesList.find((course) => course._id == id);
-    return course;
-  };
-
   useEffect(() => {}, []);
 
   useEffect(() => {

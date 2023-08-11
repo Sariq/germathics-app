@@ -4,9 +4,10 @@
 // export const BASE_URL = "https://jellyfish-app-9hxts.ondigitalocean.app/api";
 // export const WS_URL = "wss://cjellyfish-app-9hxts.ondigitalocean.app";
 
-//DEV
+// //DEV
 export const BASE_URL = "http://192.168.1.234:1111/api";
 export const WS_URL = "ws://192.168.1.234:1111";
+
 
 // export const BASE_URL = "http://10.0.0.38:1111/api";
 // export const WS_URL = "ws://10.0.0.38:1111";

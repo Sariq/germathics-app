@@ -60,24 +60,6 @@ const CoursesListScreen = ({ route }) => {
     setSelectedProduct({ ...selectedProduct, [name]: value });
   };
 
-  const handlAddClick = () => {
-    if (selectedProduct) {
-      setIsLoading(true);
-      //uploadImage(imgFile).then((res) => {
-      let updatedData: TProduct = null;
-
-      updatedData = { ...selectedProduct };
-
-      setSelectedProduct(updatedData);
-      menuStore.addOrUpdateProduct(updatedData, isEditMode).then((res: any) => {
-        menuStore.getMenu();
-        setIsLoading(false);
-        //navigateToMenu();
-      });
-
-      //});
-    }
-  };
 
   const handleOpenStudents = (course: any) => {
     setSelctedCourse(course);
@@ -96,10 +78,12 @@ const CoursesListScreen = ({ route }) => {
     setSelctedLecturesList(null);
   };
 
-  const onSaveLecture = (lecturesList: any) => {
+  const onSaveLecture = (data) => {
+    const {tmpLecturesList, lecture} = data;
     const tmpCourse = { ...selctedCourse };
-    tmpCourse.lectures = lecturesList;
-    menuStore.addOrUpdateProduct(tmpCourse, true).then((res: any) => {
+    tmpCourse.lectures = tmpLecturesList;
+    console.log("tmpCourse.lectures",tmpCourse.lectures)
+    menuStore.addOrUpdateProduct(tmpCourse, true, lecture).then((res: any) => {
       menuStore.getMenu();
       setIsLoading(false);
     });
